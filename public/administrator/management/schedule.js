@@ -233,11 +233,31 @@ let loadTableSchedule = (stype, value) => {
                     ${val.teacher_middlename}
                     </td>
                     <td>
-                        ${val.monday ? "Monday, " : ""}
-                        ${val.tuesday ? "Tuesday, " : ""}
-                        ${val.wednesday ? "Wednesday, " : ""}
-                        ${val.thursday ? "Thursday, " : ""}
-                        ${val.friday ? "Friday " : ""}
+                        ${
+                            val.monday
+                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Mon</span>`
+                                : ""
+                        }
+                        ${
+                            val.tuesday
+                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Tue</span>`
+                                : ""
+                        }
+                        ${
+                            val.wednesday
+                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Wed</span>`
+                                : ""
+                        }
+                        ${
+                            val.thursday
+                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Thu</span>`
+                                : ""
+                        }
+                        ${
+                            val.friday
+                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Fri</span>`
+                                : ""
+                        }
                     </td>
                     <td>
                         ${val.sched_from} - 

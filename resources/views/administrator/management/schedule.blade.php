@@ -45,8 +45,8 @@
                                     <table class="table table-striped" style="font-size: 11px">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>Section</th>
+                                                <th width="1%">#</th>
+                                                <th width="7%">Section</th>
                                                 <th>Descriptive Title</th>
                                                 <th>Subject Teacher</th>
                                                 <th>Day(s)</th>
