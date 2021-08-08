@@ -1,4 +1,5 @@
 let cancelSchedule = $(".cancelSchedule").hide();
+let sched_toHTML = "";
 const myTime = [
     "7:00 am",
     "7:30 am",
@@ -58,36 +59,19 @@ $('select[name="search_type"]').on("change", function () {
     }
 });
 
-let searchByGradeLevel = (grade_level) => {
-    let subjectHTML = "";
+let searchBySection = (grade_level) => {
     let sectionHTML = "";
     $.ajax({
-        url: `search/byGradeLevel/${grade_level}`,
+        url: `search/section/${grade_level}`,
         type: "GET",
         dataType: "json",
     })
         .done(function (data) {
-            subjectHTML += `<option></option>`;
             sectionHTML += `<option></option>`;
-            if (data["section"]) {
-                data.section.forEach((element) => {
-                    sectionHTML += `<option value="${element.id}">${element.section_name}</option>`;
-                });
-                $("select[name='section_id']").html(sectionHTML);
-            }
-            if (data["subject"]) {
-                data.subject.forEach((element) => {
-                    subjectHTML += `<option value="${element.id}">${
-                        "[ " +
-                        element.subject_for +
-                        " ] " +
-                        element.subject_code +
-                        " - " +
-                        element.descriptive_title
-                    }</option>`;
-                });
-                $("select[name='subject_id']").html(subjectHTML);
-            }
+            data.forEach((element) => {
+                sectionHTML += `<option value="${element.id}">${element.section_name}</option>`;
+            });
+            $("select[name='section_id']").html(sectionHTML);
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
@@ -96,52 +80,93 @@ let searchByGradeLevel = (grade_level) => {
 };
 
 $("select[name='grade_level']").on("change", function () {
-    searchByGradeLevel($(this).val());
+    searchBySection($(this).val());
     $("select[name='teacher_id']").val(null).trigger("change");
 });
-searchByGradeLevel(7);
+searchBySection(7);
+let searhBySubject = (section) => {
+    let subjectHTML = "";
+    $.ajax({
+        url: `search/subject/${section}`,
+        type: "GET",
+        dataType: "json",
+    })
+        .done(function (data) {
+            subjectHTML += `<option></option>`;
+            data.forEach((element) => {
+                subjectHTML += `<option value="${element.id}">${
+                    "[ " +
+                    element.subject_for +
+                    " ] " +
+                    element.subject_code +
+                    " - " +
+                    element.descriptive_title
+                }</option>`;
+            });
+            $("select[name='subject_id']").html(subjectHTML);
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            console.log(jqxHR, textStatus, errorThrown);
+            getToast("error", "Eror", errorThrown);
+        });
+};
+$("select[name='section_id']").on("change", function () {
+    if ($(this).val() != "") {
+        searhBySubject($(this).val());
+    }
+});
 
 $("#scheduleForm").submit(function (e) {
     e.preventDefault();
-    $.ajax({
-        url: "schedule/save",
-        type: "POST",
-        data: new FormData(this),
-        processData: false,
-        contentType: false,
-        cache: false,
-        beforeSend: function () {
-            $(".btnSaveSchedule")
-                .html(
-                    `Saving ...
-                    <div class="spinner-border spinner-border-sm" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>`
-                )
-                .attr("disabled", true);
-        },
-    })
-        .done(function (data) {
-            console.log(data);
-            $("#selectedGL").val($('select[name="grade_level"]').val());
-            $(".btnSaveSchedule").html("Submit").attr("disabled", false);
-            document.getElementById("scheduleForm").reset();
-            $("input[name='id']").val("");
-            $("select[name='section_id']").val(null).trigger("change");
-            $("select[name='subject_id']").val(null).trigger("change");
-            $("select[name='teacher_id']").val(null).trigger("change");
-            $("select[name='sched_to']").val(null);
-            let cloneArr = arrTime.slice(0);
-            cloneArr.splice(index + 1).forEach((element, i) => {
-                sched_toHTML += `<option  value="${element}" ${
-                    i == 1 ? `selected` : ``
-                }>${element}</option>`;
-            });
+    let countCheckBoxAreChecked = $(
+        "#scheduleForm input[type=checkbox]:checked"
+    ).is(":checked");
+    if (countCheckBoxAreChecked) {
+        $.ajax({
+            url: "schedule/save",
+            type: "POST",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,
+            beforeSend: function () {
+                $(".btnSaveSchedule")
+                    .html(
+                        `Saving ...
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>`
+                    )
+                    .attr("disabled", true);
+            },
         })
-        .fail(function (jqxHR, textStatus, errorThrown) {
-            getToast("error", "Eror", errorThrown);
-            $(".btnSaveSchedule").html("Submit").attr("disabled", false);
-        });
+            .done(function (data) {
+                $("#selectedGL").val($('select[name="grade_level"]').val());
+                $(".btnSaveSchedule").html("Submit").attr("disabled", false);
+                document.getElementById("scheduleForm").reset();
+                $("input[name='id']").val("");
+                $("select[name='section_id']").val(null).trigger("change");
+                $("select[name='subject_id']").val(null).trigger("change");
+                $("select[name='teacher_id']").val(null).trigger("change");
+                $("select[name='sched_to']").val(null);
+
+                let cloneArr1 = myTime.slice(0);
+                cloneArr1.forEach((element, i) => {
+                    console.log(i);
+                    sched_toHTML += `<option  value="${element}" ${
+                        i == 1 ? `selected` : ``
+                    }>${element}</option>`;
+                });
+
+                $("select[name='sched_to']").html(sched_toHTML);
+            })
+            .fail(function (jqxHR, textStatus, errorThrown) {
+                getToast("error", "Eror", errorThrown);
+                $(".btnSaveSchedule").html("Submit").attr("disabled", false);
+            });
+    } else {
+        getToast("warning", "Warning", "Please select day(s) at least one! ");
+    }
 });
 
 let sched_fromHTML = "";
@@ -153,7 +178,6 @@ $("select[name='sched_from']").html(sched_fromHTML);
 
 //
 let nextTime = (arrTime = [], value) => {
-    let sched_toHTML = "";
     let cloneArr = arrTime.slice(0);
     const index = cloneArr.findIndex((val) => {
         return val == value;
@@ -178,7 +202,7 @@ let loadTableSchedule = (stype, value) => {
         url: `schedule/list/${stype}/${value}`,
         type: "GET",
         beforeSend: function () {
-            $("#sectionTable").html(
+            $("#scheduleTable").html(
                 `<tr>
                         <td colspan="7" class="text-center">
                             <div class="spinner-border spinner-border-sm" role="status">
@@ -191,7 +215,6 @@ let loadTableSchedule = (stype, value) => {
         },
     })
         .done(function (data) {
-            console.log(data);
             data.forEach((val) => {
                 loadTableHTML += `
                 <tr>
@@ -225,7 +248,7 @@ let loadTableSchedule = (stype, value) => {
                             <button type="button" style="font-size:9px" class="btn btn-sm btn-info pl-3 pr-3 editSubject editSub_${
                                 val.id
                             }" id="${val.id}">Edit</button>
-                            <button type="button" style="font-size:9px" class="btn btn-sm btn-danger deleteSubject deleteSub_${
+                            <button type="button" style="font-size:9px" class="btn btn-sm btn-danger pl-2 pr-2 deleteSubject deleteSub_${
                                 val.id
                             }" id="${val.id}">Delete</button>
                         </div>
@@ -233,7 +256,7 @@ let loadTableSchedule = (stype, value) => {
                 </tr>
                 `;
             });
-            $("#subjectTable").html(loadTableHTML);
+            $("#scheduleTable").html(loadTableHTML);
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
@@ -242,7 +265,6 @@ let loadTableSchedule = (stype, value) => {
 };
 
 $("select[name='exactValue']").on("change", function () {
-    console.log($("select[name='search_type']").find(":selected").val());
     loadTableSchedule(
         $("select[name='search_type']").find(":selected").val(),
         $(this).val()

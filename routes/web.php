@@ -60,7 +60,8 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     // schedule
     Route::get('schedule', [AdminController::class, 'schedule'])->name('schedule');
     Route::get('search/type/{type}', [ScheduleController::class, 'searchType']);
-    Route::get('search/byGradeLevel/{grade_level}', [ScheduleController::class, 'searchByGradeLevel']);
+    Route::get('search/section/{grade_level}', [ScheduleController::class, 'searchBySection']);
+    Route::get('search/subject/{section}', [ScheduleController::class, 'searchBySubject']);
     Route::post('schedule/save', [ScheduleController::class, 'store']);
     Route::get('schedule/list/{type}/{value}', [ScheduleController::class, 'list']);
 

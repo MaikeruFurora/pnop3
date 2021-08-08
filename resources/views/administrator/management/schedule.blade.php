@@ -54,7 +54,7 @@
                                                 <th width="10%">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="subjectTable">
+                                        <tbody id="scheduleTable">
                                             <tr>
                                                 <td colspan="7" class="text-center">No available data</td>
                                             </tr>

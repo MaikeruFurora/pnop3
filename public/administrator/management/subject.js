@@ -108,24 +108,30 @@ $("#selectedGL").on("change", function () {
 });
 
 $('input[name="subject_code"]').on("blur", function () {
-    $.ajax({
-        url: `subject/check/${$(this).val()}/${$(
-            'select[name="grade_level"]'
-        ).val()}`,
-        type: "GET",
-    })
-        .done(function (data) {
-            if (data) {
-                getToast("warning", "Warning", "This subject is already added");
-                $('input[name="subject_code"]').addClass("is-invalid");
-            } else {
-                $('input[name="subject_code"]').removeClass("is-invalid");
-            }
+    if ($(this).val() != "") {
+        $.ajax({
+            url: `subject/check/${$(this).val()}/${$(
+                'select[name="grade_level"]'
+            ).val()}`,
+            type: "GET",
         })
-        .fail(function (jqxHR, textStatus, errorThrown) {
-            getToast("error", "Eror", errorThrown);
-            $(".btnSaveSubject").html("Submit").attr("disabled", false);
-        });
+            .done(function (data) {
+                if (data) {
+                    getToast(
+                        "warning",
+                        "Warning",
+                        "This subject is already added"
+                    );
+                    $('input[name="subject_code"]').addClass("is-invalid");
+                } else {
+                    $('input[name="subject_code"]').removeClass("is-invalid");
+                }
+            })
+            .fail(function (jqxHR, textStatus, errorThrown) {
+                getToast("error", "Eror", errorThrown);
+                $(".btnSaveSubject").html("Submit").attr("disabled", false);
+            });
+    }
 });
 
 $(document).on("click", ".editSubject", function () {

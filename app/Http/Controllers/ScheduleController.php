@@ -40,12 +40,15 @@ class ScheduleController extends Controller
         }
     }
 
-    public function searchByGradeLevel($grade_level)
+    public function searchBySection($grade_level)
     {
-        return response()->json([
-            'section' => Section::where([['grade_level', $grade_level], ['school_year_id', Helper::activeAY()->id]])->get(),
-            'subject' => Subject::where([['grade_level', $grade_level]])->get()
-        ]);
+        return response()->json(Section::where([['grade_level', $grade_level], ['school_year_id', Helper::activeAY()->id]])->get());
+    }
+
+    public function searchBySubject(Section $section)
+    {
+        // return $section;
+        return response()->json(Subject::where('grade_level', $section->grade_level)->whereIn('subject_for', [$section->class_type, 'GENERAL'])->get());
     }
 
 
