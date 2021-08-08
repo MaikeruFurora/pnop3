@@ -27,7 +27,7 @@
                                                 </select>
                                             </div>
                                             <div class="col">
-                                                <select name="grade_level" class="form-control select2" id="mySelect2">
+                                                <select name="exactValue" class="form-control select2" id="mySelect2">
                                                 </select>
                                             </div>
                                         </div>
@@ -40,20 +40,23 @@
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
                             <div class="card-body pb-1">
+                                {{-- <label class="d-flex showME">Narra</label> --}}
                                 <div class="table-responsive">
                                     <table class="table table-striped" style="font-size: 11px">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Subject Code</th>
+                                                <th>Section</th>
                                                 <th>Descriptive Title</th>
+                                                <th>Subject Teacher</th>
+                                                <th>Day(s)</th>
                                                 <th>Time</th>
                                                 <th width="10%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody id="subjectTable">
                                             <tr>
-                                                <td colspan="6" class="text-center">No available data</td>
+                                                <td colspan="7" class="text-center">No available data</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -63,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 col-sm-12">
+            <div class="col-lg-4 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="card-body m-1">
                         <form id="scheduleForm">@csrf
@@ -102,26 +105,31 @@
                             <div class="form-group">
                                 <label class="d-block">Day(s)</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="monday" value="option1">
+                                    <input class="form-check-input" type="checkbox" id="monday" name="monday"
+                                        value="true">
                                     <label class="form-check-label" style="font-size: 12px" for="monday">Monday</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="tuesday" value="option2">
+                                    <input class="form-check-input" type="checkbox" id="tuesday" name="tuesday"
+                                        value="true">
                                     <label class="form-check-label" style="font-size: 12px"
                                         for="tuesday">Tuesday</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="wednesday" value="option3">
+                                    <input class="form-check-input" type="checkbox" id="wednesday" name="wednesday"
+                                        value="true">
                                     <label class="form-check-label" style="font-size: 12px"
                                         for="wednesday">Wednesday</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="thursday" value="option3">
+                                    <input class="form-check-input" type="checkbox" id="thursday" name="thursday"
+                                        value="true">
                                     <label class="form-check-label" style="font-size: 12px"
                                         for="thursday">Thursday</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="friday" value="option3">
+                                    <input class="form-check-input" type="checkbox" id="friday" name="friday"
+                                        value="true">
                                     <label class="form-check-label" style="font-size: 12px" for="friday">Friday</label>
                                 </div>
                             </div>

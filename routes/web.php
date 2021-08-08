@@ -62,6 +62,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('search/type/{type}', [ScheduleController::class, 'searchType']);
     Route::get('search/byGradeLevel/{grade_level}', [ScheduleController::class, 'searchByGradeLevel']);
     Route::post('schedule/save', [ScheduleController::class, 'store']);
+    Route::get('schedule/list/{type}/{value}', [ScheduleController::class, 'list']);
 
     // academic-year route
     Route::get('academic-year', [AdminController::class, 'academicYear'])->name('academicYear');
