@@ -1,9 +1,12 @@
 @extends('../layout/app')
 @section('content')
-{{-- <div class="section-header">
-    <h1>sas</h1>
-</div> --}}
-<div class="section-body">
+<section class="section">
+    <div class="section-body">
+        <div class="card">
+            <div class="card-body">
 
-</div>
+            </div>
+        </div>
+    </div>
+</section>
 @endsection

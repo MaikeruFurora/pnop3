@@ -78,8 +78,6 @@
                                     <option value="8">8</option>
                                     <option value="9">9</option>
                                     <option value="10">10</option>
-                                    <option value="11">11</option>
-                                    <option value="12">12</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -104,33 +102,35 @@
                             </div>
                             <div class="form-group">
                                 <label class="d-block">Day(s)</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="monday" name="monday"
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input class="custom-control-input" type="checkbox" id="monday" name="monday"
                                         value="true">
-                                    <label class="form-check-label" style="font-size: 12px" for="monday">Monday</label>
+                                    <label class="custom-control-label" style="font-size: 12px"
+                                        for="monday">Monday</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="tuesday" name="tuesday"
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input class="custom-control-input" type="checkbox" id="tuesday" name="tuesday"
                                         value="true">
-                                    <label class="form-check-label" style="font-size: 12px"
+                                    <label class="custom-control-label" style="font-size: 12px"
                                         for="tuesday">Tuesday</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="wednesday" name="wednesday"
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input class="custom-control-input" type="checkbox" id="wednesday" name="wednesday"
                                         value="true">
-                                    <label class="form-check-label" style="font-size: 12px"
+                                    <label class="custom-control-label" style="font-size: 12px"
                                         for="wednesday">Wednesday</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="thursday" name="thursday"
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input class="custom-control-input" type="checkbox" id="thursday" name="thursday"
                                         value="true">
-                                    <label class="form-check-label" style="font-size: 12px"
+                                    <label class="custom-control-label" style="font-size: 12px"
                                         for="thursday">Thursday</label>
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="friday" name="friday"
+                                <div class="custom-control custom-checkbox custom-control-inline">
+                                    <input class="custom-control-input" type="checkbox" id="friday" name="friday"
                                         value="true">
-                                    <label class="form-check-label" style="font-size: 12px" for="friday">Friday</label>
+                                    <label class="custom-control-label" style="font-size: 12px"
+                                        for="friday">Friday</label>
                                 </div>
                             </div>
                             <div class="form-row">

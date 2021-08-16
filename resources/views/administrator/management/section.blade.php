@@ -84,8 +84,6 @@
                             <option value="8">8</option>
                             <option value="9">9</option>
                             <option value="10">10</option>
-                            <option value="11">11</option>
-                            <option value="12">12</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -103,7 +101,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Adviser</label>
+                        <label>Class Adviser</label>
                         <select name="teacher_id" class="form-control select2" id="mySelect2" required>
                             <option value=""></option>
                             @foreach ($teachers as $teacher)

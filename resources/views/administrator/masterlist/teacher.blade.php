@@ -20,6 +20,11 @@
                 <div class="modal-body">
                     <input type="hidden" name="id">
                     <div class="form-group">
+                        <label>Employee ID.</label>
+                        <input type="text" name="roll_no" class="form-control" required>
+                        <small class="form-text text-danger"></small>
+                    </div>
+                    <div class="form-group">
                         <label>First name</label>
                         <input type="text" name="firstname" class="form-control" required>
                         <small class="form-text text-danger"></small>

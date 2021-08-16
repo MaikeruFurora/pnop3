@@ -54,12 +54,17 @@ class Teacher extends Authenticatable
 
     public function getFullNameAttribute()
     {
-        return ucfirst("{$this->teacher_firstname} {$this->teacher_lastname}");
+        return ucwords("{$this->teacher_firstname} {$this->teacher_lastname}");
     }
 
 
     public function section()
     {
         return $this->hasOne(Section::class);
+    }
+
+    public function chairman()
+    {
+        return $this->hasOne(Chairman::class);
     }
 }

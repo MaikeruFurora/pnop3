@@ -13,13 +13,17 @@ class SectionController extends Controller
 {
     public function list($grade_level)
     {
-        return response()->json(Section::with('teacher')->where([['grade_level', $grade_level], ['school_year_id', Helper::activeAY()->id]])->get());
+        if (empty(Helper::activeAY())) {
+            return response()->json(['error' => 'No Academic Year Active']);
+        } else {
+            return response()->json(Section::with('teacher')->where([['grade_level', $grade_level], ['school_year_id', Helper::activeAY()->id]])->get());
+        }
     }
 
     public function store(Request $request)
     {
         if (empty(Helper::activeAY())) {
-            return response()->json(['error' => 'No Academic Year set']);
+            return response()->json(['error' => 'No Academic Year Active']);
         } else {
             /**
              * 
@@ -84,7 +88,7 @@ class SectionController extends Controller
     public function checkSection(Request $request)
     {
         if (empty(Helper::activeAY())) {
-            return response()->json(['error' => 'No Academic Year set']);
+            return response()->json(['error' => 'No Academic Year Active']);
         } else {
             $data = Section::where([['school_year_id', Helper::activeAY()->id], ['section_name', $request->section_name]])->exists();
             if ($data) {

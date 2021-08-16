@@ -26,7 +26,8 @@ class CreateSectionsTable extends Migration
             $table->tinyInteger('grade_level');
             $table->string('class_type');
             $table->boolean('lead_section')->default(false);
-            $table->tinyInteger('max')->default(50);
+            $table->tinyInteger('min')->default(40);
+            $table->tinyInteger('max')->default(45);
             $table->timestamps();
         });
     }

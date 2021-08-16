@@ -17,9 +17,7 @@ class TeacherController extends Controller
         return view('teacher/dashboard');
     }
 
-
-
-    // administrator Control Functionalities
+    // administrator Control and Functionalities
 
     public function list()
     {
@@ -59,7 +57,7 @@ class TeacherController extends Controller
             'teacher_middlename' => Str::title($request->middlename),
             'teacher_lastname' => Str::title($request->lastname),
             'teacher_gender' => $request->gender,
-            'roll_no' => empty($dataret->roll_no) ? Helper::create_roll_no() : $dataret->roll_no,
+            'roll_no' => empty($dataret->roll_no) ? $request->roll_no : $dataret->roll_no,
             'username' => empty($dataret->username) ? Helper::create_username($request->firstname, $request->lastname) : $dataret->username,
             'orig_password' => empty($dataret->orig_password) ? Crypt::encrypt($dataPass) : $dataret->orig_password,
             'password' => empty($dataret->password) ? Hash::make($dataPass) : $dataret->password,

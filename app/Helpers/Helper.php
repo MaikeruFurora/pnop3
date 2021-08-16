@@ -19,7 +19,7 @@ class Helper
 
     public static function create_roll_no()
     {
-        return mt_rand(1000, 9999) . mt_rand(1000, 9999);;
+        return mt_rand(1000, 9999) . mt_rand(1000, 9999);
     }
 
     public static function activeAY()

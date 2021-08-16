@@ -82,20 +82,29 @@ $(function () {
             type: "DELETE",
             data: { _token: $('input[name="_token"]').val() },
             beforeSend: function () {
-                $(".btnDelete_" + id).html(`
+                $(".btnDelete_" + id)
+                    .html(
+                        `
                 <div class="spinner-border spinner-border-sm" role="status">
                     <span class="sr-only">Loading...</span>
-                </div>`);
+                </div>`
+                    )
+                    .attr("disabled", true);
             },
         })
             .done(function (response) {
-                $(".btnDelete_" + id).html("Delete");
+                $(".btnDelete_" + id)
+                    .html("Delete")
+                    .attr("disabled", false);
                 getToast("success", "Success", "deleted one record");
                 $("#teacherForm")[0].reset();
                 table_teacher.ajax.reload();
             })
             .fail(function (jqxHR, textStatus, errorThrown) {
                 console.log(jqxHR, textStatus, errorThrown);
+                $(".btnDelete_" + id)
+                    .html("Delete")
+                    .attr("disabled", false);
                 getToast("error", "Eror", errorThrown);
             });
     });
@@ -117,6 +126,7 @@ $(function () {
                 $(".modal-title").text("Update Teacher");
                 $(".btnEdit_" + id).html("Edit");
                 $("#staticBackdrop").modal("show");
+                $("input[name='roll_no']").val(data.roll_no);
                 $("input[name='firstname']").val(data.teacher_firstname);
                 $("input[name='middlename']").val(data.teacher_middlename);
                 $("input[name='lastname']").val(data.teacher_lastname);

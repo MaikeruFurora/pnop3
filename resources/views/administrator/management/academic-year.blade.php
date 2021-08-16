@@ -28,17 +28,17 @@
                             </div>
                         </div>
                     </form>
-                    <div class="table-responsive mt-1">
-                        <table class="table table-bordered text-center" id="school_year_Table">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" width="65%">Academic Year</th>
-                                    <th class="text-center" width="5%">Active</th>
-                                    <th class="text-center" width="30%">Action</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
+                    {{-- <div class="table-responsive mt-1"> --}}
+                    <table class="table table-bordered text-center" id="school_year_Table">
+                        <thead>
+                            <tr>
+                                <th class="text-center" width="65%">Academic Year</th>
+                                <th class="text-center" width="5%">Active</th>
+                                <th class="text-center" width="30%">Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    {{-- </div> --}}
                 </div>
             </div>
         </div>

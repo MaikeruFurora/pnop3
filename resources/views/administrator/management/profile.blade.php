@@ -11,34 +11,34 @@
             <div class="card">
                 <div class="card-body m-3">
                     <form enctype="multipart/form-data" id="schooProfileForm">@csrf
-                        <input type="hidden" name="id" value="{{ $data->id }}">
+                        <input type="hidden" name="id" value="{{ $data->id ?? '' }}">
                         <div class="row">
                             <div class="col-lg-9">
                                 <div class="form-group">
                                     <label for="inputSchoolName">School Name</label>
                                     <input type="text" class="form-control" name="school_name"
-                                        value="{{ $data->school_name }}" id="inputSchoolName" required>
+                                        value="{{ $data->school_name ?? '' }}" id="inputSchoolName" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="inputSchoolAddress">School Address</label>
                                     <input type="text" class="form-control" name="school_address"
-                                        value="{{ $data->school_address }}" id="inputSchoolAddress" required>
+                                        value="{{ $data->school_address ?? '' }}" id="inputSchoolAddress" required>
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-lg-6">
                                         <label for="inputSchoolIdNo">School Division</label>
                                         <input type="text" class="form-control" name="school_division"
-                                            value="{{ $data->school_division }}" id="inputSchoolIdNo" required>
+                                            value="{{ $data->school_division ?? '' }}" id="inputSchoolIdNo" required>
                                     </div>
                                     <div class="form-group col-lg-4">
                                         <label for="inputSchoolIdNo">School Region</label>
                                         <input type="text" class="form-control" name="school_region"
-                                            value="{{ $data->school_region }}" id="inputSchoolIdNo" required>
+                                            value="{{ $data->school_region ?? '' }}" id="inputSchoolIdNo" required>
                                     </div>
                                     <div class="form-group col-lg-2">
                                         <label for="inputSchoolIdNo">School ID No.</label>
                                         <input type="number" class="form-control" name="school_id_no"
-                                            value="{{ $data->school_id_no }}" id="inputSchoolIdNo" required>
+                                            value="{{ $data->school_id_no ?? '' }}" id="inputSchoolIdNo" required>
                                     </div>
                                 </div>
                             </div>

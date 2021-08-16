@@ -46,6 +46,7 @@ class AuthController extends Controller
                 break;
 
             case 'Teacher':
+                session()->put('sessionAY', SchoolYear::where('status', 1)->first());
                 if (Auth::guard('teacher')->attempt($credits)) {
                     return redirect()->route('teacher.dashboard');
                 } else {
@@ -55,6 +56,7 @@ class AuthController extends Controller
 
             case 'Student':
                 if (Auth::guard('student')->attempt($credits)) {
+                    session()->put('sessionAY', SchoolYear::where('status', 1)->first());
                     return redirect()->route('student.dashboard');
                 } else {
                     return redirect()->route('auth.login')->with('msg', 'Login credentials is invalid');

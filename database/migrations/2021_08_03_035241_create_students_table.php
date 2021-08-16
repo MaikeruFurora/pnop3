@@ -16,19 +16,29 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('roll_no', 45)->unique();
-            $table->string('student_type', 45)->nullable();
+            $table->string('curriculum', 45)->nullable();
             $table->string('student_firstname')->nullable();
             $table->string('student_middlename')->nullable();
             $table->string('student_lastname')->nullable();
             $table->string('date_of_birth', 45)->nullable();
-            $table->string('place_of_birth')->nullable();
-            $table->string('contact', 45)->nullable();
+            $table->string('student_contact', 45)->nullable();
             $table->string('gender', 45)->nullable();
-            $table->string('martial_status', 45)->nullable();
-            $table->string('nationality', 45)->nullable();
-            $table->string('religion', 45)->nullable();
             $table->string('address')->nullable();
+            $table->string('region')->nullable();
+            $table->string('province')->nullable();
+            $table->string('town')->nullable();
+            $table->string('barangay')->nullable();
+            $table->string('last_school_attended')->nullable();
+            $table->string('mother_name')->nullable();
+            $table->string('mother_contact_no')->nullable();
+            $table->string('father_name')->nullable();
+            $table->string('father_contact_no')->nullable();
+            $table->string('guardian_name')->nullable();
+            $table->string('guardian_contact_no')->nullable();
+            $table->string('status', 45)->nullable();
+
             $table->string('username', 45)->nullable();
+            $table->string('orig_password')->nullable();
             $table->string('password')->nullable();
             $table->string('student_status')->nullable();
             $table->timestamps();

@@ -7,7 +7,7 @@ const subjectTable = (level) => {
         type: "GET",
         dataType: "json",
         beforeSend: function () {
-            $("#sectionTable").html(
+            $("#subjectTable").html(
                 `<tr>
                         <td colspan="5" class="text-center">
                             <div class="spinner-border spinner-border-sm" role="status">
@@ -98,6 +98,7 @@ $("#subjectForm").submit(function (e) {
 
 $(".cancelSubject").on("click", function (e) {
     e.preventDefault();
+    $(this).hide();
     document.getElementById("subjectForm").reset();
     $(".btnSaveSubject").html("Submit");
     $("input[name='id']").val("");

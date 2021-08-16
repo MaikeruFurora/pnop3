@@ -138,6 +138,7 @@ $(document).on("click", ".editSection", function () {
 
 $(".cancelSection").on("click", function (e) {
     e.preventDefault();
+    $(this).hide();
     document.getElementById("sectionForm").reset();
     $(".btnSaveSection").html("Submit");
     $("input[name='id']").val("");

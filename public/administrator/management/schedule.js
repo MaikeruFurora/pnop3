@@ -68,9 +68,13 @@ let searchBySection = (grade_level) => {
     })
         .done(function (data) {
             sectionHTML += `<option></option>`;
-            data.forEach((element) => {
-                sectionHTML += `<option value="${element.id}">${element.section_name}</option>`;
-            });
+            if (data.warning) {
+                getToast("warning", "Warning", data.warning);
+            } else {
+                data.forEach((element) => {
+                    sectionHTML += `<option value="${element.id}">${element.section_name}</option>`;
+                });
+            }
             $("select[name='section_id']").html(sectionHTML);
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
@@ -141,24 +145,40 @@ $("#scheduleForm").submit(function (e) {
             },
         })
             .done(function (data) {
-                $("#selectedGL").val($('select[name="grade_level"]').val());
                 $(".btnSaveSchedule").html("Submit").attr("disabled", false);
-                document.getElementById("scheduleForm").reset();
-                $("input[name='id']").val("");
-                $("select[name='section_id']").val(null).trigger("change");
-                $("select[name='subject_id']").val(null).trigger("change");
-                $("select[name='teacher_id']").val(null).trigger("change");
-                $("select[name='sched_to']").val(null);
+                if (!(data.errSubject || data.errTime)) {
+                    cancelSchedule.hide();
+                    document.getElementById("scheduleForm").reset();
+                    $("#selectedGL").val($('select[name="grade_level"]').val());
+                    $("input[name='id']").val("");
+                    $("select[name='section_id']").val(null).trigger("change");
+                    $("select[name='subject_id']").val(null).trigger("change");
+                    $("select[name='teacher_id']").val(null).trigger("change");
+                    $("select[name='sched_from']")
+                        .find(":selected")
+                        .val("7:00 am");
+                    $("select[name='sched_to']")
+                        .find(":selected")
+                        .val("8:00 am");
+                    $("input[type='checkbox']").attr("checked", false);
+                    nextTime(myTime, "7:00 am");
+                    if ($("select[name='search_type']").val() != "") {
+                        loadTableSchedule(
+                            $("select[name='search_type']")
+                                .find(":selected")
+                                .val(),
+                            $("select[name='exactValue']").val()
+                        );
+                    }
+                }
 
-                let cloneArr1 = myTime.slice(0);
-                cloneArr1.forEach((element, i) => {
-                    console.log(i);
-                    sched_toHTML += `<option  value="${element}" ${
-                        i == 1 ? `selected` : ``
-                    }>${element}</option>`;
-                });
+                if (data.errSubject) {
+                    getToast("warning", "Warning", data.errSubject);
+                }
 
-                $("select[name='sched_to']").html(sched_toHTML);
+                if (data.errTime) {
+                    getToast("warning", "Warning", data.errTime);
+                }
             })
             .fail(function (jqxHR, textStatus, errorThrown) {
                 getToast("error", "Eror", errorThrown);
@@ -215,67 +235,76 @@ let loadTableSchedule = (stype, value) => {
         },
     })
         .done(function (data) {
-            data.forEach((val) => {
-                loadTableHTML += `
-                <tr>
-                    <td>
-                    ${i++}
-                    <td>
-                    ${val.section_name}
-                    </td>
-                    <td>
-                    ${val.descriptive_title}
-                    </td>
-                    </td>
-                    <td>
-                    ${val.teacher_lastname},
-                    ${val.teacher_firstname} 
-                    ${val.teacher_middlename}
-                    </td>
-                    <td>
-                        ${
-                            val.monday
-                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Mon</span>`
-                                : ""
-                        }
-                        ${
-                            val.tuesday
-                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Tue</span>`
-                                : ""
-                        }
-                        ${
-                            val.wednesday
-                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Wed</span>`
-                                : ""
-                        }
-                        ${
-                            val.thursday
-                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Thu</span>`
-                                : ""
-                        }
-                        ${
-                            val.friday
-                                ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Fri</span>`
-                                : ""
-                        }
-                    </td>
-                    <td>
-                        ${val.sched_from} - 
-                        ${val.sched_to}
-                    </td>
-                    <td>
-                        <div class="btn-group" role="group" aria-label="Basic example">
-                            <button type="button" style="font-size:9px" class="btn btn-sm btn-info pl-3 pr-3 editSubject editSub_${
-                                val.id
-                            }" id="${val.id}">Edit</button>
-                            <button type="button" style="font-size:9px" class="btn btn-sm btn-danger pl-2 pr-2 deleteSubject deleteSub_${
-                                val.id
-                            }" id="${val.id}">Delete</button>
-                        </div>
-                    </td>
-                </tr>
-                `;
-            });
+            if (data.length > 0) {
+                data.forEach((val) => {
+                    loadTableHTML += `
+                    <tr>
+                        <td>
+                        ${i++}
+                        <td>
+                        ${val.section_name}
+                        </td>
+                        <td>
+                        ${val.descriptive_title}
+                        </td>
+                        </td>
+                        <td>
+                        ${val.teacher_lastname},
+                        ${val.teacher_firstname} 
+                        ${val.teacher_middlename}
+                        </td>
+                        <td>
+                            ${
+                                val.monday
+                                    ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Mon</span>`
+                                    : ""
+                            }
+                            ${
+                                val.tuesday
+                                    ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Tue</span>`
+                                    : ""
+                            }
+                            ${
+                                val.wednesday
+                                    ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Wed</span>`
+                                    : ""
+                            }
+                            ${
+                                val.thursday
+                                    ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Thu</span>`
+                                    : ""
+                            }
+                            ${
+                                val.friday
+                                    ? `<span class="badge badge-info pt-1 pb-1 pl-2 mt-1 pr-2">Fri</span>`
+                                    : ""
+                            }
+                        </td>
+                        <td>
+                            ${val.sched_from} - 
+                            ${val.sched_to}
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" style="font-size:9px" class="btn btn-sm btn-info pl-3 pr-3 editSchedule editSched_${
+                                    val.id
+                                }" id="${val.id}">Edit</button>
+                                <button type="button" style="font-size:9px" class="btn btn-sm btn-danger pl-2 pr-2 deleteSchedule deleteSched_${
+                                    val.id
+                                }" id="${val.id}">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                });
+            } else {
+                loadTableHTML = `
+                                <tr>
+                                    <td colspan="7" class="text-center">No available data</td>
+                                </tr>
+                                `;
+            }
+
             $("#scheduleTable").html(loadTableHTML);
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
@@ -289,4 +318,118 @@ $("select[name='exactValue']").on("change", function () {
         $("select[name='search_type']").find(":selected").val(),
         $(this).val()
     );
+});
+
+$(document).on("click", ".deleteSchedule", function () {
+    let id = $(this).attr("id");
+    $.ajax({
+        url: `schedule/delete/${id}`,
+        type: "DELETE",
+        data: { _token: $('input[name="_token"]').val() },
+        beforeSend: function () {
+            $(".deleteSched_" + id)
+                .html(
+                    `
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>`
+                )
+                .attr("disabled", true);
+        },
+    })
+        .done(function (response) {
+            $(".deleteSched_" + id)
+                .html("Delete")
+                .attr("disabled", false);
+            getToast("success", "Success", "deleted one record");
+            loadTableSchedule(
+                $("select[name='search_type']").find(":selected").val(),
+                $("select[name='exactValue']").val()
+            );
+            myOptionList($("select[name='exactValue']").val());
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            $(".deleteSched_" + id)
+                .html("Delete")
+                .attr("disabled", false);
+            console.log(jqxHR, textStatus, errorThrown);
+            getToast("error", "Eror", errorThrown);
+        });
+});
+
+$(document).on("click", ".editSchedule", function () {
+    let id = $(this).attr("id");
+    $.ajax({
+        url: "schedule/edit/" + id,
+        type: "GET",
+        data: { _token: $('input[name="_token"]').val() },
+        beforeSend: function () {
+            $(".editSched_" + id)
+                .html(
+                    `
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>`
+                )
+                .attr("disabled", true);
+        },
+    })
+        .done(function (data) {
+            cancelSchedule.show();
+            $(".editSched_" + id)
+                .html("Edit")
+                .attr("disabled", false);
+            $(".btnSaveSchedule").html("Update");
+            $("input[name='id']").val(data.id);
+            $("select[name='grade_level']").val(data.grade_level);
+            $("select[name='section_id']").val(data.section_id);
+            $("select[name='section_id']").trigger("change"); // Notify any JS components that the value changed
+
+            setTimeout(() => {
+                $("select[name='subject_id']").val(data.subject_id);
+                $("select[name='subject_id']").trigger("change"); // Notify any JS components that the value changed
+            }, 500);
+
+            $("select[name='class_type']").val(data.class_type);
+            $("select[name='teacher_id']").val(data.teacher_id); // Select the option with a value of '1'
+            $("select[name='teacher_id']").trigger("change"); // Notify any JS components that the value changed
+
+            // checkbox
+            $("input[name=monday]").attr("checked", data.monday ? true : false);
+            $("input[name=tuesday]").attr(
+                "checked",
+                data.tuesday ? true : false
+            );
+            $("input[name=wednesday]").attr(
+                "checked",
+                data.wednesday ? true : false
+            );
+            $("input[name=thursday]").attr(
+                "checked",
+                data.thursday ? true : false
+            );
+            $("input[name=friday]").attr("checked", data.friday ? true : false);
+            // time from -to
+            $("select[name='sched_from']").val(data.sched_from);
+            $("select[name='sched_to']").val(data.sched_to);
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            console.log(jqxHR, textStatus, errorThrown);
+            $(".editSched_" + id)
+                .html("Edit")
+                .attr("disabled", false);
+            getToast("error", "Eror", errorThrown);
+        });
+});
+
+$(".cancelSchedule").on("click", function (e) {
+    e.preventDefault();
+    $(this).hide();
+    document.getElementById("scheduleForm").reset();
+    $(".btnSaveSchedule").html("Submit");
+    $("input[name='id']").val("");
+    $("input[type=checkbox]").attr("checked", false);
+    $("select[name='section_id']").val(null).trigger("change");
+    $("select[name='subject_id']").val(null).trigger("change");
+    $("select[name='teacher_id']").val(null).trigger("change");
 });

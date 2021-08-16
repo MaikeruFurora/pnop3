@@ -7,6 +7,7 @@ use App\Models\SchoolProfile;
 use App\Models\SchoolYear;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str as SupportStr;
 
 class AdminController extends Controller
@@ -17,6 +18,16 @@ class AdminController extends Controller
     {
 
         return view('administrator/dashboard');
+    }
+    public function admission()
+    {
+
+        return view('administrator/enrollment/admission');
+    }
+    public function enrollment()
+    {
+
+        return view('administrator/enrollment/enrollment');
     }
     public function teacher()
     {
@@ -52,6 +63,18 @@ class AdminController extends Controller
     {
         $teachers = Teacher::all();
         return view('administrator/management/schedule', compact('teachers'));
+    }
+
+    public function assign()
+    {
+        $teachers = Teacher::all();
+        return view('administrator/management/assign', compact('teachers'));
+    }
+
+    public function chairman()
+    {
+        $teachers = Teacher::all();
+        return view('administrator/management/chairman', compact('teachers'));
     }
 
     public function academicYear()
