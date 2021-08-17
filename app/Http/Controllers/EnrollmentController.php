@@ -70,7 +70,7 @@ class EnrollmentController extends Controller
                 'grade_level' => empty($request->grade_level) ? '7' : $request->grade_level,
                 'school_year_id' => Helper::activeAY()->id,
                 'date_of_enroll' => date("d/m/Y"),
-                'enroll_status' => 'Enrolled',
+                'enroll_status' => empty($request->section_id) ? 'Pending' : 'Enrolled',
             ]);
         } else {
             $student = Student::where('roll_no', $request->roll_no)->first();

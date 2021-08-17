@@ -100,7 +100,7 @@
             </li>
 
             <li
-                class="nav-item dropdown {{ request()->is('teacher/my/stem') || request()->is('teacher/my/bec')?'active':'' }}">
+                class="nav-item dropdown {{ request()->is('teacher/my/stem') || request()->is('teacher/my/bec') || request()->is('teacher/my/spa') || request()->is('teacher/my/spj')?'active':'' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
                     <i class="fas fa-users"></i><span>Enroll Student</span>
                 </a>
@@ -115,13 +115,13 @@
                             <i class="fas fa-users"></i><span>BEC</span>
                         </a>
                     </li>
-                    <li class="{{ request()->is('teacher/my/enroll')?'active':'' }}">
-                        <a class="nav-link" href="{{ route('teacher.stem') }}">
+                    <li class="{{ request()->is('teacher/my/spa')?'active':'' }}">
+                        <a class="nav-link" href="{{ route('teacher.spa') }}">
                             <i class="fas fa-palette"></i><span>SP Art</span>
                         </a>
                     </li>
-                    <li class="{{ request()->is('teacher/my/enroll')?'active':'' }}">
-                        <a class="nav-link" href="{{ route('teacher.stem') }}">
+                    <li class="{{ request()->is('teacher/my/spj')?'active':'' }}">
+                        <a class="nav-link" href="{{ route('teacher.spj') }}">
                             <i class="fas fa-file-signature"></i><span>SP Journalism</span>
                         </a>
                     </li>

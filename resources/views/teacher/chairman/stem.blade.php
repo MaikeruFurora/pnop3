@@ -8,6 +8,7 @@
 <!-- Modal -->
 @include('teacher/chairman/partial/enrollForm')
 @include('teacher/chairman/partial/setSectionForm')
+@include('teacher/chairman/partial/listEnrolled')
 {{-- Modal end --}}
 <section class="section">
     <input type="hidden" name="current_curriculum" value="STEM">
@@ -29,7 +30,7 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="row sectionListAvailable"></div>
+                <div class="row sectionListAvailable mb-3"></div>
                 <div class="card">
                     <div class="card-body">
 
@@ -67,7 +68,6 @@
 <script src="{{ asset('js/datatable/dataTables.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
-{{-- <script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script> --}}
 <script src="{{ asset('teacher/chairman/enroll.js') }}"></script>
 <script src="{{ asset('teacher/chairman/stem.js') }}"></script>
 @endsection

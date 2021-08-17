@@ -11,7 +11,7 @@
                     <input type="hidden" name="enroll_id">
                     <input type="hidden" name="status_now">
                     <div class="form-group">
-                        <label for="sectionFilter">Name</label>
+                        <label>Name</label>
                         <input type="text" class="form-control nameOfStudent" readonly>
                     </div>
                     <div class="form-group mt-2">

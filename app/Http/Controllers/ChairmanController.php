@@ -207,6 +207,24 @@ class ChairmanController extends Controller
         }
     }
 
+    public function spapage()
+    {
+        if (Auth::user()->chairman->where('school_year_id', session('sessionAY')->id)->exists()) {
+            return view('teacher/chairman/spa');
+        } else {
+            return redirect()->route('teacher.dashboard');
+        }
+    }
+
+    public function spjpage()
+    {
+        if (Auth::user()->chairman->where('school_year_id', session('sessionAY')->id)->exists()) {
+            return view('teacher/chairman/spj');
+        } else {
+            return redirect()->route('teacher.dashboard');
+        }
+    }
+
     // table list per curriculum
 
     public function tableList($class)
@@ -225,22 +243,79 @@ class ChairmanController extends Controller
                 )
                     ->join('students', 'enrollments.student_id', 'students.id')
                     ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-                    ->where('sections.class_type', $class)
+                    ->where('students.curriculum', $class)
+                    ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                    ->where('enrollments.school_year_id', Helper::activeAY()->id)
+                    ->get()
+            ]
+        );
+    }
+    public function tableListFiltred($curriculum, $barangay)
+    {
+        return response()->json(
+            [
+                'data' =>
+                Enrollment::select(
+                    "enrollments.*",
+                    "student_firstname",
+                    "student_middlename",
+                    "student_lastname",
+                    "roll_no",
+                    "student_contact",
+                    "section_name"
+                )
+                    ->join('students', 'enrollments.student_id', 'students.id')
+                    ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+                    ->where('students.curriculum', $curriculum)
+                    ->where('students.barangay', $barangay)
+                    ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                    ->where('enrollments.school_year_id', Helper::activeAY()->id)
                     ->get()
             ]
         );
     }
 
+    public function tableListEnrolledStudent($section)
+    {
+        return response()->json(
+            Enrollment::select(
+                "enrollments.id",
+                "enrollments.school_year_id",
+                "enrollments.grade_level",
+                "roll_no",
+                "section_name",
+                DB::raw("CONCAT(student_lastname,', ',student_firstname,' ', student_middlename) AS fullname")
+            )
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+                ->where('sections.section_name', $section)
+                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                ->where('enrollments.school_year_id', Helper::activeAY()->id)
+                ->get()
+        );
+    }
+
     public function monitorSection($curriculum)
     {
-        // return response()->json([
+        return response()->json(
+            Enrollment::select('sections.section_name', DB::raw('count(*) as total'))
+                ->join('sections', 'enrollments.section_id', 'sections.id')
+                ->where('sections.class_type', $curriculum)
+                ->where('enrollments.school_year_id', Helper::activeAY()->id)
+                ->groupBy('section_name')
+                ->get()
+        );
+    }
 
-        // ]);
-
-        return Enrollment::select('sections.section_name', DB::raw('count(*) as total'))
-            ->join('sections', 'enrollments.section_id', 'sections.id')
-            ->where('sections.class_type', $curriculum)
-            ->groupBy('section_name')
-            ->get();
+    public function filterbarangay($curriculum)
+    {
+        return response()->json(
+            Enrollment::select('students.barangay')
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->where('students.curriculum', $curriculum)
+                ->where('enrollments.school_year_id', Helper::activeAY()->id)
+                ->groupBy('barangay')
+                ->get()
+        );
     }
 }

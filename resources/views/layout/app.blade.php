@@ -41,7 +41,7 @@
     <script src="{{ asset('js/stisla.js') }}"></script>
     <script src="{{ asset('js/toast/iziToast.min.js') }}"></script>
     <script src="{{ asset('js/global.js') }}"></script>
-
+    <script src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
     <!-- JS Libraies -->
     @yield('moreJs')
     <!-- Template JS File -->

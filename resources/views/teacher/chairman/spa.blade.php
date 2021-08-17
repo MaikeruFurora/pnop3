@@ -11,12 +11,12 @@
 @include('teacher/chairman/partial/listEnrolled')
 {{-- Modal end --}}
 <section class="section">
-    <input type="hidden" name="current_curriculum" value="BEC">
+    <input type="hidden" name="current_curriculum" value="SPA">
     <div class="section-body">
         <div class="col-12">
             <div class="row justify-content-between">
                 <div class="col-lg-5 col-md-8">
-                    <h2 class="section-title">Enrolle's Today [ BEC Student ] </h2>
+                    <h2 class="section-title">Enrolle's Today [ SPA Student ] </h2>
                     <p class="section-lead">We provide advanced input fields, such as date picker, color picker, and so
                         on.
                     </p>
@@ -71,5 +71,5 @@
 <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
 <script src="{{ asset('teacher/chairman/enroll.js') }}"></script>
-<script src="{{ asset('teacher/chairman/bec.js') }}"></script>
+<script src="{{ asset('teacher/chairman/spa.js') }}"></script>
 @endsection

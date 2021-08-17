@@ -77,19 +77,23 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-lg-4">
+                        <div class="form-group col-lg-3">
+                            <label>Date of Birth</label>
+                            <input type="date" class="form-control" required name="date_of_birth">
+                        </div>
+                        <div class="form-group col-lg-3">
                             <label>Gender</label>
                             <select name="gender" class="form-control">
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                             </select>
                         </div>
-                        <div class="form-group col-lg-4">
+                        <div class="form-group col-lg-3">
                             <label>Contact No.</label>
                             <input type="text" class="form-control" name="student_contact" pattern="^[0-9]{11}$"
                                 onkeypress="return numberOnly(event)" maxlength="11" required>
                         </div>
-                        <div class="form-group col-lg-4">
+                        <div class="form-group col-lg-3">
                             <label>Section</label>
                             <select name="section_id" class="form-control">
                             </select>
@@ -99,26 +103,26 @@
                         <div class="form-group col-lg-3">
                             <label>Region</label>
                             <select name="region" id="region" class="custom-select">
-                                <option value="region"></option>
+                                {{-- <option value="region"></option> --}}
                             </select>
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Province</label>
                             <select name="province" id="province" class="custom-select">
-                                <option value="province"></option>
+                                {{-- <option value="province"></option> --}}
                             </select>
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Town</label>
                             <select name="city" id="city" class="custom-select">
-                                <option value="city"></option>
+                                {{-- <option value="city"></option> --}}
 
                             </select>
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Barangay</label>
                             <select name="barangay" id="barangay" class="custom-select">
-                                <option value="barangay"></option>
+                                {{-- <option value="barangay"></option> --}}
                             </select>
                         </div>
                     </div>

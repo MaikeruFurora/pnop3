@@ -139,18 +139,27 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     // STEM route
     Route::get('stem', [ChairmanController::class, 'stempage'])->name('stem');
 
-
     //BEC route
     Route::get('bec', [ChairmanController::class, 'becpage'])->name('bec');
 
+    //SPA route
+    Route::get('spa', [ChairmanController::class, 'spapage'])->name('spa');
+
+    //SPJ route
+    Route::get('spj', [ChairmanController::class, 'spjpage'])->name('spj');
+
     // crud and monitor per level chairman
     Route::get('table/list/{class}', [ChairmanController::class, 'tableList']);
+    Route::get('table/list/filtered/{class}/{barangay}', [ChairmanController::class, 'tableListFiltred']);
+    Route::get('table/list/enrolled/student/{section}', [ChairmanController::class, 'tableListEnrolledStudent']);
     Route::get('section/search/by/level/{curriculum}', [ChairmanController::class, 'searchSecionByLevel']);
-    Route::post('section/save', [EnrollmentController::class, 'setSection']);
-    Route::delete('edit/{enrollment}', [EnrollmentController::class, 'edit']);
+    Route::post('section/set', [EnrollmentController::class, 'setSection']);
+    Route::get('edit/{enrollment}', [EnrollmentController::class, 'edit']);
     Route::get('filter/section/{curriculum}', [EnrollmentController::class, 'filterSection']);
     Route::delete('delete/{enrollment}', [EnrollmentController::class, 'destroy']);
     Route::get('monitor/section/{curriculum}', [ChairmanController::class, 'monitorSection']);
+    Route::get('filter/barangay/{curriculum}', [ChairmanController::class, 'filterbarangay']);
+
 
     //enrollment form manually aading student
     Route::get('check/lrn/{lrn}', [EnrollmentController::class, 'checkLRN']);

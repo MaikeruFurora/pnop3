@@ -1,34 +1,34 @@
-// var my_handlers = {
-//     fill_provinces: function () {
-//         var region_code = $(this).val();
-//         $("#province").ph_locations("fetch_list", [
-//             { region_code: region_code },
-//         ]);
-//     },
+var my_handlers = {
+    fill_provinces: function () {
+        var region_code = $(this).val();
+        $("#province").ph_locations("fetch_list", [
+            { region_code: region_code },
+        ]);
+    },
 
-//     fill_cities: function () {
-//         var province_code = $(this).val();
-//         $("#city").ph_locations("fetch_list", [
-//             { province_code: province_code },
-//         ]);
-//     },
+    fill_cities: function () {
+        var province_code = $(this).val();
+        $("#city").ph_locations("fetch_list", [
+            { province_code: province_code },
+        ]);
+    },
 
-//     fill_barangays: function () {
-//         var city_code = $(this).val();
-//         $("#barangay").ph_locations("fetch_list", [{ city_code: city_code }]);
-//     },
-// };
+    fill_barangays: function () {
+        var city_code = $(this).val();
+        $("#barangay").ph_locations("fetch_list", [{ city_code: city_code }]);
+    },
+};
 
-// $("#region").on("change", my_handlers.fill_provinces);
-// $("#province").on("change", my_handlers.fill_cities);
-// $("#city").on("change", my_handlers.fill_barangays);
+$("#region").on("change", my_handlers.fill_provinces);
+$("#province").on("change", my_handlers.fill_cities);
+$("#city").on("change", my_handlers.fill_barangays);
 
-// $("#region").ph_locations({ location_type: "regions" });
-// $("#province").ph_locations({ location_type: "provinces" });
-// $("#city").ph_locations({ location_type: "cities" });
-// $("#barangay").ph_locations({ location_type: "barangays" });
+$("#region").ph_locations({ location_type: "regions" });
+$("#province").ph_locations({ location_type: "provinces" });
+$("#city").ph_locations({ location_type: "cities" });
+$("#barangay").ph_locations({ location_type: "barangays" });
 
-// $("#region").ph_locations("fetch_list");
+$("#region").ph_locations("fetch_list");
 /**
  *
  *
@@ -37,6 +37,25 @@
 // global variable for all curriculum
 let current_curriculum = $('input[name="current_curriculum"]').val();
 
+let filterBarangay = () => {
+    let barangayHTML;
+    $.ajax({
+        url: `filter/barangay/${current_curriculum}`,
+        type: "GET",
+        dataType: "json",
+    })
+        .done(function (data) {
+            data.forEach((val) => {
+                barangayHTML += `<option>${val.barangay}</option>`;
+            });
+            $("select[name='selectBarangay']").html(barangayHTML);
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            getToast("error", "Eror", errorThrown);
+            $(".btnSaveSectionNow").html("Save").attr("disabled", false);
+        });
+};
+filterBarangay();
 let monitorSection = (curriculum) => {
     let monitorHMTL = "";
     $.ajax({
@@ -46,21 +65,14 @@ let monitorSection = (curriculum) => {
     })
         .done(function (data) {
             data.forEach((val) => {
-                monitorHMTL += `<div class="col-lg-2 col-md-6 col-sm-6 col-12">
-                <div class="card card-statistic-1 shadow">
-                  <div class="card-icon bg-primary">
-                    <i class="far fa-user"></i>
-                  </div>
-                  <div class="card-wrap">
-                    <div class="card-header">
-                      <h4>${val.section_name}</h4>
-                    </div>
-                    <div class="card-body">
-                    ${val.total} 
-                    </div>
-                  </div>
-                </div>
-              </div>`;
+                monitorHMTL += `
+                <button type="button" class="btn btn-info btn-icon icon-left ml-3 p-2 listenrolledBtn " value='${val.section_name}'>
+                        <i class="far fa-user"></i> ${val.section_name}
+                        <span class="btnSection_${val.section_name}">
+                        <span class="badge badge-transparent ">${val.total}</span>
+                        </span>
+                </button>
+               `;
             });
             $(".sectionListAvailable").html(monitorHMTL);
         })
@@ -68,6 +80,44 @@ let monitorSection = (curriculum) => {
             getToast("error", "Eror", errorThrown);
             $(".btnSaveSectionNow").html("Save").attr("disabled", false);
         });
+};
+monitorSection(current_curriculum);
+let findTableToRefresh = (current_curriculum) => {
+    switch (current_curriculum) {
+        case "STEM":
+            tableCurriculum.ajax.reload();
+            break;
+        case "BEC":
+            setTimeout(() => {
+                tableCurriculumBec(
+                    $('select[name="selectBarangay"]')
+                        .prop("selectedIndex", 0)
+                        .val()
+                );
+            }, 2000);
+            break;
+
+        case "SPA":
+            setTimeout(() => {
+                tableCurriculumSpa(
+                    $('select[name="selectBarangay"]')
+                        .prop("selectedIndex", 0)
+                        .val()
+                );
+            }, 2000);
+            break;
+        case "SPJ":
+            setTimeout(() => {
+                tableCurriculumSpj(
+                    $('select[name="selectBarangay"]')
+                        .prop("selectedIndex", 0)
+                        .val()
+                );
+            }, 2000);
+            break;
+        default:
+            break;
+    }
 };
 
 $("input[name='roll_no']").on("blur", function () {
@@ -82,10 +132,12 @@ $("input[name='roll_no']").on("blur", function () {
                 if (data.warning) {
                     getToast("warning", "Warning", data.warning);
                     $("input[name='roll_no']").addClass("is-invalid");
+                    $(".btnSaveEnroll").attr("disabled", true);
                 } else {
                     $("input[name='roll_no']")
                         .removeClass("is-invalid")
                         .addClass("is-valid");
+                    $(".btnSaveEnroll").attr("disabled", false);
                 }
             })
             .fail(function (jqxHR, textStatus, errorThrown) {
@@ -96,9 +148,7 @@ $("input[name='roll_no']").on("blur", function () {
 
 $("#btnModalStudent").on("click", function () {
     $("#staticBackdrop").modal("show");
-    $("select[name='curriculum']").val(
-        $('input[name="current_curriculum"]').val()
-    );
+    $("select[name='curriculum']").val(current_curriculum);
     searchSecionByLevel($('input[name="current_curriculum"]').val());
 });
 $('select[name="grade_level"]').attr("readonly", true);
@@ -147,6 +197,12 @@ $("select[name='curriculum']").on("change", function () {
     searchSecionByLevel($(this).val());
 });
 
+/**
+ *
+ * ENROLLMENT FORM FOR EVERY ONE
+ *
+ */
+
 $("#enrollForm").submit(function (e) {
     e.preventDefault();
     $.ajax({
@@ -168,14 +224,16 @@ $("#enrollForm").submit(function (e) {
         },
     })
         .done(function (data) {
-            console.log(data);
             $("input[name='roll_no']").removeClass("is-valid");
-            tableCurriculum.ajax.reload();
             getToast("success", "Ok", "Successfully added new enrolled");
-            $(".btnSaveEnroll").html("Save");
+            $(".btnSaveEnroll").html("Save").attr("disabled", false);
             document.getElementById("enrollForm").reset();
             $("#last_school_attended").hide();
-            monitorSection(current_curriculum);
+            setTimeout(() => {
+                monitorSection(current_curriculum);
+                findTableToRefresh(current_curriculum);
+                filterBarangay();
+            }, 1500);
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             getToast("error", "Eror", errorThrown);
@@ -191,7 +249,7 @@ $(".modalClose").on("click", function () {
 
 /**
  *
- *
+ * SHOW WARNING MESSAGE
  *
  */
 
@@ -217,10 +275,13 @@ let filterSection = (curriculum) => {
     }
 };
 
+/**
+ * SET SECTION
+ */
 $("#setSectionForm").submit(function (e) {
     e.preventDefault();
     $.ajax({
-        url: "section/save",
+        url: "section/set",
         type: "POST",
         data: new FormData(this),
         processData: false,
@@ -252,7 +313,8 @@ $("#setSectionForm").submit(function (e) {
                 $("input[name='roll_no']").removeClass("is-valid");
                 getToast("success", "Ok", "Successfully assign section");
                 document.getElementById("setSectionForm").reset();
-                tableCurriculum.ajax.reload();
+                findTableToRefresh(current_curriculum);
+                filterBarangay();
             }
             monitorSection(current_curriculum);
         })
@@ -270,4 +332,135 @@ $(".btnCancelSectionNow").on("click", function () {
     $(".alert-warning").hide();
     $(".btnSaveSectionNow").html("Save").attr("disabled", false);
     $("input[name='status_now']").val("");
+});
+
+// $("select[name='section']").on("change", function () {
+//     let enroll_id = $('input[name="enroll_id"]').val();
+//     let section_id = $(this).val();
+//     $.ajax({
+//         url: `check/vacant/${section_id}/${enroll_id}`,
+//         type: "GET",
+//         dataType: "json",
+//     })
+//         .done(function (data) {
+//             console.log(data);
+//         })
+//         .fail(function (jqxHR, textStatus, errorThrown) {
+//             getToast("error", "Eror", errorThrown);
+//             $(".btnSaveSectionNow").html("Save").attr("disabled", false);
+//         });
+// });
+
+/**
+ *
+ * DELETE FUNCTIONALLITES PER CURRICULUM
+ *
+ */
+
+$(document).on("click", ".cDelete", function () {
+    let id = $(this).attr("id");
+    if (confirm("Are you sure you want delete this student pernamently?")) {
+        $.ajax({
+            url: "delete/" + id,
+            type: "DELETE",
+            data: { _token: $('input[name="_token"]').val() },
+            beforeSend: function () {
+                $(".btnDelete_" + id).html(`
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>`);
+            },
+        })
+            .done(function (response) {
+                $(".btnDelete_" + id).html("Delete");
+
+                getToast("success", "Success", "deleted one record");
+                monitorSection(current_curriculum);
+                findTableToRefresh(current_curriculum);
+                filterBarangay();
+            })
+            .fail(function (jqxHR, textStatus, errorThrown) {
+                console.log(jqxHR, textStatus, errorThrown);
+                getToast("error", "Eror", errorThrown);
+            });
+    } else {
+        return false;
+    }
+});
+
+/**
+ *
+ * EDIT FUNCTIONALITIES PER CURRICULUM
+ *
+ *
+ */
+
+$(document).on("click", ".cEdit", function () {
+    let id = $(this).attr("id");
+    filterSection(current_curriculum);
+    $.ajax({
+        url: "edit/" + id,
+        type: "GET",
+        beforeSend: function () {
+            $(".btnEdit_" + id).html(`
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>`);
+        },
+    })
+        .done(function (response) {
+            $(".nameOfStudent").val(
+                response.student_lastname +
+                    " " +
+                    response.student_firstname +
+                    " " +
+                    response.student_middlename
+            );
+            $('select[name="section"]').val(response.section_id);
+            $("input[name='enroll_id']").val(response.id);
+            $(".btnEdit_" + id).html("Section");
+            $("#setSectionModal").modal("show");
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            console.log(jqxHR, textStatus, errorThrown);
+            getToast("error", "Eror", errorThrown);
+        });
+});
+
+$(document).on("click", ".listenrolledBtn", function () {
+    let tableListHTML;
+    let sectionOpen = $(this).val();
+    $.ajax({
+        url: "table/list/enrolled/student/" + sectionOpen,
+        type: "GET",
+        dataType: "json",
+        beforeSend: function () {
+            $(".btnSection_" + sectionOpen)
+                .html(`<div class="spinner-border spinner-border-sm ml-3 mr-3" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>`);
+        },
+    })
+        .done(function (data) {
+            setTimeout(() => {
+                data.forEach((val) => {
+                    tableListHTML += `
+                    <tr>
+                    <td>${val.roll_no}</td>
+                    <td>${val.fullname}</td>
+                    </tr>
+                `;
+                });
+                $("#listEnrolled").html(tableListHTML);
+                $(".btnSection_" + sectionOpen).html(
+                    `<span class="badge badge-transparent">${data.length}</span>`
+                );
+                $(".eTotal").text(data.length);
+                $("#listEnrolledModal").modal("show");
+            }, 2000);
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            console.log(jqxHR, textStatus, errorThrown);
+            getToast("error", "Eror", errorThrown);
+        });
 });

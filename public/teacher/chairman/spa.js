@@ -1,4 +1,4 @@
-let tableCurriculumBec = (barangay) => {
+let tableCurriculumSpa = (barangay) => {
     // $("#example").dataTable().destroy();
     $("#tableCurriculum").dataTable({
         processing: true,
@@ -60,11 +60,11 @@ let tableCurriculumBec = (barangay) => {
 };
 
 $('select[name="selectBarangay"]').on("change", function () {
-    $(this).val() != "" ? tableCurriculumBec($(this).val()) : "";
+    $(this).val() != "" ? tableCurriculumSpa($(this).val()) : "";
 });
 
 setTimeout(() => {
-    tableCurriculumBec(
+    tableCurriculumSpa(
         $('select[name="selectBarangay"]').prop("selectedIndex", 0).val()
     );
 }, 2000);

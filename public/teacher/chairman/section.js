@@ -105,6 +105,7 @@ $("#sectionForm").submit(function (e) {
         });
 });
 
+// cancel button from assigning section
 $(".cancelSection").on("click", function (e) {
     e.preventDefault();
     $(this).hide();
@@ -158,13 +159,14 @@ $(document).on("click", ".deleteSection", function () {
         },
     })
         .done(function (response) {
-            $(".deleteSec" + id).html("Delete");
+            $(".deleteSec_" + id).text("Delete");
             getToast("success", "Success", "deleted one record");
             sectionTable($("#selectedGL").val());
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
             getToast("error", "Eror", errorThrown);
+            $(".deleteSec_" + id).text("Delete");
         });
 });
 
