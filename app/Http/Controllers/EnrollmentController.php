@@ -29,9 +29,9 @@ class EnrollmentController extends Controller
                 )->orderBy('sections.section_name')
                     ->join('students', 'enrollments.student_id', 'students.id')
                     ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-                    ->where('enrollments.school_year_id', Helper::activeAY()->id)
+                    ->leftjoin('school_years', 'enrollments.school_year_id', 'school_years.id')
+                    ->where('school_years.status', 1)
                     ->where('enrollments.grade_level', $level)
-
                     ->get()
             ]
         );

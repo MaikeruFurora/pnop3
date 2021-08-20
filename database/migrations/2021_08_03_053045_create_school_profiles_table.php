@@ -21,6 +21,7 @@ class CreateSchoolProfilesTable extends Migration
             $table->string('school_division')->nullable();
             $table->string('school_address')->nullable();
             $table->string('school_logo')->nullable();
+            $table->boolean('school_enrollment_url')->default(true);
             $table->timestamps();
         });
     }
