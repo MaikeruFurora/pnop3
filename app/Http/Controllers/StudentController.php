@@ -22,17 +22,19 @@ class StudentController extends Controller
         }
         $address = ucwords(strtolower($request->barangay) . ", " . strtolower($request->city) . ", " . strtolower($request->province));
         $dataPass = Helper::create_password(7);
-        return Student::create([
+        return Student::updateOrCreate(['id' => $request->id], [
             'roll_no' => $request->roll_no,
-            'student_type' => $request->student_type,
+            'curriculum' => empty($dataret->curriculum) ? $request->curriculum : $dataret->curriculum,
             'student_firstname' => $request->student_firstname,
             'student_middlename' => $request->student_middlename,
             'student_lastname' => $request->student_lastname,
             'date_of_birth' => $request->date_of_birth,
             'student_contact' => $request->student_contact,
             'gender' => $request->gender,
-            'martial_status' => $request->martial_status,
-            'address' => $address,
+            'region' => $request->region,
+            'province' => $request->province,
+            'city' => $request->city,
+            'barangay' => $request->barangay,
             'mother_name' => $request->mother_name,
             'mother_contact_no' => $request->mother_contact_no,
             'father_name' => $request->father_name,
@@ -57,6 +59,7 @@ class StudentController extends Controller
             $arr['student_firstname'] = $value->student_firstname;
             $arr['student_middlename'] = $value->student_middlename;
             $arr['student_lastname'] = $value->student_lastname;
+            $arr['student_contact'] = $value->student_contact;
             $arr['gender'] = $value->gender;
             $arr['username'] = $value->username;
             $arr['orig_password'] = Crypt::decrypt($value->orig_password);
@@ -66,9 +69,14 @@ class StudentController extends Controller
         return response()->json(['data' => $data]);
     }
 
-    public function profile(Student $student)
+    public function destroy(Student $student)
     {
-        return view('student/profile', compact('student'));
+        return $student->delete();
+    }
+
+    public function profile()
+    {
+        return view('student/profile');
     }
 
     public function grade()

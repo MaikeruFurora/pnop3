@@ -48,3 +48,29 @@ let ucwords = (str) => {
         return $1.toUpperCase();
     });
 };
+
+/**
+ *
+ * SET GLOBAL
+ *
+ */
+
+$('select[name="region_text"]').on("change", function () {
+    let region = $('select[name="region_text"] option:selected').text();
+    $('input[name="region"]').val(region);
+});
+
+$('select[name="province_text"]').on("change", function () {
+    let province = $('select[name="province_text"] option:selected').text();
+    $('input[name="province"]').val(province);
+});
+
+$('select[name="city_text"]').on("change", function () {
+    let city = $('select[name="city_text"] option:selected').text();
+    $('input[name="city"]').val(city);
+});
+
+$('select[name="barangay_text"]').on("change", function () {
+    let barangay = $('select[name="barangay_text"] option:selected').text();
+    $('input[name="barangay"]').val(barangay);
+});

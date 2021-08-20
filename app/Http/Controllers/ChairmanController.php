@@ -59,14 +59,18 @@ class ChairmanController extends Controller
 
     public function list()
     {
-        return response()->json(
-            DB::table("chairmen")
-                ->select("chairmen.*", "teachers.teacher_firstname", "teachers.teacher_lastname", "teachers.teacher_middlename")
-                ->join("teachers", "chairmen.teacher_id", "teachers.id")
-                ->where("chairmen.school_year_id", Helper::activeAY()->id)
-                ->get()
+        if (empty(Helper::activeAY())) {
+            return response()->json(['error' => 'No Academic Year Active']);
+        } else {
+            return response()->json(
+                DB::table("chairmen")
+                    ->select("chairmen.*", "teachers.teacher_firstname", "teachers.teacher_lastname", "teachers.teacher_middlename")
+                    ->join("teachers", "chairmen.teacher_id", "teachers.id")
+                    ->where("chairmen.school_year_id", Helper::activeAY()->id)
+                    ->get()
 
-        );
+            );
+        }
     }
 
     public function destroy(Chairman $chairman)
@@ -84,7 +88,7 @@ class ChairmanController extends Controller
 
     public function section()
     {
-        if (Auth::user()->chairman->where('school_year_id', session('sessionAY')->id)->exists()) {
+        if (Auth::user()->chairman) {
             $teachers = Teacher::all();
             return view('teacher/chairman/section', compact('teachers'));
         } else {
@@ -191,7 +195,7 @@ class ChairmanController extends Controller
     // page ng lahat ng mga curriculum
     public function stempage()
     {
-        if (Auth::user()->chairman->where('school_year_id', session('sessionAY')->id)->exists()) {
+        if (Auth::user()->chairman) {
             return view('teacher/chairman/stem');
         } else {
             return redirect()->route('teacher.dashboard');
@@ -200,7 +204,7 @@ class ChairmanController extends Controller
 
     public function becpage()
     {
-        if (Auth::user()->chairman->where('school_year_id', session('sessionAY')->id)->exists()) {
+        if (Auth::user()->chairman) {
             return view('teacher/chairman/bec');
         } else {
             return redirect()->route('teacher.dashboard');
@@ -209,7 +213,7 @@ class ChairmanController extends Controller
 
     public function spapage()
     {
-        if (Auth::user()->chairman->where('school_year_id', session('sessionAY')->id)->exists()) {
+        if (Auth::user()->chairman) {
             return view('teacher/chairman/spa');
         } else {
             return redirect()->route('teacher.dashboard');
@@ -218,7 +222,7 @@ class ChairmanController extends Controller
 
     public function spjpage()
     {
-        if (Auth::user()->chairman->where('school_year_id', session('sessionAY')->id)->exists()) {
+        if (Auth::user()->chairman) {
             return view('teacher/chairman/spj');
         } else {
             return redirect()->route('teacher.dashboard');
@@ -282,7 +286,6 @@ class ChairmanController extends Controller
                 "enrollments.id",
                 "enrollments.school_year_id",
                 "enrollments.grade_level",
-                "roll_no",
                 "section_name",
                 DB::raw("CONCAT(student_lastname,', ',student_firstname,' ', student_middlename) AS fullname")
             )
@@ -301,6 +304,7 @@ class ChairmanController extends Controller
             Enrollment::select('sections.section_name', DB::raw('count(*) as total'))
                 ->join('sections', 'enrollments.section_id', 'sections.id')
                 ->where('sections.class_type', $curriculum)
+                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->groupBy('section_name')
                 ->get()
@@ -313,8 +317,21 @@ class ChairmanController extends Controller
             Enrollment::select('students.barangay')
                 ->join('students', 'enrollments.student_id', 'students.id')
                 ->where('students.curriculum', $curriculum)
+                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->groupBy('barangay')
+                ->get()
+        );
+    }
+
+    public function dashMonitor()
+    {
+        return response()->json(
+            Enrollment::select('curriculum', DB::raw("COUNT(if (enroll_status='Enrolled',1,NULL)) as enrolled"), DB::raw("COUNT(if (enroll_status='Pending',1,NULL)) as pending"))
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                ->where('enrollments.school_year_id', Helper::activeAY()->id)
+                ->groupBy('students.curriculum')
                 ->get()
         );
     }

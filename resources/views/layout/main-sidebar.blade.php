@@ -30,7 +30,7 @@
             </li>
             <li class="menu-header">Masterlist</li>
             <li
-                class="nav-item dropdown {{ request()->is('admin/my/teacher') ||  request()->is('admin/my/student')?'active':'' }}">
+                class="nav-item dropdown {{ request()->is('admin/my/teacher') ||  request()->is('admin/my/student') ||  request()->is('admin/my/archive')?'active':'' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                         class="fas fa-cog"></i><span>Masterlist</span></a>
                 <ul class="dropdown-menu">
@@ -41,6 +41,10 @@
                     <li class="{{ request()->is('admin/my/student')?'active':'' }}">
                         <a class="nav-link" href="{{ route('admin.student') }}">
                             <i class="fas fa-users"></i><span>Student</span></a>
+                    </li>
+                    <li class="{{ request()->is('admin/my/archive')?'active':'' }}">
+                        <a class="nav-link" href="{{ route('admin.archive') }}">
+                            <i class="fas fa-user-times"></i><span>Archive</span></a>
                     </li>
                 </ul>
             </li>
@@ -90,15 +94,25 @@
             <li class="{{ request()->is('teacher/my/dashboard')?'active':'' }}"><a class="nav-link"
                     href="{{ route('teacher.dashboard') }}"><i class="fas fa-cube"></i><span>Dashboard</span></a>
             </li>
-            @if ( Auth::user()->chairman()->where('school_year_id', session('sessionAY')->id)->exists())
+            @if (Auth::user()->section()->where('school_year_id', session('sessionAY')->id)->exists())
+            <li class="{{ request()->is('teacher/my/class/monitor')?'active':'' }}">
+                <a class="nav-link" href="{{ route('teacher.class.monitor') }}">
+                    <i class="fas fa-puzzle-piece"></i><span>
+                        Class Monitor</span>
+                </a>
+            </li>
+            @endif
+            <li class="menu-header">Data Entry</li>
+            <li class="{{ request()->is('teacher/my/grading')?'active':'' }}"><a class="nav-link"
+                    href="{{ route('teacher.grading') }}"><i class="fas fa-cube"></i><span>Grading</span></a>
+            </li>
+            @if (Auth::user()->chairman()->where('school_year_id', session('sessionAY')->id)->exists())
             <li class="menu-header">Chairman Setting</li>
-
             <li class="{{ request()->is('teacher/my/section')?'active':'' }}">
                 <a class="nav-link" href="{{ route('teacher.section') }}">
                     <i class="fas fa-border-all"></i><span>Manage Section</span>
                 </a>
             </li>
-
             <li
                 class="nav-item dropdown {{ request()->is('teacher/my/stem') || request()->is('teacher/my/bec') || request()->is('teacher/my/spa') || request()->is('teacher/my/spj')?'active':'' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
@@ -137,12 +151,10 @@
             </li>
             <li class="menu-header">Information</li>
             <li class="{{ request()->is('student/my/profile')?'active':'' }}"><a class="nav-link"
-                    href="{{ route('student.profile',Auth::guard('student')->user()->id) }}"><i
-                        class="fas fa-user-circle"></i><span>Profile</span></a>
+                    href="{{ route('student.profile') }}"><i class="fas fa-user-circle"></i><span>Profile</span></a>
             </li>
             <li class="{{ request()->is('student/my/grade')?'active':'' }}"><a class="nav-link"
-                    href="{{ route('student.grade',Auth::guard('student')->user()->id) }}"><i
-                        class="fas fa-book-reader"></i><span>Grade</span></a>
+                    href="{{ route('student.grade') }}"><i class="fas fa-book-reader"></i><span>Grade</span></a>
             </li>
             </li>
         </ul>

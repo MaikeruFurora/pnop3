@@ -50,7 +50,7 @@ class EnrollmentController extends Controller
                 'gender' => $request->gender,
                 'region' => $request->region,
                 'province' => $request->province,
-                'town' => $request->town,
+                'city' => $request->city,
                 'barangay' => $request->barangay,
                 'last_school_attended' => $request->last_school_attended,
                 'mother_name' => Str::title($request->mother_name),
@@ -157,5 +157,36 @@ class EnrollmentController extends Controller
                     ]);
             }
         }
+    }
+
+    public function myClass()
+    {
+        return response()->json([
+            'data' => Enrollment::select(
+                "enrollments.id",
+                "enrollments.enroll_status",
+                "students.roll_no",
+                "students.student_contact",
+                "students.gender",
+                "sections.section_name",
+                DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname")
+            )
+                ->join('sections', 'enrollments.section_id', 'sections.id')
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                ->where('sections.teacher_id', Auth::user()->id)
+                ->where('enrollments.school_year_id', 1)
+                ->where('enrollments.grade_level', Auth::user()->section->grade_level)
+                ->whereIn('enrollments.enroll_status', ['Enrolled', 'Dropped'])
+                ->orderBy('students.student_lastname')
+                ->get()
+        ]);
+    }
+
+    public function dropped(Enrollment $enrollment)
+    {
+        $enrollment->enroll_status = ($enrollment->enroll_status == 'Dropped') ? 'Enrolled' : 'Dropped';
+        $enrollment->date_of_enroll = date("d/m/Y");
+        return $enrollment->save();
     }
 }

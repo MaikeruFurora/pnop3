@@ -19,9 +19,20 @@ let enrollmentTable = (level) => {
             {
                 data: null,
                 render: function (data) {
-                    return data.enroll_status == "Pending"
-                        ? `<span class="badge badge-warning">${data.enroll_status}</span>`
-                        : `<span class="badge badge-success">${data.enroll_status}</span>`;
+                    switch (data.enroll_status) {
+                        case "Pending":
+                            return `<span class="badge badge-warning">${data.enroll_status}</span>`;
+                            break;
+                        case "Enrolled":
+                            return `<span class="badge badge-success">${data.enroll_status}</span>`;
+                            break;
+                        case "Dropped":
+                            return `<span class="badge badge-danger">${data.enroll_status}</span>`;
+                            break;
+                        default:
+                            return false;
+                            break;
+                    }
                 },
             },
             { data: "date_of_enroll" },

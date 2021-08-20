@@ -25,20 +25,24 @@ const studentTable = $("#studentTable").DataTable({
             },
         },
         { data: "gender" },
-        { data: "username" },
+        { data: "student_contact" },
         { data: "username" },
         { data: "orig_password" },
         {
             data: null,
             render: function (data) {
-                return `<button type="button" class="btn btn-sm btn-danger tdelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
-                Delete
+                return `<button type="button" class="btn btn-sm btn-warning sdelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
+                <i class="fas fa-user-times"></i>
                 </button>&nbsp;
-                <button type="button" class="btn btn-sm btn-info tedit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
-                    Edit
-                </button>
+               
                 `;
             },
+            /**
+             *  <button type="button" class="btn btn-sm btn-info tedit btnEdit_${data.id} pt-0 pb-0 " id="${data.id}">
+                <i class="fas fa-edit"></i>
+                </button>
+             * 
+             */
         },
     ],
 });
@@ -72,6 +76,46 @@ $("#studentForm").submit(function (e) {
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
+            getToast("error", "Eror", errorThrown);
+        });
+});
+
+/**
+ *
+ * DELETE
+ *
+ */
+
+$(document).on("click", ".sdelete", function () {
+    let id = $(this).attr("id");
+    $.ajax({
+        url: "student/delete/" + id,
+        type: "DELETE",
+        data: { _token: $('input[name="_token"]').val() },
+        beforeSend: function () {
+            $(".btnDelete_" + id)
+                .html(
+                    `
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>`
+                )
+                .attr("disabled", true);
+        },
+    })
+        .done(function (response) {
+            $(".btnDelete_" + id)
+                .html("Delete")
+                .attr("disabled", false);
+            getToast("success", "Success", "deleted one record");
+            $("#studentForm")[0].reset();
+            studentTable.ajax.reload();
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            console.log(jqxHR, textStatus, errorThrown);
+            $(".btnDelete_" + id)
+                .html("Delete")
+                .attr("disabled", false);
             getToast("error", "Eror", errorThrown);
         });
 });

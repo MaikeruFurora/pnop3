@@ -14,34 +14,40 @@
         <div class="col-12">
             <div class="row justify-content-between">
                 <div class="col-lg-5 col-md-8">
-                    <h2 class="section-title">Student Masterlist</h2>
+                    <h2 class="section-title">Archive Masterlist</h2>
                     <p class="section-lead">We provide advanced input fields, such as date picker, color picker, and so
                         on.
                     </p>
                 </div>
                 <div class="col-lg-2 col-md-2">
-                    <button class="btn float-right btn-primary my-4" id="btnStudentModal">
-                        <i class="fas fa-plus-circle"></i>&nbsp;Student
-                    </button>
+                    <div class="float-right mb-3">
+                        <div class="form-row align-items-center mt-3 ml-4 pb-0">
+
+                            <div class="col-auto my-1">
+                                <select class="custom-select mr-sm-2" name="archiveType">
+                                    <option value="student">Student</option>
+                                    <option value="teacher">Teacher</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col-12">
             <div class="card">
 
-                <div class="card-body mt-2">
+                <div class="card-body mt-2 pb-0 pt-1">
                     {{-- <div class="table-responsive"> --}}
                     {{-- dt-responsive nowrap --}}
-                    <table class="table table-striped" id="studentTable">
+                    <table class="table table-striped" id="archiveTable">
                         <thead>
                             <tr>
                                 <th>LRN</th>
                                 <th>Fullname</th>
                                 <th>Gender</th>
-                                <th>Contact No.</th>
-                                <th>Username</th>
-                                <th>Password</th>
-                                <th>Action</th>
+                                <th width="15%">Action</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -59,5 +65,5 @@
 <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('js/datatable/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('administrator/masterlist/student.js') }}"></script>
+<script src="{{ asset('administrator/masterlist/archive.js') }}"></script>
 @endsection

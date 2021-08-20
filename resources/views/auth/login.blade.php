@@ -87,7 +87,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="user_type">Login as</label>
-                                        <select name="user_type" class="form-control">
+                                        <select name="user_type" class="custom-select">
                                             <option value="Student">Student</option>
                                             <option value="Teacher">Teacher</option>
                                             <option value="Administrator">Administrator</option>

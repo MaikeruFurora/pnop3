@@ -13,6 +13,6 @@ class Section extends Model
 
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class, 'teacher_id');
+        return $this->belongsTo(Teacher::class);
     }
 }

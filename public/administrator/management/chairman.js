@@ -20,40 +20,45 @@ const chairmanTable = () => {
         },
     })
         .done(function (data) {
-            if (data.length > 0) {
-                data.forEach((val) => {
-                    htmlHold += `
-                        <tr>
-                            <td>
-                                ${i++}
-                            </td>
-                            <td>
-                                ${val.grade_level}
-                            </td>
-                            <td>
-                                ${val.teacher_lastname},
-                                ${val.teacher_firstname}
-                                ${val.teacher_middlename}
-                            </td>
-                            <td>
-                                <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-info pl-3 pr-3 editchairman editCha_${
-                                        val.id
-                                    }" id="${val.id}">Edit</button>
-                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-danger deletechairman deleteCha_${
-                                        val.id
-                                    }" id="${val.id}">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                    `;
-                });
+            if (data.error) {
+                getToast("warning", "Warning", data.error);
             } else {
-                htmlHold = `
+                if (data.length > 0) {
+                    data.forEach((val) => {
+                        htmlHold += `
                             <tr>
-                                <td colspan="4" class="text-center">No available data</td>
-                            </tr>`;
+                                <td>
+                                    ${i++}
+                                </td>
+                                <td>
+                                    ${val.grade_level}
+                                </td>
+                                <td>
+                                    ${val.teacher_lastname},
+                                    ${val.teacher_firstname}
+                                    ${val.teacher_middlename}
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" style="font-size:9px" class="btn btn-sm btn-info pl-3 pr-3 editchairman editCha_${
+                                            val.id
+                                        }" id="${val.id}">Edit</button>
+                                        <button type="button" style="font-size:9px" class="btn btn-sm btn-danger deletechairman deleteCha_${
+                                            val.id
+                                        }" id="${val.id}">Delete</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                } else {
+                    htmlHold = `
+                                <tr>
+                                    <td colspan="4" class="text-center">No available data</td>
+                                </tr>`;
+                }
             }
+
             $("#chairmanTable").html(htmlHold);
         })
         .fail(function (jqxHR, textStatus, errorThrown) {

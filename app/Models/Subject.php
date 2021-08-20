@@ -15,4 +15,9 @@ class Subject extends Model
         'descriptive_title',
         'subject_for'
     ];
+
+    // public function subject()
+    // {
+    //     return $this->belongsTo(Subject::class);
+    // }
 }

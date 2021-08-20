@@ -38,21 +38,39 @@ let tableCurriculumBec = (barangay) => {
             {
                 data: null,
                 render: function (data) {
-                    return data.enroll_status == "Pending"
-                        ? `<span class="badge badge-warning">${data.enroll_status}</span>`
-                        : `<span class="badge badge-success">${data.enroll_status}</span>`;
+                    switch (data.enroll_status) {
+                        case "Pending":
+                            return `<span class="badge badge-warning">${data.enroll_status}</span>`;
+                            break;
+                        case "Enrolled":
+                            return `<span class="badge badge-success">${data.enroll_status}</span>`;
+                            break;
+                        case "Dropped":
+                            return `<span class="badge badge-danger">${data.enroll_status}</span>`;
+                            break;
+                        default:
+                            return false;
+                            break;
+                    }
                 },
             },
             {
                 data: null,
                 render: function (data) {
-                    return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
+                    if (data.enroll_status == "Dropped") {
+                        return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
+                        Delete
+                        </button>
+                        `;
+                    } else {
+                        return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
                         Delete
                         </button>&nbsp;
                         <button type="button" class="btn btn-sm btn-info cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
                             Section
                         </button>
                         `;
+                    }
                 },
             },
         ],

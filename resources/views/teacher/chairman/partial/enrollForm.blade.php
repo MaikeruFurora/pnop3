@@ -102,28 +102,32 @@
                     <div class="form-row">
                         <div class="form-group col-lg-3">
                             <label>Region</label>
-                            <select name="region" id="region" class="custom-select">
+                            <select name="region_text" id="region" class="custom-select">
                                 {{-- <option value="region"></option> --}}
                             </select>
+                            <input type="hidden" name="region">
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Province</label>
-                            <select name="province" id="province" class="custom-select">
+                            <select name="province_text" id="province" class="custom-select">
                                 {{-- <option value="province"></option> --}}
                             </select>
+                            <input type="hidden" name="province">
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Town</label>
-                            <select name="city" id="city" class="custom-select">
+                            <select name="city_text" id="city" class="custom-select">
                                 {{-- <option value="city"></option> --}}
 
+                                <input type="hidden" name="city">
                             </select>
                         </div>
                         <div class="form-group col-lg-3">
                             <label>Barangay</label>
-                            <select name="barangay" id="barangay" class="custom-select">
+                            <select name="barangay_text" id="barangay" class="custom-select">
                                 {{-- <option value="barangay"></option> --}}
                             </select>
+                            <input type="hidden" name="barangay">
                         </div>
                     </div>
                     <div class="form-row">

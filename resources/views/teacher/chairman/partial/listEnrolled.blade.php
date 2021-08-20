@@ -3,17 +3,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Mahogany</h5>
+                <h5 class="modal-title titleSection"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body pb-0">
                 <p>Total Student: <b class="eTotal"></b></p>
-                <table class="table table-sm table-bordered">
+                <table class="table table-sm table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>LRN</th>
+                            <th>#</th>
                             <th>Fullname</th>
                         </tr>
                     </thead>

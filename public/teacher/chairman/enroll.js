@@ -1,34 +1,34 @@
-var my_handlers = {
-    fill_provinces: function () {
-        var region_code = $(this).val();
-        $("#province").ph_locations("fetch_list", [
-            { region_code: region_code },
-        ]);
-    },
+// var my_handlers = {
+//     fill_provinces: function () {
+//         var region_code = $(this).val();
+//         $("#province").ph_locations("fetch_list", [
+//             { region_code: region_code },
+//         ]);
+//     },
 
-    fill_cities: function () {
-        var province_code = $(this).val();
-        $("#city").ph_locations("fetch_list", [
-            { province_code: province_code },
-        ]);
-    },
+//     fill_cities: function () {
+//         var province_code = $(this).val();
+//         $("#city").ph_locations("fetch_list", [
+//             { province_code: province_code },
+//         ]);
+//     },
 
-    fill_barangays: function () {
-        var city_code = $(this).val();
-        $("#barangay").ph_locations("fetch_list", [{ city_code: city_code }]);
-    },
-};
+//     fill_barangays: function () {
+//         var city_code = $(this).val();
+//         $("#barangay").ph_locations("fetch_list", [{ city_code: city_code }]);
+//     },
+// };
 
-$("#region").on("change", my_handlers.fill_provinces);
-$("#province").on("change", my_handlers.fill_cities);
-$("#city").on("change", my_handlers.fill_barangays);
+// $("#region").on("change", my_handlers.fill_provinces);
+// $("#province").on("change", my_handlers.fill_cities);
+// $("#city").on("change", my_handlers.fill_barangays);
 
-$("#region").ph_locations({ location_type: "regions" });
-$("#province").ph_locations({ location_type: "provinces" });
-$("#city").ph_locations({ location_type: "cities" });
-$("#barangay").ph_locations({ location_type: "barangays" });
+// $("#region").ph_locations({ location_type: "regions" });
+// $("#province").ph_locations({ location_type: "provinces" });
+// $("#city").ph_locations({ location_type: "cities" });
+// $("#barangay").ph_locations({ location_type: "barangays" });
 
-$("#region").ph_locations("fetch_list");
+// $("#region").ph_locations("fetch_list");
 /**
  *
  *
@@ -430,13 +430,14 @@ $(document).on("click", ".cEdit", function () {
 $(document).on("click", ".listenrolledBtn", function () {
     let tableListHTML;
     let sectionOpen = $(this).val();
+    let i = 1;
     $.ajax({
         url: "table/list/enrolled/student/" + sectionOpen,
         type: "GET",
         dataType: "json",
         beforeSend: function () {
             $(".btnSection_" + sectionOpen)
-                .html(`<div class="spinner-border spinner-border-sm ml-3 mr-3" role="status">
+                .html(`<div class="spinner-border spinner-border-sm ml-1 mr-1" role="status">
                 <span class="sr-only">Loading...</span>
             </div>`);
         },
@@ -446,11 +447,12 @@ $(document).on("click", ".listenrolledBtn", function () {
                 data.forEach((val) => {
                     tableListHTML += `
                     <tr>
-                    <td>${val.roll_no}</td>
+                    <td>${i++}</td>
                     <td>${val.fullname}</td>
                     </tr>
                 `;
                 });
+                $(".titleSection").text(sectionOpen);
                 $("#listEnrolled").html(tableListHTML);
                 $(".btnSection_" + sectionOpen).html(
                     `<span class="badge badge-transparent">${data.length}</span>`

@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class Teacher extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, SoftDeletes;
 
     // protected $fillable = [
     //     'roll_no',
@@ -23,7 +24,7 @@ class Teacher extends Authenticatable
     // ];
 
     protected $guarded = [];
-
+    protected $date = ['deleted_at'];
     protected $hidden = [
         'orig_password',
         'password',
@@ -67,4 +68,9 @@ class Teacher extends Authenticatable
     {
         return $this->hasOne(Chairman::class);
     }
+
+    // public function assign()
+    // {
+    //     return $this->hasOne(Assign::class);
+    // }
 }

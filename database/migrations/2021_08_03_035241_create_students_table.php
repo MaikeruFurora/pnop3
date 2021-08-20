@@ -23,10 +23,9 @@ class CreateStudentsTable extends Migration
             $table->string('date_of_birth', 45)->nullable();
             $table->string('student_contact', 45)->nullable();
             $table->string('gender', 45)->nullable();
-            $table->string('address')->nullable();
             $table->string('region')->nullable();
             $table->string('province')->nullable();
-            $table->string('town')->nullable();
+            $table->string('city')->nullable();
             $table->string('barangay')->nullable();
             $table->string('last_school_attended')->nullable();
             $table->string('mother_name')->nullable();

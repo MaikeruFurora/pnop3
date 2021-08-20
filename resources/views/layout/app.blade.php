@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>PNOP &middot; PNHS Online Portal</title>
-    {{-- <link rel="shortcut icon" href="{{ asset('image/logo/logo.png') }}"> --}}
+    <link rel="shortcut icon" href="{{ asset('image/logo/logo.png') }}">
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome/css/all.css') }}">
@@ -41,7 +41,7 @@
     <script src="{{ asset('js/stisla.js') }}"></script>
     <script src="{{ asset('js/toast/iziToast.min.js') }}"></script>
     <script src="{{ asset('js/global.js') }}"></script>
-    <script src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
+    {{-- <script src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script> --}}
     <!-- JS Libraies -->
     @yield('moreJs')
     <!-- Template JS File -->

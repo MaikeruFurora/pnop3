@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ChairmanController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\GradeController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
@@ -42,6 +43,8 @@ Route::post('form/save', [FormController::class, 'store']);
 Route::get('form/check/lrn/{lrn}', [FormController::class, 'checkLRN']);
 
 
+//
+
 
 Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('admin/my/')->group(function () {
 
@@ -66,7 +69,13 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('student', [AdminController::class, 'student'])->name('student');
     Route::post('student/save', [StudentController::class, 'store']);
     Route::get('student/list', [StudentController::class, 'list']);
+    Route::delete('student/delete/{student}', [StudentController::class, 'destroy']);
 
+    // archive
+    Route::get('archive', [AdminController::class, 'archive'])->name('archive');
+    Route::get('archive/list/{type}', [AdminController::class, 'archiveList']);
+    Route::delete('archive/force/delete/{type}/{id}', [AdminController::class, 'archieveForceDelete']);
+    Route::post('archive/restore/{type}/{id}', [AdminController::class, 'archiveRestore']);
 
     // profile-route
     Route::get('profile', [AdminController::class, 'profile'])->name('profile');
@@ -159,20 +168,29 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::delete('delete/{enrollment}', [EnrollmentController::class, 'destroy']);
     Route::get('monitor/section/{curriculum}', [ChairmanController::class, 'monitorSection']);
     Route::get('filter/barangay/{curriculum}', [ChairmanController::class, 'filterbarangay']);
-
+    Route::get('dash/monitor', [ChairmanController::class, 'dashMonitor']);
 
     //enrollment form manually aading student
     Route::get('check/lrn/{lrn}', [EnrollmentController::class, 'checkLRN']);
     Route::post('save', [EnrollmentController::class, 'store']);
 
-    // Route::get('enroll/table/bec', [EnrollmentController::class, 'becList']);
-    // Route::get('enroll/table/spa', [EnrollmentController::class, 'spaList']);
-    // Route::get('enroll/table/spj', [EnrollmentController::class, 'spjList']);
+    // for advicer route
+    Route::get('class/monitor', [TeacherController::class, 'classMonitor'])->name('class.monitor');
+    Route::get('class/monitor/list', [EnrollmentController::class, 'myClass']);
+    Route::post('class/monitor/dropped/{enrollment}', [EnrollmentController::class, 'dropped']);
+    Route::get('grading', [TeacherController::class, 'grading'])->name('grading');
+
+    // subject Teacher
+    Route::get('grading', [TeacherController::class, 'grading'])->name('grading');
+    Route::get('grading/load/subject', [TeacherController::class, 'loadMySection']);
+    Route::get('grading/load/student/{section}', [TeacherController::class, 'loadMyStudent']);
+    Route::post('grade/student/now', [GradeController::class, 'gradeStudentNow']);
 });
 
 Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->prefix('student/my/')->group(function () {
     Route::get('dashboard', [StudentController::class, 'dashboard'])->name('dashboard');
-    Route::get('profile/{student}', [StudentController::class, 'profile'])->name('profile');
+    Route::get('profile', [StudentController::class, 'profile'])->name('profile');
+    Route::post('student/save', [StudentController::class, 'store']);
     Route::get('grade', [StudentController::class, 'grade'])->name('grade');
 });
 

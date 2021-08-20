@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Models\SchoolProfile;
 use App\Models\SchoolYear;
+use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str as SupportStr;
 
 class AdminController extends Controller
@@ -38,6 +40,11 @@ class AdminController extends Controller
     {
 
         return view('administrator/masterlist/student');
+    }
+
+    public function archive()
+    {
+        return view('administrator/masterlist/archive');
     }
 
     public function profile()
@@ -139,5 +146,74 @@ class AdminController extends Controller
     public function editAY(SchoolYear $schoolYear)
     {
         return response()->json($schoolYear);
+    }
+
+    // Archive List
+
+    public function archiveList($type)
+    {
+        switch ($type) {
+            case 'student':
+                return response()->json(
+                    [
+                        'data' => Student::select(
+                            'id',
+                            'roll_no',
+                            'gender',
+                            'student_lastname',
+                            'student_firstname',
+                            'student_middlename',
+                            DB::raw("CONCAT(student_lastname,', ',student_firstname,' ', student_middlename) AS fullname")
+                        )->onlyTrashed()->get()
+                    ]
+                );
+                break;
+            case 'teacher':
+                return response()->json(
+                    [
+                        'data' => Teacher::select(
+                            'id',
+                            'roll_no',
+                            'teacher_gender AS gender',
+                            DB::raw("CONCAT(teacher_lastname,', ',teacher_firstname,' ', teacher_middlename) AS fullname")
+                        )->onlyTrashed()->get()
+                    ]
+                );
+                break;
+
+            default:
+                return false;
+                break;
+        }
+    }
+
+    public function archieveForceDelete($type, $id)
+    {
+        switch ($type) {
+            case 'student':
+                return Student::where('id', $id)->withTrashed()->first()->forceDelete();
+                break;
+            case 'teacher':
+                return Teacher::where('id', $id)->withTrashed()->first()->forceDelete();
+                break;
+            default:
+                return false;
+                break;
+        }
+    }
+
+    public function archiveRestore($type, $id)
+    {
+        switch ($type) {
+            case 'student':
+                return Student::where('id', $id)->withTrashed()->first()->restore();
+                break;
+            case 'teacher':
+                return Teacher::where('id', $id)->withTrashed()->first()->restore();
+                break;
+            default:
+                return false;
+                break;
+        }
     }
 }
