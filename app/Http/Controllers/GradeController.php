@@ -52,22 +52,27 @@ class GradeController extends Controller
             switch ($request->columnIn) {
                 case '1st':
                     return Grade::where('id', $request->grade_id)->update([
-                        'first' => $request->value
+                        'first' => $request->value,
+                        'avg' => $request->avg
                     ]);
                     break;
                 case '2nd':
                     return Grade::where('id', $request->grade_id)->update([
-                        'second' => $request->value
+                        'second' => $request->value,
+                        'avg' => $request->avg
                     ]);
                     break;
                 case '3rd':
                     return Grade::where('id', $request->grade_id)->update([
-                        'third' => $request->value
+                        'third' => $request->value,
+                        'avg' => $request->avg
                     ]);
                     break;
                 case '4th':
-                    return Grade::where('id', $request->grade_id)->update([
-                        'fourth' => $request->value
+                    // return $request->avg;
+                    Grade::where('id', $request->grade_id)->update([
+                        'fourth' => $request->value,
+                        'avg' => $request->avg,
                     ]);
                     break;
                 default:
@@ -76,26 +81,4 @@ class GradeController extends Controller
             }
         }
     }
-
-    // public function findHaveValue($term)
-    // {
-    //     $value;
-    //     switch ($term) {
-    //         case "1st":
-    //             first = $(this).val();
-    //             break;
-    //         case "2nd":
-    //             second = $(this).val();
-    //             break;
-    //         case "3rd":
-    //             third = $(this).val();
-    //             break;
-    //         case "4th":
-    //             fourth = $(this).val();
-    //             break;
-    //         default:
-    //             avg = $(this).val();
-    //             break;
-    //     }
-    // }
 }

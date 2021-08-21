@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Helpers\Helper;
+use App\Models\Enrollment;
+use App\Models\Grade;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 
@@ -82,5 +85,50 @@ class StudentController extends Controller
     public function grade()
     {
         return view('student/grade');
+    }
+
+
+    public function gradeList()
+    {
+
+
+        // return Enrollment::with('student', 'section')->where('enrollments.student_id', Auth::user()->id)->get();
+        // return response()->json(
+        //     Grade::select(
+        //         "grades.id as gid",
+        //         "grades.first",
+        //         "grades.second",
+        //         "grades.third",
+        //         "grades.fourth",
+        //         "grades.avg",
+        //         "subjects.descriptive_title",
+        //         "enrollments.grade_level",
+        //         "sections.section_name",
+        //     )->join('students', 'grades.student_id', 'students.id')
+        //         ->join('subjects', 'grades.subject_id', 'subjects.id')
+        //         ->join('enrollments', 'grades.student_id', 'enrollments.student_id')
+        //         ->join('sections', 'enrollments.section_id', 'sections.id')
+        //         ->where('students.id', Auth::user()->id)
+        //         ->groupBy('enrollments.grade_level')
+        //         ->get()
+        // );
+
+
+        return Enrollment::select(
+            "grades.first",
+            "grades.second",
+            "grades.third",
+            "grades.fourth",
+            "grades.avg",
+            "sections.section_name",
+            "subjects.descriptive_title",
+        )
+            ->join('students', 'enrollments.student_id', 'students.id')
+            ->join('grades', 'enrollments.student_id', 'grades.student_id')
+            ->join('subjects', 'grades.subject_id', 'subjects.id')
+            ->join('sections', 'enrollments.section_id', 'sections.id')
+            ->where('students.id', Auth::user()->id)
+            // ->groupBy('sections.section_name')
+            ->get();
     }
 }

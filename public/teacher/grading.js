@@ -111,7 +111,7 @@ let myClassTable = (section_id, subject_id) => {
                               data.third == null ||
                               data.fourth == null
                                 ? ""
-                                : `<span class="ml-3 text-center">${myAverage}</span>`
+                                : `<span class="ml-4">${myAverage}</span>`
                             : ""
                     }`;
                 },
@@ -140,16 +140,12 @@ let myClassTable = (section_id, subject_id) => {
                 },
             },
         ],
-        // fnRowCallback: function (row, data, index) {
-        //     myAverage = Math.round(
-        //         (data.first + data.second + data.third + data.fourth) / 4
-        //     );
-        //     console.log(row);
-        //     if (myAverage <= 75) {
-        //         // $(row).find("td:eq(10)").css("color", "red");
-        //         $('td',row).css("backgroud-color", " rgba(255, 0, 0, 0.2)");
-        //     }
-        // },
+        createdRow: function (row, data, index) {
+            if (parseInt(data.avg) <= parseInt(75)) {
+                // $(row).find("td:eq(10)").css("color", "red");
+                $(row).css("backgroud-color", " red");
+            }
+        },
     });
 };
 
@@ -200,8 +196,17 @@ $(document).on("blur", "input[name='inGrade']", function () {
             default:
                 break;
         }
-
         if (!flag) {
+            let avg =
+                $("#4th_" + student_id).val() != ""
+                    ? Math.round(
+                          (parseInt($("#1st_" + student_id).val()) +
+                              parseInt($("#2nd_" + student_id).val()) +
+                              parseInt($("#3rd_" + student_id).val()) +
+                              parseInt($("#4th_" + student_id).val())) /
+                              4
+                      )
+                    : "";
             $.ajax({
                 url: "grade/student/now",
                 type: "POST",
@@ -210,6 +215,7 @@ $(document).on("blur", "input[name='inGrade']", function () {
                     student_id,
                     subject_id,
                     grade_id,
+                    avg,
                     columnIn: $(this).attr("id").split("_")[0],
                     value: $(this).val(),
                 },

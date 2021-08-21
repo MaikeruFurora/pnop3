@@ -195,6 +195,7 @@ Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->pre
     Route::get('profile', [StudentController::class, 'profile'])->name('profile');
     Route::post('student/save', [StudentController::class, 'store']);
     Route::get('grade', [StudentController::class, 'grade'])->name('grade');
+    Route::get('grade/list', [StudentController::class, 'gradeList']);
 });
 
 

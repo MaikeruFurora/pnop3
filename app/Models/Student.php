@@ -24,4 +24,13 @@ class Student extends Authenticatable
     {
         return ucwords("{$this->student_firstname} {$this->student_lastname}");
     }
+    public function grade()
+    {
+        return $this->belongsTo(Grade::class);
+    }
+
+    public function enrollment()
+    {
+        return $this->belongsTo(Enrollment::class);
+    }
 }

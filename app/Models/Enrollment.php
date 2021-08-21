@@ -15,4 +15,9 @@ class Enrollment extends Model
     {
         return $this->belongsTo(Student::class);
     }
+
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
 }

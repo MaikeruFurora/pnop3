@@ -23,6 +23,7 @@ class CreateGradesTable extends Migration
             $table->tinyInteger('second')->nullable();
             $table->tinyInteger('third')->nullable();
             $table->tinyInteger('fourth')->nullable();
+            $table->tinyInteger('avg')->nullable();
             $table->timestamps();
         });
     }

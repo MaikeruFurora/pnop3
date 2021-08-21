@@ -79,6 +79,7 @@ class TeacherController extends Controller
                 "grades.second",
                 "grades.third",
                 "grades.fourth",
+                "grades.avg",
                 "subjects.descriptive_title",
                 DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname")
             )->join('students', 'grades.student_id', 'students.id')
