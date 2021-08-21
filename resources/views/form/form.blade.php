@@ -14,9 +14,9 @@
     {{-- <link rel="stylesheet" href="../node_modules/bootstrap-social/bootstrap-social.css"> --}}
 
     <!-- Template CSS -->
+    <link rel="stylesheet" href="{{ asset('css/toast/iziToast.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/components.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/toast/iziToast.min.css') }}">
     <style>
         .center-screen {
             display: flex;

@@ -12,7 +12,9 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Models\SchoolProfile;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,14 +38,14 @@ Route::middleware(['guest:web', 'guest:teacher', 'guest:student', 'preventBackHi
 //logout
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::get('welcome', [FormController::class, 'welcome'])->name('welcome');
-Route::get('done', [FormController::class, 'done'])->name('done');
-Route::get('form', [FormController::class, 'form'])->name('form');
-Route::post('form/save', [FormController::class, 'store']);
+$school = SchoolProfile::find(1);
+if ($school->school_enrollment_url) {
+    Route::get('welcome', [FormController::class, 'welcome'])->name('welcome');
+    Route::get('done', [FormController::class, 'done'])->name('done');
+    Route::get('form', [FormController::class, 'form'])->name('form');
+    Route::post('form/save', [FormController::class, 'store']);
+}
 Route::get('form/check/lrn/{lrn}', [FormController::class, 'checkLRN']);
-
-
-//
 
 
 Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('admin/my/')->group(function () {
@@ -57,6 +59,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     // enrollment route
     Route::get('enrollment', [AdminController::class, 'enrollment'])->name('enrollment');
     Route::get('enrollment/list/{level}', [EnrollmentController::class, 'masterList']);
+    Route::post('enrollment/status', [EnrollmentController::class, 'changeStatus']);
 
     // teacher-route
     Route::get('teacher', [AdminController::class, 'teacher'])->name('teacher');

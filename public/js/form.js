@@ -111,12 +111,19 @@ $("#enrollForm").submit(function (e) {
         cache: false,
     })
         .done(function (data) {
+            if (data.warning) {
+                getToast(
+                    "warning",
+                    "Warning",
+                    data.warning + ", please contact the administrator"
+                );
+            } else {
+                window.location.href = "/done";
+            }
             // $("#staticBackdrop").modal("show");
             // $(".modal-title").text("Successful");
             // $(".txt").text("Successfull saved your data");
             // document.getElementById("enrollForm").reset();
-
-            window.location.href = "/done";
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             getToast("error", "Eror", errorThrown);

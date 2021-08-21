@@ -29,39 +29,43 @@ class FormController extends Controller
 
     public function store(Request $request)
     {
-        $student = Student::create([
-            'roll_no' => $request->roll_no,
-            'curriculum' => $request->curriculum,
-            'student_firstname' => Str::title($request->student_firstname),
-            'student_middlename' => Str::title($request->student_middlename),
-            'student_lastname' => Str::title($request->student_lastname),
-            'date_of_birth' => $request->date_of_birth,
-            'student_contact' => $request->student_contact,
-            'gender' => $request->gender,
-            'region' => $request->region,
-            'province' => $request->province,
-            'town' => $request->town,
-            'barangay' => $request->barangay,
-            'last_school_attended' => $request->last_school_attended,
-            'mother_name' => Str::title($request->mother_name),
-            'mother_contact_no' => $request->mother_contact_no,
-            'father_name' => Str::title($request->father_name),
-            'father_contact_no' => $request->father_contact_no,
-            'guardian_name' => Str::title($request->guardian_name),
-            'guardian_contact_no' => $request->guardian_contact_no,
-            'username' => Helper::create_username($request->student_firstname, $request->student_lastname),
-            'orig_password' => Crypt::encrypt("pnhs"),
-            'password' => Hash::make("pnhs"),
-        ]);
+        if (empty(Helper::activeAY())) {
+            return response()->json(['warning' => 'No Academic Year Active']);
+        } else {
+            $student = Student::create([
+                'roll_no' => $request->roll_no,
+                'curriculum' => $request->curriculum,
+                'student_firstname' => Str::title($request->student_firstname),
+                'student_middlename' => Str::title($request->student_middlename),
+                'student_lastname' => Str::title($request->student_lastname),
+                'date_of_birth' => $request->date_of_birth,
+                'student_contact' => $request->student_contact,
+                'gender' => $request->gender,
+                'region' => $request->region,
+                'province' => $request->province,
+                'city' => $request->city,
+                'barangay' => $request->barangay,
+                'last_school_attended' => $request->last_school_attended,
+                'mother_name' => Str::title($request->mother_name),
+                'mother_contact_no' => $request->mother_contact_no,
+                'father_name' => Str::title($request->father_name),
+                'father_contact_no' => $request->father_contact_no,
+                'guardian_name' => Str::title($request->guardian_name),
+                'guardian_contact_no' => $request->guardian_contact_no,
+                'username' => Helper::create_username($request->student_firstname, $request->student_lastname),
+                'orig_password' => Crypt::encrypt("pnhs"),
+                'password' => Hash::make("pnhs"),
+            ]);
 
-        return Enrollment::create([
-            'student_id' => $student->id,
-            'section_id' => null,
-            'grade_level' => empty($request->grade_level) ? '7' : $request->grade_level,
-            'school_year_id' => Helper::activeAY()->id,
-            'date_of_enroll' => date("d/m/Y"),
-            'enroll_status' => 'Pending',
-        ]);
+            return Enrollment::create([
+                'student_id' => $student->id,
+                'section_id' => null,
+                'grade_level' => empty($request->grade_level) ? '7' : $request->grade_level,
+                'school_year_id' => Helper::activeAY()->id,
+                'date_of_enroll' => date("d/m/Y"),
+                'enroll_status' => 'Pending',
+            ]);
+        }
     }
 
     public function checkLRN($lrn)

@@ -7,7 +7,6 @@ $.uploadPreview({
     no_label: false, // Default: false
     success_callback: null, // Default: null
 });
-
 $("#schooProfileForm").submit(function (e) {
     e.preventDefault();
     $.ajax({
@@ -36,4 +35,57 @@ $("#schooProfileForm").submit(function (e) {
             console.log(jqxHR, textStatus, errorThrown);
             getToast("error", "Eror", errorThrown);
         });
+});
+
+let eStatus = (value, id) => {
+    console.log(value, id);
+    $.ajax({
+        url: `enrollment/status`,
+        type: "POST",
+        data: {
+            id,
+            value,
+            _token: $('input[name="_token"]').val(),
+        },
+    })
+        .done(function (data) {
+            if (value == "no") {
+                getToast("info", "Done", "Enrollment has been ended!");
+            } else {
+                getToast("info", "Active", "Enrollment has been activated!");
+            }
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            console.log(jqxHR, textStatus, errorThrown);
+        });
+};
+$("select[name='statusEnrollment']").on("change", function () {
+    let decide = $(this).val();
+    if ($('input[name="id"]').val() != "") {
+        if (decide != "") {
+            if (decide == "yes") {
+                eStatus(decide, $('input[name="id"]').val());
+            } else {
+                $("#endModalOnlineENrollment").modal("show");
+                $(".showText").text(
+                    "Are you sure you want to end Online Enrollment"
+                );
+                $(".btnYes")
+                    .show()
+                    .on("click", function () {
+                        eStatus(decide, $('input[name="id"]').val());
+                        $("#endModalOnlineENrollment").modal("hide");
+                    });
+            }
+        } else {
+            $("#endModalOnlineENrollment").modal("show");
+            $(".showText").text("Please Select Enrollment Status!");
+            $("select[name='statusEnrollment']").val("");
+            $(".btnYes").hide();
+        }
+    } else {
+        $("#endModalOnlineENrollment").modal("show");
+        $(".showText").text("Please fill up the school profile first!");
+        $(".btnYes").hide();
+    }
 });

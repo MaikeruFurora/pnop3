@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Models\Enrollment;
+use App\Models\SchoolProfile;
 use App\Models\Section;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -15,6 +16,15 @@ use Illuminate\Support\Str;
 
 class EnrollmentController extends Controller
 {
+    public function changeStatus(Request $request)
+    {
+
+        // return $request->value;
+        SchoolProfile::where('id', $request->id)
+            ->update([
+                'school_enrollment_url' => $request->value == 'yes' ? true : false
+            ]);
+    }
     public function masterList($level)
     {
         return response()->json(
@@ -29,8 +39,8 @@ class EnrollmentController extends Controller
                 )->orderBy('sections.section_name')
                     ->join('students', 'enrollments.student_id', 'students.id')
                     ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-                    ->leftjoin('school_years', 'enrollments.school_year_id', 'school_years.id')
-                    ->where('school_years.status', 1)
+                    // ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                    // ->where('school_years.status', 1)
                     ->where('enrollments.grade_level', $level)
                     ->get()
             ]
