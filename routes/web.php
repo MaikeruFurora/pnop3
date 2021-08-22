@@ -172,6 +172,7 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::get('filter/barangay/{curriculum}', [ChairmanController::class, 'filterbarangay']);
     Route::get('dash/monitor', [ChairmanController::class, 'dashMonitor']);
     Route::get('print/report/{section}', [ChairmanController::class, 'printReport']);
+    // Route::get('autofill/{roll_no}', [ChairmanController::class, 'autofill']);
 
     //enrollment form manually aading student
     Route::get('check/lrn/{lrn}', [EnrollmentController::class, 'checkLRN']);

@@ -11,6 +11,7 @@
 @include('teacher/chairman/partial/listEnrolled')
 {{-- Modal end --}}
 <section class="section">
+
     <input type="hidden" name="current_curriculum" value="STEM">
     <div class="section-body">
         <div class="col-12">

@@ -61,7 +61,7 @@ $(document).on("click", ".sdelete", function () {
                 .attr("disabled", false);
             getToast("success", "Success", "deleted one record");
             $("#studentForm")[0].reset();
-            archiveTable();
+            archiveTable($("select[name='archiveType']").val());
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);

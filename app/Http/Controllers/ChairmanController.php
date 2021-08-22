@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Models\Chairman;
 use App\Models\Enrollment;
 use App\Models\Section;
+use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

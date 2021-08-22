@@ -30,12 +30,11 @@
                                     <div class="form-group col-md-6">
                                         <label>Learning Reference Number</label>
                                         <input type="text" name="roll_no" required class="form-control"
-                                            onkeypress="return numberOnly(event)">
+                                            pattern="^[0-9]{12}$" onkeypress="return numberOnly(event)" maxlength="12">
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Curriculum</label>
-                                        <select name="student_type" required class="custom-select">
-                                            <option selected>Choose...</option>
+                                        <select name="curriculum" class="custom-select" required>
                                             <option value="STEM">STEM - Science Technology Engineering and Mathematics
                                             </option>
                                             <option value="BEC">BEC - Basic Education Curriculum</option>
@@ -51,7 +50,7 @@
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label>Middle name</label>
-                                        <input type="text" class="form-control" name="student_middlename" required>
+                                        <input type="text" class="form-control" name="student_middlename">
                                     </div>
                                     <div class=" form-group col-md-4">
                                         <label>Last name</label>
@@ -61,30 +60,28 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
                                         <label>Region</label>
-                                        <select name="region_text" id="region" class="custom-select"></select>
+                                        <select name="region_text" id="region" class="custom-select" required></select>
                                         <input type="hidden" name="region">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Province</label>
-                                        <select name="province_text" id="province" class="custom-select"></select>
+                                        <select name="province_text" id="province" class="custom-select"
+                                            required></select>
                                         <input type="hidden" name="province">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Town</label>
-                                        <select name="city_text" id="city" class="custom-select"></select>
+                                        <select name="city_text" id="city" class="custom-select" required></select>
                                         <input type="hidden" name="city">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Barangay</label>
-                                        <select name="barangay_text" id="barangay" class="custom-select"></select>
+                                        <select name="barangay_text" id="barangay" class="custom-select"
+                                            required></select>
                                         <input type="hidden" name="barangay">
                                     </div>
                                 </div>
 
-                                {{-- <div class="form-group">
-                                    <label>Address</label>
-                                    <input type="text" class="form-control" name="address">
-                                </div> --}}
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
                                         <label>Date of Birth</label>
@@ -93,8 +90,7 @@
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label>Gender</label>
-                                        <select class="custom-select" name="gender">
-                                            <option selected>Choose...</option>
+                                        <select class="custom-select" name="gender" required>
                                             <option value="Male">Male</option>
                                             <option value="Female">Female</option>
                                         </select>
@@ -102,24 +98,18 @@
                                     <div class="form-group col-md-4">
                                         <label>Contact No.</label>
                                         <input type="text" class="form-control" name="student_contact"
-                                            onkeypress="return numberOnly(event)">
+                                            pattern="^[0-9]{11}$" onkeypress="return numberOnly(event)" maxlength="11">
                                     </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Last school attended</label>
+                                    <input type="text" class="form-control" name="last_school_attended" required>
                                 </div>
                                 {{-- end student details here --}}
                             </div>
                             <div class="tab-pane fade mt-3" id="nav-profile">
                                 {{-- start parent details here --}}
-                                <div class="form-row">
-                                    <div class="form-group col-md-8">
-                                        <label>Mother's name</label>
-                                        <input type="text" class="form-control" name="mother_name">
-                                    </div>
-                                    <div class="form-group col-md-4">
-                                        <label>Contact No.</label>
-                                        <input type="text" class="form-control" name="mother_contact_no"
-                                            onkeypress="return numberOnly(event)">
-                                    </div>
-                                </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-8">
                                         <label>Father's name</label>
@@ -128,7 +118,18 @@
                                     <div class="form-group col-md-4">
                                         <label>Contact No.</label>
                                         <input type="text" class="form-control" name="father_contact_no"
-                                            onkeypress="return numberOnly(event)">
+                                            pattern="^[0-9]{11}$" onkeypress="return numberOnly(event)" maxlength="11">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-8">
+                                        <label>Mother's name</label>
+                                        <input type="text" class="form-control" name="mother_name">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Contact No.</label>
+                                        <input type="text" class="form-control" name="mother_contact_no"
+                                            pattern="^[0-9]{11}$" onkeypress="return numberOnly(event)" maxlength="11">
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -139,7 +140,7 @@
                                     <div class="form-group col-md-4">
                                         <label>Contact No.</label>
                                         <input type="text" class="form-control" name="guardian_contact_no"
-                                            onkeypress="return numberOnly(event)">
+                                            pattern="^[0-9]{11}$" onkeypress="return numberOnly(event)" maxlength="11">
                                     </div>
                                 </div>
                                 {{-- end parent details here --}}

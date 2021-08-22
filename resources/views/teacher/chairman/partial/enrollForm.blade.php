@@ -1,3 +1,4 @@
+<input type="hidden" name="current_glc" value="{{ Auth::user()->chairman->grade_level }}">
 <form id="enrollForm" method="POST">@csrf
     <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -12,16 +13,17 @@
                 <div class="modal-body pb-0">
                     <input type="hidden" name="id">
                     <div class="form-row">
+
+                        @if (Auth::user()->chairman->grade_level==7)
                         <div class="form-group col-lg-6">
                             <label>LRN (Learning Reference Number)</label>
                             <input type="text" class="form-control" name="roll_no" pattern="^[0-9]{12}$"
                                 onkeypress="return numberOnly(event)" maxlength="12" required>
                         </div>
-                        @if (Auth::user()->chairman->grade_level==7)
                         <div class="form-group col-lg-6">
                             <label>Status</label>
                             <select name="status" class="form-control" required>
-                                <option></option>
+                                <option value="nothing"></option>
                                 <option value="new">Incomming grade 7</option>
                                 <option value="transferee">Transferee</option>
                             </select>
@@ -30,10 +32,15 @@
                         <div class="form-group col-lg-6">
                             <label>Status</label>
                             <select name="status" class="form-control" required>
-                                <option></option>
+                                <option value="nothing"></option>
                                 <option value="upperclass">Upper Class</option>
                                 <option value="transferee">Transferee</option>
                             </select>
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label>LRN (Learning Reference Number)</label>
+                            <input type="text" class="form-control" name="roll_no" pattern="^[0-9]{12}$"
+                                onkeypress="return numberOnly(event)" maxlength="12" required>
                         </div>
                         @endif
 
@@ -58,7 +65,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group" id="last_school_attended">
+                    <div class="form-group" id="last_school">
                         <label>Last school attended</label>
                         <input type="text" class="form-control" name="last_school_attended" required>
                     </div>
@@ -99,7 +106,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row" id="notUpper">
                         <div class="form-group col-lg-3">
                             <label>Region</label>
                             <select name="region_text" id="region" class="custom-select">
@@ -129,6 +136,10 @@
                             </select>
                             <input type="hidden" name="barangay">
                         </div>
+                    </div>
+                    <div class="form-group" id="forUpper">
+                        <label>Address</label>
+                        <input type="text" class="form-control" name="address">
                     </div>
                     <div class="form-row">
                         <div class="form-group col-lg-8">
@@ -167,7 +178,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary modalClose">Close</button>
-                    <button type="submit" class="btn btn-primary btnSaveEnroll">&nbsp;&nbsp;Save&nbsp;&nbsp;</button>
+                    <button type="submit" class="btn btn-primary btnSaveEnroll">&nbsp;&nbsp;Enroll&nbsp;&nbsp;</button>
                 </div>
             </div>
         </div>

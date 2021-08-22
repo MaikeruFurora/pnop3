@@ -48,32 +48,9 @@ class EnrollmentController extends Controller
     }
     public function store(Request $request)
     {
-        if (Auth::user()->chairman->grade_level == 7) {
-            $student = Student::create([
-                'roll_no' => $request->roll_no,
-                'curriculum' => $request->curriculum,
-                'student_firstname' => Str::title($request->student_firstname),
-                'student_middlename' => Str::title($request->student_middlename),
-                'student_lastname' => Str::title($request->student_lastname),
-                'date_of_birth' => $request->date_of_birth,
-                'student_contact' => $request->student_contact,
-                'gender' => $request->gender,
-                'region' => $request->region,
-                'province' => $request->province,
-                'city' => $request->city,
-                'barangay' => $request->barangay,
-                'last_school_attended' => $request->last_school_attended,
-                'mother_name' => Str::title($request->mother_name),
-                'mother_contact_no' => $request->mother_contact_no,
-                'father_name' => Str::title($request->father_name),
-                'father_contact_no' => $request->father_contact_no,
-                'guardian_name' => Str::title($request->guardian_name),
-                'guardian_contact_no' => $request->guardian_contact_no,
-                'username' => Helper::create_username($request->student_firstname, $request->student_lastname),
-                'orig_password' => Crypt::encrypt("pnhs"),
-                'password' => Hash::make("pnhs"),
-            ]);
 
+        if (Auth::user()->chairman->grade_level == 7) {
+            $student = $this->storeStudenRequest($request);
             return Enrollment::create([
                 'student_id' => $student->id,
                 'section_id' => $request->section_id,
@@ -83,18 +60,59 @@ class EnrollmentController extends Controller
                 'enroll_status' => empty($request->section_id) ? 'Pending' : 'Enrolled',
             ]);
         } else {
-            $student = Student::where('roll_no', $request->roll_no)->first();
-            return Enrollment::create([
-                'student_id' => $student->id,
-                'section_id' => null,
-                'grade_level' => $request->grade_level,
-                'school_year_id' => Helper::activeAY()->id,
-                'date_of_enroll' => date("d/m/Y"),
-                'enroll_status' => 'Pending',
-            ]);
+            if ($request->status == "upperclass") {
+                $student = Student::where('roll_no', $request->roll_no)->first();
+                return Enrollment::create([
+                    'student_id' => $student->id,
+                    'section_id' => null,
+                    'grade_level' => $request->grade_level,
+                    'school_year_id' => Helper::activeAY()->id,
+                    'date_of_enroll' => date("d/m/Y"),
+                    'enroll_status' => 'Pending',
+                ]);
+            } elseif ($request->status = "transferee") {
+                $student = $this->storeStudenRequest($request);
+                return Enrollment::create([
+                    'student_id' => $student->id,
+                    'section_id' => $request->section_id,
+                    'grade_level' => $request->grade_level,
+                    'school_year_id' => Helper::activeAY()->id,
+                    'date_of_enroll' => date("d/m/Y"),
+                    'enroll_status' => empty($request->section_id) ? 'Pending' : 'Enrolled',
+                ]);
+            } else {
+                return false;
+            }
         }
     }
 
+    public function storeStudenRequest($request)
+    {
+        return  Student::create([
+            'roll_no' => $request->roll_no,
+            'curriculum' => $request->curriculum,
+            'student_firstname' => Str::title($request->student_firstname),
+            'student_middlename' => Str::title($request->student_middlename),
+            'student_lastname' => Str::title($request->student_lastname),
+            'date_of_birth' => $request->date_of_birth,
+            'student_contact' => $request->student_contact,
+            'gender' => $request->gender,
+            'region' => $request->region,
+            'province' => $request->province,
+            'city' => $request->city,
+            'barangay' => $request->barangay,
+            'last_school_attended' => $request->last_school_attended,
+            'mother_name' => Str::title($request->mother_name),
+            'mother_contact_no' => $request->mother_contact_no,
+            'father_name' => Str::title($request->father_name),
+            'father_contact_no' => $request->father_contact_no,
+            'guardian_name' => Str::title($request->guardian_name),
+            'guardian_contact_no' => $request->guardian_contact_no,
+            'username' => Helper::create_username($request->student_firstname, $request->student_lastname),
+            'orig_password' => Crypt::encrypt("pnhs"),
+            'password' => Hash::make("pnhs"),
+        ]);
+    }
 
     public function edit($enrollment)
     {
@@ -124,10 +142,17 @@ class EnrollmentController extends Controller
                 return response()->json(['warning' => 'This student are already Enrolled']);
             }
         } else {
-            $student = Student::where('roll_no', $lrn)->exists();
+            $student = Enrollment::join('students', 'enrollments.student_id', 'students.id')->where('roll_no', $lrn)->exists();
             // $isHave = Enrollment::where("student_id", $student->id)->where("school_year_id", Helper::activeAY()->id)->exists();
             if ($student) {
                 return response()->json(['warning' => 'You are already Enrolled']);
+            } else {
+                $isAlreadyinMasterlist = Student::where('roll_no', $lrn)->exists();
+                if ($isAlreadyinMasterlist) {
+                    return response()->json([
+                        'student' => Student::where('roll_no', $lrn)->first()
+                    ]);
+                }
             }
         }
     }

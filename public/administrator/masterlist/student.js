@@ -55,7 +55,7 @@ $("#btnStudentModal").on("click", function () {
 $("#studentForm").submit(function (e) {
     e.preventDefault();
     $.ajax({
-        url: "student/store",
+        url: "student/save",
         type: "POST",
         data: new FormData(this),
         processData: false,

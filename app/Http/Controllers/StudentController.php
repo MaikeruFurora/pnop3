@@ -23,7 +23,6 @@ class StudentController extends Controller
         if (isset($request->id)) {
             $dataret = Student::findOrFail($request->id);
         }
-        $address = ucwords(strtolower($request->barangay) . ", " . strtolower($request->city) . ", " . strtolower($request->province));
         $dataPass = Helper::create_password(7);
         return Student::updateOrCreate(['id' => $request->id], [
             'roll_no' => $request->roll_no,
@@ -38,6 +37,7 @@ class StudentController extends Controller
             'province' => $request->province,
             'city' => $request->city,
             'barangay' => $request->barangay,
+            'last_school_attended' => $request->last_school_attended,
             'mother_name' => $request->mother_name,
             'mother_contact_no' => $request->mother_contact_no,
             'father_name' => $request->father_name,
@@ -45,8 +45,8 @@ class StudentController extends Controller
             'guardian_name' => $request->guardian_name,
             'guardian_contact_no' => $request->guardian_contact_no,
             'username' => empty($dataret->username) ? Helper::create_username($request->student_firstname, $request->student_lastname) : $dataret->username,
-            'orig_password' => empty($dataret->orig_password) ? Crypt::encrypt($dataPass) : $dataret->orig_password,
-            'password' => empty($dataret->password) ? Hash::make($dataPass) : $dataret->password,
+            'orig_password' => empty($dataret->orig_password) ? Crypt::encrypt("pnhs") : $dataret->orig_password,
+            'password' => empty($dataret->password) ? Hash::make("pnhs") : $dataret->password,
             'student_status' => null,
         ]);
     }

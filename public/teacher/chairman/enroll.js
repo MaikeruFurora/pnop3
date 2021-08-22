@@ -1,39 +1,3 @@
-// var my_handlers = {
-//     fill_provinces: function () {
-//         var region_code = $(this).val();
-//         $("#province").ph_locations("fetch_list", [
-//             { region_code: region_code },
-//         ]);
-//     },
-
-//     fill_cities: function () {
-//         var province_code = $(this).val();
-//         $("#city").ph_locations("fetch_list", [
-//             { province_code: province_code },
-//         ]);
-//     },
-
-//     fill_barangays: function () {
-//         var city_code = $(this).val();
-//         $("#barangay").ph_locations("fetch_list", [{ city_code: city_code }]);
-//     },
-// };
-
-// $("#region").on("change", my_handlers.fill_provinces);
-// $("#province").on("change", my_handlers.fill_cities);
-// $("#city").on("change", my_handlers.fill_barangays);
-
-// $("#region").ph_locations({ location_type: "regions" });
-// $("#province").ph_locations({ location_type: "provinces" });
-// $("#city").ph_locations({ location_type: "cities" });
-// $("#barangay").ph_locations({ location_type: "barangays" });
-
-// $("#region").ph_locations("fetch_list");
-/**
- *
- *
- */
-
 // global variable for all curriculum
 let current_curriculum = $('input[name="current_curriculum"]').val();
 
@@ -64,7 +28,6 @@ let monitorSection = (curriculum) => {
         dataType: "json",
     })
         .done(function (data) {
-            console.log(data);
             data.forEach((val) => {
                 monitorHMTL += `
                 <div class="btn-group" role="group" aria-label="Basic example">
@@ -142,6 +105,58 @@ $("input[name='roll_no']").on("blur", function () {
                         .removeClass("is-invalid")
                         .addClass("is-valid");
                     $(".btnSaveEnroll").attr("disabled", false);
+                    if (data.student) {
+                        console.log(data.student);
+                        $("select[name='curriculum']").val(
+                            data.student.curriculum
+                        );
+                        $("input[name='student_firstname']").val(
+                            data.student.student_firstname
+                        );
+                        $("input[name='student_middlename']").val(
+                            data.student.student_middlename
+                        );
+                        $("input[name='student_lastname']").val(
+                            data.student.student_lastname
+                        );
+                        $("input[name='region']").val(data.student.region);
+                        $("input[name='province']").val(data.student.province);
+                        $("input[name='city']").val(data.student.city);
+                        $("input[name='barangay']").val(data.student.barangay);
+                        $("input[name='date_of_birth']").val(
+                            data.student.date_of_birth
+                        );
+
+                        $("input[name='address']").val(
+                            data.student.barangay +
+                                ", " +
+                                data.student.city +
+                                ", " +
+                                data.student.province
+                        );
+                        $("select[name='gender']").val(data.student.gender);
+                        $("input[name='student_contact']").val(
+                            data.student.student_contact
+                        );
+                        $("input[name='mother_name']").val(
+                            data.student.mother_name
+                        );
+                        $("input[name='mother_contact_no']").val(
+                            data.student.mother_contact_no
+                        );
+                        $("input[name='father_name']").val(
+                            data.student.father_name
+                        );
+                        $("input[name='father_contact_no']").val(
+                            data.student.father_contact_no
+                        );
+                        $("input[name='guardian_name']").val(
+                            data.student.guardian_name
+                        );
+                        $("input[name='guardian_contact_no']").val(
+                            data.student.guardian_contact_no
+                        );
+                    }
                 }
             })
             .fail(function (jqxHR, textStatus, errorThrown) {
@@ -152,41 +167,78 @@ $("input[name='roll_no']").on("blur", function () {
 
 $("#btnModalStudent").on("click", function () {
     $("#staticBackdrop").modal("show");
-    $("select[name='curriculum']").val(current_curriculum);
+    $("select[name='curriculum']")
+        .val(current_curriculum)
+        .attr("readonly", true);
     searchSecionByLevel($('input[name="current_curriculum"]').val());
 });
 $('select[name="grade_level"]').attr("disabled", true);
-$("#last_school_attended").hide();
+$("#last_school").hide();
 $("select[name='status']").on("change", function () {
-    if ($(this).val() != "") {
-        if ($(this).val() == "new" || $(this).val() == "transferee") {
-            $("#last_school_attended").show();
+    let current_glc = $("input[name='current_glc']").val();
+    if (current_glc == 7) {
+        if ($(this).val() != "") {
+            if ($(this).val() == "new" || $(this).val() == "transferee") {
+                $("#last_school").show();
+            } else {
+                $("#last_school").hide();
+                $('select[name="grade_level"]').val("").attr("disabled", true);
+            }
         } else {
-            $("#last_school_attended").hide();
-            $('select[name="grade_level"]').val("").attr("disabled", true);
+            // $('select[name="grade_level"]').val("").attr("disabled", true);
+            $("#last_school").hide();
+        }
+        if ($(this).val() == "new") {
+            $('select[name="grade_level"]')
+                .val(current_glc)
+                .attr("disabled", true);
+            $('input[name="last_school_attended"]').attr("required", true);
         }
     } else {
-        // $('select[name="grade_level"]').val("").attr("disabled", true);
-        $("#last_school_attended").hide();
+        if ($(this).val() == "upperclass") {
+            $('input[name="last_school_attended"]').attr("required", false);
+            $("#last_school").hide();
+            $("#notUpper").hide();
+            $("#forUpper").show();
+        } else if ($(this).val() == "transferee") {
+            $("#last_school").show();
+            $("#forUpper").hide();
+            $("#notUpper").show();
+            document.getElementById("enrollForm").reset();
+            $('input[name="last_school_attended"]').attr("required", true);
+            $("select[name='status']").val("transferee");
+            $("input[name='roll_no']").removeClass("is-valid");
+        } else if ($(this).val() == "nothing") {
+            $("#last_school").hide();
+            $('select[name="grade_level"]').attr("disabled", true);
+            document.getElementById("enrollForm").reset();
+            $("input[name='roll_no']").removeClass("is-valid");
+            $("#forUpper").hide();
+            $("#notUpper").show();
+        } else {
+            alert("wala");
+        }
     }
-
-    console.log($(this).val());
-    // if ($(this).val() == "") {
-    //     $('select[name="grade_level"]')
-    //         .val("")
-    //         .prop("selectIndex", 0)
-    //         .attr("disabled", true);
-    // }
-    if ($(this).val() == "upperclass") {
-        $('select[name="grade_level"]').val("8").attr("disabled", false);
-    }
-    if ($(this).val() == "transferee") {
-        $('select[name="grade_level"]').val("7").attr("disabled", false);
-    }
-    if ($(this).val() == "new") {
-        $('select[name="grade_level"]').val("7").attr("disabled", true);
-    }
+    $('select[name="grade_level"]').val(current_glc).attr("readonly", true);
+    $("select[name='curriculum']")
+        .val(current_curriculum)
+        .attr("readonly", true);
 });
+$("#forUpper").hide();
+// let autoFillForm = (roll_no) => {
+//     $.ajax({
+//         url: "autofill/lrn/" + roll_no,
+//         type: "GET",
+//         dataType: "json",
+//     })
+//         .done(function (data) {
+//             alert(data);
+//         })
+//         .fail(function (jqxHR, textStatus, errorThrown) {
+//             getToast("error", "Eror", errorThrown);
+//             $(".btnSaveSection").html("Submit").attr("disabled", false);
+//         });
+// };
 
 let searchSecionByLevel = (curriculum) => {
     if (curriculum != "") {
@@ -220,41 +272,49 @@ $("select[name='curriculum']").on("change", function () {
  */
 
 $("#enrollForm").submit(function (e) {
-    e.preventDefault();
-    $.ajax({
-        url: "save",
-        type: "POST",
-        data: new FormData(this),
-        processData: false,
-        contentType: false,
-        cache: false,
-        beforeSend: function () {
-            $(".btnSaveEnroll")
-                .html(
-                    `Saving ...
+    if ($("select[name='status']").val() != "nothing") {
+        e.preventDefault();
+        $.ajax({
+            url: "save",
+            type: "POST",
+            data: new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,
+            beforeSend: function () {
+                $(".btnSaveEnroll")
+                    .html(
+                        `Saving ...
                     <div class="spinner-border spinner-border-sm" role="status">
                         <span class="sr-only">Loading...</span>
                     </div>`
-                )
-                .attr("disabled", true);
-        },
-    })
-        .done(function (data) {
-            $("input[name='roll_no']").removeClass("is-valid");
-            getToast("success", "Ok", "Successfully added new enrolled");
-            $(".btnSaveEnroll").html("Save").attr("disabled", false);
-            document.getElementById("enrollForm").reset();
-            $("#last_school_attended").hide();
-            setTimeout(() => {
-                monitorSection(current_curriculum);
-                findTableToRefresh(current_curriculum);
-                filterBarangay();
-            }, 1500);
+                    )
+                    .attr("disabled", true);
+            },
         })
-        .fail(function (jqxHR, textStatus, errorThrown) {
-            getToast("error", "Eror", errorThrown);
-            $(".btnSaveEnroll").html("Save").attr("disabled", false);
-        });
+            .done(function (data) {
+                $("input[name='roll_no']").removeClass("is-valid");
+                getToast("success", "Ok", "Successfully added new enrolled");
+                $(".btnSaveEnroll").html("Save").attr("disabled", false);
+                document.getElementById("enrollForm").reset();
+                $("#last_school").hide();
+                setTimeout(() => {
+                    monitorSection(current_curriculum);
+                    findTableToRefresh(current_curriculum);
+                    filterBarangay();
+                }, 1500);
+            })
+            .fail(function (jqxHR, textStatus, errorThrown) {
+                getToast("error", "Eror", errorThrown);
+                $(".btnSaveEnroll").html("Save").attr("disabled", false);
+            });
+    } else {
+        getToast(
+            "warning",
+            "Warning",
+            "You must select student Status for verification"
+        );
+    }
 });
 
 $(".modalClose").on("click", function () {
