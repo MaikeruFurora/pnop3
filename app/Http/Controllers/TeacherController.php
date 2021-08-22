@@ -84,9 +84,11 @@ class TeacherController extends Controller
                 DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname")
             )->join('students', 'grades.student_id', 'students.id')
                 ->join('enrollments', 'grades.student_id', 'enrollments.student_id')
+                ->join('sections', 'enrollments.section_id', 'sections.id')
                 ->join('subjects', 'grades.subject_id', 'subjects.id')
                 ->where('enrollments.enroll_status', "Enrolled")
                 ->where('subjects.id', $subject)
+                ->where('sections.id', $section)
                 ->get()
         ]);
     }

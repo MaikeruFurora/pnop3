@@ -26,11 +26,11 @@ class Student extends Authenticatable
     }
     public function grade()
     {
-        return $this->belongsTo(Grade::class);
+        return $this->hasMany(Grade::class);
     }
 
     public function enrollment()
     {
-        return $this->belongsTo(Enrollment::class);
+        return $this->hasMany(Enrollment::class);
     }
 }

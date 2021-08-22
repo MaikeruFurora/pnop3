@@ -38,13 +38,12 @@ Route::middleware(['guest:web', 'guest:teacher', 'guest:student', 'preventBackHi
 //logout
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-$school = SchoolProfile::find(1);
-if ($school->school_enrollment_url) {
-    Route::get('welcome', [FormController::class, 'welcome'])->name('welcome');
-    Route::get('done', [FormController::class, 'done'])->name('done');
-    Route::get('form', [FormController::class, 'form'])->name('form');
-    Route::post('form/save', [FormController::class, 'store']);
-}
+
+Route::get('welcome', [FormController::class, 'welcome'])->name('welcome');
+Route::get('done', [FormController::class, 'done'])->name('done');
+Route::get('form', [FormController::class, 'form'])->name('form');
+Route::post('form/save', [FormController::class, 'store']);
+
 Route::get('form/check/lrn/{lrn}', [FormController::class, 'checkLRN']);
 
 
@@ -172,6 +171,7 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::get('monitor/section/{curriculum}', [ChairmanController::class, 'monitorSection']);
     Route::get('filter/barangay/{curriculum}', [ChairmanController::class, 'filterbarangay']);
     Route::get('dash/monitor', [ChairmanController::class, 'dashMonitor']);
+    Route::get('print/report/{section}', [ChairmanController::class, 'printReport']);
 
     //enrollment form manually aading student
     Route::get('check/lrn/{lrn}', [EnrollmentController::class, 'checkLRN']);
@@ -195,7 +195,9 @@ Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->pre
     Route::get('profile', [StudentController::class, 'profile'])->name('profile');
     Route::post('student/save', [StudentController::class, 'store']);
     Route::get('grade', [StudentController::class, 'grade'])->name('grade');
-    Route::get('grade/list', [StudentController::class, 'gradeList']);
+    Route::get('grade/list/{level}', [StudentController::class, 'gradeList']);
+    Route::get('level/list', [StudentController::class, 'levelList']);
+    Route::get('enrollment', [StudentController::class, 'enrollment'])->name('enrollment');
 });
 
 

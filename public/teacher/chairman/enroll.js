@@ -64,14 +64,18 @@ let monitorSection = (curriculum) => {
         dataType: "json",
     })
         .done(function (data) {
+            console.log(data);
             data.forEach((val) => {
                 monitorHMTL += `
-                <button type="button" class="btn btn-info btn-icon icon-left ml-3 p-2 listenrolledBtn " value='${val.section_name}'>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn btn-info btn-icon icon-left listenrolledBtn ml-3 p-2" value='${val.section_name}'>
                         <i class="far fa-user"></i> ${val.section_name}
                         <span class="btnSection_${val.section_name}">
                         <span class="badge badge-transparent ">${val.total}</span>
                         </span>
-                </button>
+                    </button>
+                    <button type="button" class="btn btn-info border-left p-2 pl-3 pr-3 printBtn" value='${val.section_name}'><i class="fa fa-print" style="font-size:15px"></i></button>
+                </div>
                `;
             });
             $(".sectionListAvailable").html(monitorHMTL);
@@ -151,7 +155,7 @@ $("#btnModalStudent").on("click", function () {
     $("select[name='curriculum']").val(current_curriculum);
     searchSecionByLevel($('input[name="current_curriculum"]').val());
 });
-$('select[name="grade_level"]').attr("readonly", true);
+$('select[name="grade_level"]').attr("disabled", true);
 $("#last_school_attended").hide();
 $("select[name='status']").on("change", function () {
     if ($(this).val() != "") {
@@ -159,16 +163,28 @@ $("select[name='status']").on("change", function () {
             $("#last_school_attended").show();
         } else {
             $("#last_school_attended").hide();
-            $('select[name="grade_level"]').val("").attr("readonly", true);
+            $('select[name="grade_level"]').val("").attr("disabled", true);
         }
     } else {
-        $('select[name="grade_level"]').val("").attr("readonly", true);
+        // $('select[name="grade_level"]').val("").attr("disabled", true);
         $("#last_school_attended").hide();
     }
+
+    console.log($(this).val());
+    // if ($(this).val() == "") {
+    //     $('select[name="grade_level"]')
+    //         .val("")
+    //         .prop("selectIndex", 0)
+    //         .attr("disabled", true);
+    // }
+    if ($(this).val() == "upperclass") {
+        $('select[name="grade_level"]').val("8").attr("disabled", false);
+    }
+    if ($(this).val() == "transferee") {
+        $('select[name="grade_level"]').val("7").attr("disabled", false);
+    }
     if ($(this).val() == "new") {
-        $('select[name="grade_level"]').val("7").attr("readonly", true);
-    } else {
-        $('select[name="grade_level"]').val("").attr("readonly", false);
+        $('select[name="grade_level"]').val("7").attr("disabled", true);
     }
 });
 
@@ -449,6 +465,7 @@ $(document).on("click", ".listenrolledBtn", function () {
                     <tr>
                     <td>${i++}</td>
                     <td>${val.fullname}</td>
+                    <td>${val.gender}</td>
                     </tr>
                 `;
                 });
@@ -465,4 +482,13 @@ $(document).on("click", ".listenrolledBtn", function () {
             console.log(jqxHR, textStatus, errorThrown);
             getToast("error", "Eror", errorThrown);
         });
+});
+
+$(document).on("click", ".printBtn", function () {
+    popupCenter({
+        url: "print/report/" + $(this).val(),
+        title: "report",
+        w: 1200,
+        h: 800,
+    });
 });

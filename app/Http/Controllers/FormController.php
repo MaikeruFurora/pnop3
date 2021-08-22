@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Helpers\Helper;
 use App\Models\Enrollment;
+use App\Models\SchoolProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -14,17 +15,17 @@ class FormController extends Controller
 {
     public function welcome()
     {
-        return view('form/welcome');
+        return $this->authority('form/welcome');
     }
 
     public function form()
     {
-        return view('form/form');
+        return $this->authority('form/form');
     }
 
     public function done()
     {
-        return view('form/done');
+        return $this->authority('form/done');
     }
 
     public function store(Request $request)
@@ -73,6 +74,16 @@ class FormController extends Controller
         $isLRN = Student::where('roll_no', $lrn)->exists();
         if ($isLRN) {
             return response()->json(['warning' => 'You are already Enrolled']);
+        }
+    }
+
+    public function authority($viewFile)
+    {
+        $school = SchoolProfile::find(1);
+        if ($school->school_enrollment_url) {
+            return view($viewFile);
+        } else {
+            return abort(403);
         }
     }
 }

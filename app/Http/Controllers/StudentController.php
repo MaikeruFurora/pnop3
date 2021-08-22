@@ -88,47 +88,59 @@ class StudentController extends Controller
     }
 
 
-    public function gradeList()
+    public function gradeList($level)
     {
 
 
         // return Enrollment::with('student', 'section')->where('enrollments.student_id', Auth::user()->id)->get();
-        // return response()->json(
-        //     Grade::select(
-        //         "grades.id as gid",
-        //         "grades.first",
-        //         "grades.second",
-        //         "grades.third",
-        //         "grades.fourth",
-        //         "grades.avg",
-        //         "subjects.descriptive_title",
-        //         "enrollments.grade_level",
-        //         "sections.section_name",
-        //     )->join('students', 'grades.student_id', 'students.id')
-        //         ->join('subjects', 'grades.subject_id', 'subjects.id')
-        //         ->join('enrollments', 'grades.student_id', 'enrollments.student_id')
-        //         ->join('sections', 'enrollments.section_id', 'sections.id')
-        //         ->where('students.id', Auth::user()->id)
-        //         ->groupBy('enrollments.grade_level')
-        //         ->get()
-        // );
+        return response()->json(
+            Grade::select(
+                "grades.id as gid",
+                "grades.first",
+                "grades.second",
+                "grades.third",
+                "grades.fourth",
+                "grades.avg",
+                "subjects.descriptive_title",
+                "enrollments.grade_level",
+                "sections.section_name",
+            )->join('students', 'grades.student_id', 'students.id')
+                ->join('subjects', 'grades.subject_id', 'subjects.id')
+                ->join('enrollments', 'grades.student_id', 'enrollments.student_id')
+                ->join('sections', 'enrollments.section_id', 'sections.id')
+                ->where('students.id', Auth::user()->id)
+                ->where('enrollments.grade_level', $level)
+                ->get()
+            // ->groupBy('enrollments.grade_level')
+        );
 
 
-        return Enrollment::select(
-            "grades.first",
-            "grades.second",
-            "grades.third",
-            "grades.fourth",
-            "grades.avg",
-            "sections.section_name",
-            "subjects.descriptive_title",
-        )
-            ->join('students', 'enrollments.student_id', 'students.id')
-            ->join('grades', 'enrollments.student_id', 'grades.student_id')
-            ->join('subjects', 'grades.subject_id', 'subjects.id')
-            ->join('sections', 'enrollments.section_id', 'sections.id')
-            ->where('students.id', Auth::user()->id)
-            // ->groupBy('sections.section_name')
-            ->get();
+        // return Enrollment::select('enrollments.grade_level', 'sections.section_name', 'grades.first', 'grades.second', 'grades.third')
+        //     ->join('students', 'enrollments.student_id', 'students.id')
+        //     ->join('sections', 'enrollments.section_id', 'sections.id')
+        //     ->join('grades', 'enrollments.student_id', 'grades.student_id')
+        //     ->join('subjects', 'grades.subject_id', 'subjects.id')
+        //     ->where('students.id', Auth::user()->id)
+        //     // ->groupBy('enrollments.grade_level',)
+        //     ->get();
+    }
+
+    public function levelList()
+    {
+        return response()->json(
+            Enrollment::select('enrollments.grade_level', 'school_years.status', 'sections.section_name')
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->join('sections', 'enrollments.section_id', 'sections.id')
+                ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                ->where('students.id', Auth::user()->id)
+                ->groupBy('enrollments.grade_level', 'school_years.status', 'sections.section_name')
+                ->orderBy('enrollments.grade_level', 'asc')
+                ->get()
+        );
+    }
+
+    public function enrollment()
+    {
+        return view('student/enrollment');
     }
 }

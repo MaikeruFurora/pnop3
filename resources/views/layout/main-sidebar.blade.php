@@ -156,6 +156,10 @@
             <li class="{{ request()->is('student/my/grade')?'active':'' }}"><a class="nav-link"
                     href="{{ route('student.grade') }}"><i class="fas fa-book-reader"></i><span>Grade</span></a>
             </li>
+            <li class="{{ request()->is('student/my/enrollment')?'active':'' }}"><a class="nav-link"
+                    href="{{ route('student.enrollment') }}"><i
+                        class="fas fa-box-tissue"></i><span>Enrollment</span></a>
+            </li>
             </li>
         </ul>
         @endif

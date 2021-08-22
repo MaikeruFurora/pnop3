@@ -30,7 +30,22 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
+                {{-- <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                    <button type="button" class="btn btn-info btn-icon icon-left">
+                        <i class="far fa-user"></i><span class="badge badge-transparent ">2</span></button>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                            <a class="dropdown-item" href="#">Dropdown link</a>
+                        </div>
+                    </div>
+                </div> --}}
                 <div class="row sectionListAvailable mb-3"></div>
+
                 <div class="card">
                     <div class="card-body">
 

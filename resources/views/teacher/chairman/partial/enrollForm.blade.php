@@ -21,7 +21,7 @@
                         <div class="form-group col-lg-6">
                             <label>Status</label>
                             <select name="status" class="form-control" required>
-                                <option value=""></option>
+                                <option></option>
                                 <option value="new">Incomming grade 7</option>
                                 <option value="transferee">Transferee</option>
                             </select>
@@ -30,7 +30,7 @@
                         <div class="form-group col-lg-6">
                             <label>Status</label>
                             <select name="status" class="form-control" required>
-                                <option value=""></option>
+                                <option></option>
                                 <option value="upperclass">Upper Class</option>
                                 <option value="transferee">Transferee</option>
                             </select>

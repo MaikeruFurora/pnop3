@@ -124,9 +124,9 @@ class EnrollmentController extends Controller
                 return response()->json(['warning' => 'This student are already Enrolled']);
             }
         } else {
-            $student = Student::where('roll_no', $lrn)->get();
-            $isHave = Enrollment::where("student_id", $student->id)->where("school_year_id", Helper::activeAY()->id)->exists();
-            if ($isHave) {
+            $student = Student::where('roll_no', $lrn)->exists();
+            // $isHave = Enrollment::where("student_id", $student->id)->where("school_year_id", Helper::activeAY()->id)->exists();
+            if ($student) {
                 return response()->json(['warning' => 'You are already Enrolled']);
             }
         }

@@ -37,50 +37,48 @@
 </head>
 
 <body>
-
-    <body>
-        <div id="app">
-            <section class="section">
-                <div class="container mt-5">
-                    <div class="row">
-                        <div
-                            class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 center-screen">
-                            {{-- <div class="login-brand">
+    <div id="app">
+        <section class="section">
+            <div class="container mt-5">
+                <div class="row">
+                    <div
+                        class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 center-screen">
+                        {{-- <div class="login-brand">
                                 PNHS
                             </div> --}}
 
-                            <div class="card card-primary">
+                        <div class="card card-primary">
 
 
-                                <div class="card-body text-center p-5">
-                                    <img src="{{ asset('image/logo/logo.png') }}" class="">
-                                    <h1 class="lead mt-5">Enrollment was successful!</h1>
-                                </div>
+                            <div class="card-body text-center p-5">
+                                <img src="{{ asset('image/logo/logo.png') }}" class="">
+                                <h1 class="lead mt-5">Enrollment was successful!</h1>
                             </div>
-                            <div class="simple-footer">
-                                Copyright &copy; Stisla 2018
-                            </div>
+                        </div>
+                        <div class="simple-footer">
+                            Copyright &copy; Stisla 2018
                         </div>
                     </div>
                 </div>
-            </section>
-        </div>
-        <!-- General JS Scripts -->
-        <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
-        <script src="{{ asset('js/popper.min.js') }}">
-        </script>
-        <script src="{{ asset('js/bootstrap.min.js') }}">
-        </script>
-        <script src="{{ asset('js/jquery.nicescroll.min.js') }}"></script>
-        <script src="{{ asset('js/moment.min.js') }}"></script>
-        <script src="{{ asset('js/stisla.js') }}"></script>
+            </div>
+        </section>
+    </div>
+    <!-- General JS Scripts -->
+    <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ asset('js/popper.min.js') }}">
+    </script>
+    <script src="{{ asset('js/bootstrap.min.js') }}">
+    </script>
+    <script src="{{ asset('js/jquery.nicescroll.min.js') }}"></script>
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('js/stisla.js') }}"></script>
 
-        <!-- JS Libraies -->
+    <!-- JS Libraies -->
 
-        <!-- Template JS File -->
-        <script src="{{ asset('js/scripts.js') }}"></script>
-        <script src="{{ asset('js/custom.js') }}"></script>
+    <!-- Template JS File -->
+    <script src="{{ asset('js/scripts.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
 
-    </body>
+</body>
 
 </html>

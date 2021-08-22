@@ -32,7 +32,7 @@
         <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 {{-- <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1"> --}}
-                <span class="badge badge-info pb-1 pt-1" style="font-size: 12px">Teacher</span>
+                <span class="badge badge-info pb-1 pt-2" style="font-size: 12px">Teacher</span>
                 &nbsp;&nbsp;
                 <div class="d-sm-none d-lg-inline-block">
                     Hi, {{ Auth::guard('teacher')->user()->fullname }}
@@ -57,7 +57,7 @@
         <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
                 {{-- <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1"> --}}
-                <span class="badge badge-info pb-1 pt-1" style="font-size: 12px">Student</span>
+                <span class="badge badge-info pb-1 pt-2" style="font-size: 12px">Student</span>
                 &nbsp;&nbsp;
                 <div class="d-sm-none d-lg-inline-block">
                     Hi, {{ Auth::guard('student')->user()->fullname }}

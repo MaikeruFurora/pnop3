@@ -284,8 +284,7 @@ class ChairmanController extends Controller
         return response()->json(
             Enrollment::select(
                 "enrollments.id",
-                "enrollments.school_year_id",
-                "enrollments.grade_level",
+                "students.gender",
                 "section_name",
                 DB::raw("CONCAT(student_lastname,', ',student_firstname,' ', student_middlename) AS fullname")
             )
@@ -294,6 +293,7 @@ class ChairmanController extends Controller
                 ->where('sections.section_name', $section)
                 ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
+                ->orderBy('students.gender', 'desc')
                 ->get()
         );
     }
@@ -334,5 +334,29 @@ class ChairmanController extends Controller
                 ->groupBy('students.curriculum')
                 ->get()
         );
+    }
+
+    public function printReport($section)
+    {
+
+        $dataNow = Enrollment::select(
+            "enrollments.id",
+            "students.gender",
+            DB::raw("CONCAT(student_lastname,', ',student_firstname,' ', student_middlename) AS fullname")
+        )
+            ->join('students', 'enrollments.student_id', 'students.id')
+            ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+            ->where('sections.section_name', $section)
+            ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+            ->where('enrollments.school_year_id', Helper::activeAY()->id)
+            ->orderBy('students.gender', 'desc')
+            ->get();
+        $total = Enrollment::select('sections.section_name', DB::raw('count(if(gender="Female",1,NULL)) as ftotal'), DB::raw('count(if(gender="Male",1,NULL)) as mtotal'))
+            ->join('students', 'enrollments.student_id', 'students.id')
+            ->join('sections', 'enrollments.section_id', 'sections.id')
+            ->where('sections.section_name', $section)
+            ->where('enrollments.school_year_id', Helper::activeAY()->id)
+            ->groupBy('sections.section_name')->first();
+        return view('teacher/chairman/partial/print', compact('dataNow', 'section', 'total'));
     }
 }
