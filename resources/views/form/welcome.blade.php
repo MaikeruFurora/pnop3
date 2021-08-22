@@ -32,23 +32,41 @@
             <div class="container mt-5">
                 <div class="row">
                     <div
-                        class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 center-screen">
+                        class="col-12 col-sm-10 offset-sm-1 col-md-10 offset-md-2 col-lg-10 offset-lg-2 col-xl-8 offset-xl-2 center-screen">
                         {{-- <div class="login-brand">
                                 PNHS
                             </div> --}}
 
                         <div class="card card-primary">
+                            <div class="card-body p-5">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-lg-5 text-center">
+                                            <img src="{{ asset('image/logo/logo.png') }}" class="">
+                                            <h1 class="lead mt-3">PNHS ENROLLMENT</h1>
+                                        </div>
+                                        <div class="col-lg-7"><br>
+                                            <p>Dear Parent/Guardian,<br>
 
+                                                Welcome to our school's Admission Center. Please use this form to apply
+                                                for
+                                                your
+                                                child's admission to our school. We need complete and accurate
+                                                information
+                                                about the
+                                                student, so make sure you fill out all fields. School Admission Forms
+                                                are
+                                                processed
 
-                            <div class="card-body text-center p-5">
-                                <img src="{{ asset('image/logo/logo.png') }}" class="">
-                                <h1 class="lead mt-3">PNHS ENROLLMENT</h1>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi labore vero
-                                    corrupti aliquam magnam velit? Quam itaque reiciendis nisi excepturi incidunt
-                                    quas sapiente error molestias explicabo adipisci? Eius</p>
-                                <a href="{{ route('form') }}" class="btn btn-lg btn-round btn-primary">
-                                    Proceed
-                                </a>
+                                            </p>
+                                            <a href="{{ route('form') }}"
+                                                class="btn btn-lg btn-round btn-primary float-right mt-2">
+                                                Proceed
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <div class="simple-footer">
