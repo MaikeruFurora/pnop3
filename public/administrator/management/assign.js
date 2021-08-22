@@ -134,9 +134,10 @@ $("#AssignForm").submit(function (e) {
 
                 document.getElementById("AssignForm").reset();
                 $('select[name="grade_level"]').val(
-                    $('select[name="grade_level"]').val()
+                    $('select[name="grade_level_top"]').val() != ""
+                        ? $('select[name="grade_level_top"]').val()
+                        : "7"
                 );
-                $("#selectedGL").val($('select[name="grade_level"]').val());
                 $("input[name='id']").val("");
                 $("select[name='section_id']").val(null).trigger("change");
                 $("select[name='subject_id']").val(null).trigger("change");
