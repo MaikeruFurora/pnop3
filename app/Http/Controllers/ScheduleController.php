@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Models\Assign;
 use App\Models\Schedule;
 use App\Models\Section;
 use App\Models\Subject;
@@ -55,7 +56,11 @@ class ScheduleController extends Controller
             return response()->json(['warning' => 'No Academic Year Active']);
         } else {
             // return $section;
-            return response()->json(Subject::where('grade_level', $section->grade_level)->whereIn('subject_for', [$section->class_type, 'GENERAL'])->get());
+            $data = Assign::select('subject_id')->where('section_id', $section->id)->pluck('subject_id')->toArray();
+            return response()->json(Subject::where('grade_level', $section->grade_level)
+                ->whereIn('subject_for', [$section->class_type, 'GENERAL'])
+                ->whereNotIn('id', $data)
+                ->get());
         }
     }
 

@@ -131,7 +131,11 @@ $("#AssignForm").submit(function (e) {
             }
             if (!data.errSubject) {
                 cancelAssign.hide();
+
                 document.getElementById("AssignForm").reset();
+                $('select[name="grade_level"]').val(
+                    $('select[name="grade_level"]').val()
+                );
                 $("#selectedGL").val($('select[name="grade_level"]').val());
                 $("input[name='id']").val("");
                 $("select[name='section_id']").val(null).trigger("change");
