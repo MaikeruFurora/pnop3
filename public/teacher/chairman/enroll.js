@@ -305,7 +305,7 @@ $("#enrollForm").submit(function (e) {
             .done(function (data) {
                 $("input[name='roll_no']").removeClass("is-valid");
                 getToast("success", "Ok", "Successfully added new enrolled");
-                $(".btnSaveEnroll").html("Save").attr("disabled", false);
+                $(".btnSaveEnroll").html("Enroll").attr("disabled", false);
                 document.getElementById("enrollForm").reset();
                 $("#last_school").hide();
                 setTimeout(() => {
@@ -316,7 +316,7 @@ $("#enrollForm").submit(function (e) {
             })
             .fail(function (jqxHR, textStatus, errorThrown) {
                 getToast("error", "Eror", errorThrown);
-                $(".btnSaveEnroll").html("Save").attr("disabled", false);
+                $(".btnSaveEnroll").html("Enroll").attr("disabled", false);
             });
     } else {
         getToast(

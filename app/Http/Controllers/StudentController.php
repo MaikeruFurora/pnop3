@@ -33,10 +33,10 @@ class StudentController extends Controller
             'date_of_birth' => $request->date_of_birth,
             'student_contact' => $request->student_contact,
             'gender' => $request->gender,
-            'region' => $request->region,
-            'province' => $request->province,
-            'city' => $request->city,
-            'barangay' => $request->barangay,
+            'region' => empty($request->region) ? $request->region : $dataret->region,
+            'province' => empty($request->province) ? $request->province : $dataret->province,
+            'city' => empty($request->city) ? $request->city : $dataret->city,
+            'barangay' => empty($request->barangay) ? $request->barangay : $dataret->barangay,
             'last_school_attended' => $request->last_school_attended,
             'mother_name' => $request->mother_name,
             'mother_contact_no' => $request->mother_contact_no,
@@ -49,6 +49,11 @@ class StudentController extends Controller
             'password' => empty($dataret->password) ? Hash::make("pnhs") : $dataret->password,
             'student_status' => null,
         ]);
+    }
+
+    public function edit(Student $student)
+    {
+        return response()->json($student);
     }
 
     public function list()

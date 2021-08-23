@@ -16,6 +16,11 @@ class AuthController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    public function forbidden()
+    {
+        return view('auth/forbidden');
+    }
+
     public function login()
     {
         return view('auth/login');

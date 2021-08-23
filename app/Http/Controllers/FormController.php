@@ -13,6 +13,9 @@ use Illuminate\Support\Str;
 
 class FormController extends Controller
 {
+
+    use Traits\AuthAccess;
+
     public function welcome()
     {
         return $this->authority('form/welcome');
@@ -83,7 +86,7 @@ class FormController extends Controller
         if ($school->school_enrollment_url) {
             return view($viewFile);
         } else {
-            return abort(403);
+            return $this->forbidden();
         }
     }
 }

@@ -23,6 +23,7 @@
 
 
                     <form id="studentForm">@csrf
+                        <input type="hidden" name="id">
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active mt-3" id="nav-home">
                                 {{-- start student details here --}}
@@ -57,7 +58,7 @@
                                         <input type="text" class="form-control" name="student_lastname" required>
                                     </div>
                                 </div>
-                                <div class="form-row">
+                                <div class="form-row" id="forNew">
                                     <div class="form-group col-md-3">
                                         <label>Region</label>
                                         <select name="region_text" id="region" class="custom-select" required></select>
@@ -79,6 +80,25 @@
                                         <select name="barangay_text" id="barangay" class="custom-select"
                                             required></select>
                                         <input type="hidden" name="barangay">
+                                    </div>
+                                </div>
+
+                                <div class="form-row" id="forUpdate">
+                                    <div class="form-group col-md-3">
+                                        <label>Region</label>
+                                        <input type="text" name="region" required class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>Province</label>
+                                        <input type="text" name="province" required class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>Town</label>
+                                        <input type="text" name="city" required class="form-control">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label>Barangay</label>
+                                        <input type="text" name="barangay" required class="form-control">
                                     </div>
                                 </div>
 

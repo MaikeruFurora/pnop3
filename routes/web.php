@@ -72,6 +72,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::post('student/save', [StudentController::class, 'store']);
     Route::get('student/list', [StudentController::class, 'list']);
     Route::delete('student/delete/{student}', [StudentController::class, 'destroy']);
+    Route::get('student/edit/{student}', [StudentController::class, 'edit']);
 
     // archive
     Route::get('archive', [AdminController::class, 'archive'])->name('archive');

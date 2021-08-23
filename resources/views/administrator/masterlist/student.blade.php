@@ -41,7 +41,7 @@
                                 <th>Contact No.</th>
                                 <th>Username</th>
                                 <th>Password</th>
-                                <th>Action</th>
+                                <th width="8%">Action</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
