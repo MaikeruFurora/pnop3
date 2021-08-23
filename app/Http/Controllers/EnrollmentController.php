@@ -136,27 +136,37 @@ class EnrollmentController extends Controller
 
     public function checkLRN($lrn, $curriculum)
     {
+
         if (Auth::user()->chairman->grade_level == 7) {
+            //grade 7 only
             $isLRN = Student::where('roll_no', $lrn)->exists();
             if ($isLRN) {
                 return response()->json(['warning' => 'This student are already Enrolled']);
             }
         } else {
+            //grade 8-10 only
             $student = Enrollment::join('students', 'enrollments.student_id', 'students.id')
                 ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
                 ->where('school_years.status', 1)
                 ->where('roll_no', $lrn)->exists();
-            // $isHave = Enrollment::where("student_id", $student->id)->where("school_year_id", Helper::activeAY()->id)->exists();
+            // determin where grade level inrolled
+            $findStudentGL = Enrollment::join('students', 'enrollments.student_id', 'students.id')
+                ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                ->where('school_years.status', 1)
+                ->where('roll_no', $lrn)
+                ->first();
             if ($student) {
-                return response()->json(['warning' => 'You are already Enrolled']);
+                return response()->json(['warning' => 'You are already Enrolled in ' . $findStudentGL->curriculum . ' curriculum <br> grade ' . $findStudentGL->grade_level . ' student']);
             } else {
                 $isAlreadyinMasterlist = Student::where('roll_no', $lrn)->where('curriculum', $curriculum)->exists();
-                $findStudent = Student::where('roll_no', $lrn)->first();
+                $findStudent = Student::where('students.roll_no', $lrn)->first();
                 if ($isAlreadyinMasterlist) {
+                    //get all stundent information
                     return response()->json([
                         'student' => $findStudent
                     ]);
                 } else {
+                    //if curriculum is not belong to the chairman enrollment form!!!
                     return response()->json(['warning' => '
                     This student is not enrolled in this program (curriculum), <br>and his or her curriculum is  included to <b>' . $findStudent->curriculum . '</b>']);
                 }
