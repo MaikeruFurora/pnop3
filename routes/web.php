@@ -175,7 +175,7 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     // Route::get('autofill/{roll_no}', [ChairmanController::class, 'autofill']);
 
     //enrollment form manually aading student
-    Route::get('check/lrn/{lrn}', [EnrollmentController::class, 'checkLRN']);
+    Route::get('check/lrn/{lrn}/{curriculum}', [EnrollmentController::class, 'checkLRN']);
     Route::post('save', [EnrollmentController::class, 'store']);
 
     // for advicer route

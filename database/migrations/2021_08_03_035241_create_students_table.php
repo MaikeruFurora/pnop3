@@ -34,8 +34,6 @@ class CreateStudentsTable extends Migration
             $table->string('father_contact_no')->nullable();
             $table->string('guardian_name')->nullable();
             $table->string('guardian_contact_no')->nullable();
-            $table->string('status', 45)->nullable();
-
             $table->string('username', 45)->nullable();
             $table->string('orig_password')->nullable();
             $table->string('password')->nullable();

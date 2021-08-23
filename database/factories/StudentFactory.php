@@ -16,6 +16,7 @@ class StudentFactory extends Factory
      */
     protected $model = Student::class;
 
+
     /**
      * Define the model's default state.
      *
@@ -24,25 +25,28 @@ class StudentFactory extends Factory
     public function definition()
     {
         return [
-            'roll_no' => Helper::create_roll_no(),
+            'roll_no' => 1129 . Helper::create_roll_no(),
             'curriculum' => $this->faker->randomElement($array = array('BEC', 'STEM', 'SPA', 'SPJ')),
             'student_firstname' => $this->faker->firstName(),
             'student_middlename' => $this->faker->lastName(),
             'student_lastname' => $this->faker->lastName(),
-            'date_of_birth' => "July 01,1999",
-            'student_contact' => '0984723722748',
+            'date_of_birth' => $this->faker->date(),
+            'student_contact' => '09277422150',
             'gender' => $this->faker->randomElement($array = array('Male', 'Female')),
-            'address' => $this->faker->address(),
+            'region' => 'REGION V (BICOL REGION)',
+            'province' => 'CAMARINES SUR',
+            'city' => $this->faker->randomElement($array = array('PILI (Capital)', 'BULA')),
+            'barangay' => $this->faker->randomElement($array = array('San Vicente', 'Anayan', 'Pawili', 'Old San Roque', 'San Juan')),
+            'last_school_attended' => $this->faker->address(),
             'mother_name' => $this->faker->name(),
-            'mother_contact_no' => '09124121',
+            'mother_contact_no' => '09277422150',
             'father_name' => $this->faker->name(),
-            'father_contact_no' => '09124121',
+            'father_contact_no' => '09277422150',
             'guardian_name' => $this->faker->name(),
-            'guardian_contact_no' => '09124121',
-            'status' => '',
-            'username' => Helper::create_username($this->faker->firstName(), $this->faker->lastName()),
-            'orig_password' => Crypt::encrypt('password'),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+            'guardian_contact_no' => '09277422150',
+            'username' => Helper::create_username($this->faker->lastName(), $this->faker->lastName()),
+            'orig_password' => Crypt::encrypt('pnhs'),
+            'password' => '$2y$10$p6lwjObc4DNSy3VaXeqNcu9XBf1W9FYQ2CD0tpihuiXlmvahnCnTW',
             'student_status' => null,
         ];
     }

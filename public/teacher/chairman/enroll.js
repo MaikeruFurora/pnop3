@@ -1,5 +1,6 @@
 // global variable for all curriculum
 let current_curriculum = $('input[name="current_curriculum"]').val();
+let current_glc = $("input[name='current_glc']").val();
 
 let filterBarangay = () => {
     let barangayHTML;
@@ -89,10 +90,15 @@ let findTableToRefresh = (current_curriculum) => {
 
 $("input[name='roll_no']").on("blur", function () {
     if ($(this).val() == "") {
+        document.getElementById("enrollForm").reset();
+        $('select[name="grade_level"]').val(current_glc).attr("readonly", true);
+        $("select[name='curriculum']")
+            .val(current_curriculum)
+            .attr("readonly", true);
         $("input[name='roll_no']").removeClass("is-valid is-invalid");
     } else {
         $.ajax({
-            url: "check/lrn/" + $(this).val(),
+            url: `check/lrn/${$(this).val()}/${current_curriculum}`,
             type: "GET",
         })
             .done(function (data) {
@@ -101,6 +107,7 @@ $("input[name='roll_no']").on("blur", function () {
                     $("input[name='roll_no']").addClass("is-invalid");
                     $(".btnSaveEnroll").attr("disabled", true);
                 } else {
+                    $('select[name="grade_level"]').attr("disabled", false);
                     $("input[name='roll_no']")
                         .removeClass("is-invalid")
                         .addClass("is-valid");
@@ -109,6 +116,9 @@ $("input[name='roll_no']").on("blur", function () {
                         console.log(data.student);
                         $("select[name='curriculum']").val(
                             data.student.curriculum
+                        );
+                        $('input[name="last_school_attended"]').val(
+                            data.student.last_school_attended
                         );
                         $("input[name='student_firstname']").val(
                             data.student.student_firstname
@@ -170,12 +180,12 @@ $("#btnModalStudent").on("click", function () {
     $("select[name='curriculum']")
         .val(current_curriculum)
         .attr("readonly", true);
+    $('select[name="grade_level"]').val(current_glc).attr("readonly", true);
     searchSecionByLevel($('input[name="current_curriculum"]').val());
 });
 $('select[name="grade_level"]').attr("disabled", true);
 $("#last_school").hide();
 $("select[name='status']").on("change", function () {
-    let current_glc = $("input[name='current_glc']").val();
     if (current_glc == 7) {
         if ($(this).val() != "") {
             if ($(this).val() == "new" || $(this).val() == "transferee") {
@@ -272,8 +282,8 @@ $("select[name='curriculum']").on("change", function () {
  */
 
 $("#enrollForm").submit(function (e) {
+    e.preventDefault();
     if ($("select[name='status']").val() != "nothing") {
-        e.preventDefault();
         $.ajax({
             url: "save",
             type: "POST",
