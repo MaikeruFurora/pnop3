@@ -34,15 +34,15 @@
                         </div>
                         {{-- table-responsive--}}
                         <table class="table  table-bordered table-hover" id="myClassTable" style="font-size: 14px">
-                            <thead class="bg-dark ">
+                            <thead class="bg-secondary ">
                                 <tr>
-                                    <th class="text-white">Subjects</th>
-                                    <th class="text-center text-white" width="8%">1st</th>
-                                    <th class="text-center text-white" width="8%">2nd</th>
-                                    <th class="text-center text-white" width="8%">3rd</th>
-                                    <th class="text-center text-white" width="8%">4th</th>
-                                    <th class="text-center text-white" width="8%">Avg</th>
-                                    <th class="text-center text-white" width="8%">Remarks</th>
+                                    <th class="">Subjects</th>
+                                    <th class="text-center " width="8%">1st</th>
+                                    <th class="text-center " width="8%">2nd</th>
+                                    <th class="text-center " width="8%">3rd</th>
+                                    <th class="text-center " width="8%">4th</th>
+                                    <th class="text-center " width="8%">Avg</th>
+                                    <th class="text-center " width="8%">Remarks</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -51,6 +51,13 @@
                                     <td colspan="7" class="text-center">No data available</td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr class="bg-secondary">
+                                    <td colspan="5" class=" text-right"><b>Final Average</b></td>
+                                    <td id="overallGrade" class="text-center "></td>
+                                    <td id="overallRemark" class="text-center "></td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

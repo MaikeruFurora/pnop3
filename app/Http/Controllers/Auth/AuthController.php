@@ -31,47 +31,9 @@ class AuthController extends Controller
         $request->validate([
             'get_your_input' => 'required',
             'password' => 'required',
-            'user_type' => 'required'
+            // 'user_type' => 'required'
         ]);
-
-        $fieldType = ctype_digit($request->get_your_input) ? 'roll_no' : 'username';
-        $request->merge([
-            $fieldType => $request->input('get_your_input')
-        ]);
-        $credits = $request->only($fieldType, 'password');
-
-        switch ($request->user_type) {
-            case 'Administrator':
-                if (Auth::guard('web')->attempt($credits)) {
-                    session()->put('sessionAY', SchoolYear::where('status', 1)->first());
-                    return redirect()->route('admin.dashboard');
-                } else {
-                    return redirect()->route('auth.login')->with('msg', 'Login credentials is invalid');
-                }
-                break;
-
-            case 'Teacher':
-                session()->put('sessionAY', SchoolYear::where('status', 1)->first());
-                if (Auth::guard('teacher')->attempt($credits)) {
-                    return redirect()->route('teacher.dashboard');
-                } else {
-                    return redirect()->route('auth.login')->with('msg', 'Login credentials is invalid');
-                }
-                break;
-
-            case 'Student':
-                if (Auth::guard('student')->attempt($credits)) {
-                    session()->put('sessionAY', SchoolYear::where('status', 1)->first());
-                    return redirect()->route('student.dashboard');
-                } else {
-                    return redirect()->route('auth.login')->with('msg', 'Login credentials is invalid');
-                }
-                break;
-
-            default:
-                return redirect()->route('auth.login')->with('msg', 'Login as is not defined');
-                break;
-        }
+        return $this->checkUserLogin($request);
     }
 
     public function logout()
@@ -89,5 +51,32 @@ class AuthController extends Controller
             session()->flush();
         }
         return redirect()->route('auth.login');
+    }
+
+    public function checkUserLogin($request)
+    {
+        $fieldType = ctype_digit($request->get_your_input) ? 'roll_no' : 'username';
+        $request->merge([
+            $fieldType => $request->input('get_your_input')
+        ]);
+        $credits = $request->only($fieldType, 'password');
+        session()->put('sessionAY', SchoolYear::where('status', 1)->first());
+
+        if ($fieldType == 'username') {
+            if (Auth::guard('web')->attempt($credits)) {
+                return redirect()->route('admin.dashboard'); //if admin
+            } else {
+                return redirect()->route('auth.login')->with('msg', 'Login credentials are invalid');
+            }
+        } else {
+            if (Auth::guard('teacher')->attempt($credits)) {
+                return redirect()->route('teacher.dashboard'); //if teacher or faculty
+            } else {
+                if (Auth::guard('student')->attempt($credits)) {
+                    return redirect()->route('student.dashboard'); //if student
+                } else {
+                }
+            }
+        }
     }
 }

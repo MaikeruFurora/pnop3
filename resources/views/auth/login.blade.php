@@ -42,7 +42,7 @@
                             {{ session('msg') }}
                         </div>
                         @endif
-                        <div class="card card-primary">
+                        <div class="card card-primary shadow-sm">
                             <div class="card-header pt-1 pb-0">
                                 <div class="col-12">
                                     <div class="row mt-0 mb-0 justify-content-between">
@@ -85,14 +85,14 @@
                                         </div>
 
                                     </div>
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label for="user_type">Login as</label>
                                         <select name="user_type" class="custom-select">
                                             <option value="Student">Student</option>
                                             <option value="Teacher">Teacher</option>
                                             <option value="Administrator">Administrator</option>
                                         </select>
-                                    </div>
+                                    </div> --}}
 
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary btn-lg btn-block">

@@ -30,7 +30,7 @@
             </li>
             <li class="menu-header">Masterlist</li>
             <li
-                class="nav-item dropdown {{ request()->is('admin/my/teacher') ||  request()->is('admin/my/student') ||  request()->is('admin/my/archive')?'active':'' }}">
+                class="nav-item dropdown {{ request()->is('admin/my/teacher') ||  request()->is('admin/my/student') ||  request()->is('admin/my/archive') ||  request()->is('admin/my/backrecord')?'active':'' }}">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                         class="fas fa-cog"></i><span>Masterlist</span></a>
                 <ul class="dropdown-menu">
@@ -45,6 +45,10 @@
                     <li class="{{ request()->is('admin/my/archive')?'active':'' }}">
                         <a class="nav-link" href="{{ route('admin.archive') }}">
                             <i class="fas fa-user-times"></i><span>Archive</span></a>
+                    </li>
+                    <li class="{{ request()->is('admin/my/backrecord')?'active':'' }}">
+                        <a class="nav-link" href="{{ route('admin.backrecord') }}">
+                            <i class="fas fa-reply-all"></i><span>Back Subject</span></a>
                     </li>
                 </ul>
             </li>
@@ -156,6 +160,18 @@
             <li class="{{ request()->is('student/my/grade')?'active':'' }}"><a class="nav-link"
                     href="{{ route('student.grade') }}"><i class="fas fa-book-reader"></i><span>Grade</span></a>
             </li>
+            @if (Auth::user()->backsubject()->exists())
+            <li class="{{ request()->is('student/my/backsubject')?'active':'' }}"><a class="nav-link"
+                    href="{{ route('student.backsubject') }}"><i class="fas fa-reply-all"></i><span>Back Subject
+                        @if (Auth::user()->backsubject()->where('back_subjects.remarks','none')->get()->count()!=0)
+                        <small class="badge badge-danger badge-sm" style="font-size: 10px">
+                            {{ Auth::user()->backsubject()->where('back_subjects.remarks','none')->get()->count() }}
+                        </small>
+                        @endif
+                    </span>
+                </a>
+            </li>
+            @endif
             <li class="{{ request()->is('student/my/enrollment')?'active':'' }}"><a class="nav-link"
                     href="{{ route('student.enrollment') }}"><i
                         class="fas fa-box-tissue"></i><span>Enrollment</span></a>

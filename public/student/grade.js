@@ -18,12 +18,14 @@ let gradeTable = (level) => {
         },
     })
         .done(function (data) {
+            let overallGrade = 0;
             if (data.length > 0) {
                 $(".txtSectionName").text(data[0].section_name);
                 data.forEach((val) => {
+                    overallGrade += parseInt(val.avg);
                     htmlHold += `
                         <tr style="background-color:${
-                            val.avg <= 75 && val.avg != null ? "#ffe6e6" : ""
+                            val.avg < 75 && val.avg != null ? "#ffe6e6" : ""
                         }">
                             <td class="">
                             ${val.descriptive_title}
@@ -100,6 +102,10 @@ let gradeTable = (level) => {
                 `;
             }
             $("#gradeTable").html(htmlHold);
+            $("#overallGrade").text(Math.round(overallGrade / 8));
+            $("#overallRemark").text(
+                Math.round(overallGrade / 8) > 75 ? "Passed" : "Failed"
+            );
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);

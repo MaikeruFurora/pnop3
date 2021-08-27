@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Models\Enrollment;
+use App\Models\Grade;
 use App\Models\SchoolProfile;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -39,19 +41,36 @@ class EnrollmentController extends Controller
                 )->orderBy('sections.section_name')
                     ->join('students', 'enrollments.student_id', 'students.id')
                     ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-                    // ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
-                    // ->where('school_years.status', 1)
+                    ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                    ->where('school_years.status', 1)
                     ->where('enrollments.grade_level', $level)
                     ->get()
             ]
         );
+    }
+
+    public function enrolledSubject($enrolled)
+    {
+        $enrolledSubject = Enrollment::select('enrollments.student_id', 'enrollments.grade_level', 'students.curriculum')
+            ->join('students', 'enrollments.student_id', 'students.id')
+            ->where('enrollments.id', $enrolled)
+            ->where('school_year_id', Helper::activeAY()->id)->first();
+        $subjects = Subject::where('grade_level', $enrolledSubject->grade_level)->whereIn('subject_for', [$enrolledSubject->curriculum, 'GENERAL'])->get();
+
+        foreach ($subjects as $subject) {
+
+            Grade::create([
+                'student_id' => $enrolledSubject->student_id,
+                'subject_id' => $subject->id
+            ]);
+        }
     }
     public function store(Request $request)
     {
 
         if (Auth::user()->chairman->grade_level == 7) {
             $student = $this->storeStudenRequest($request);
-            return Enrollment::create([
+            $enrolled = Enrollment::create([
                 'student_id' => $student->id,
                 'section_id' => $request->section_id,
                 'grade_level' => empty($request->grade_level) ? '7' : $request->grade_level,
@@ -59,6 +78,7 @@ class EnrollmentController extends Controller
                 'date_of_enroll' => date("d/m/Y"),
                 'enroll_status' => empty($request->section_id) ? 'Pending' : 'Enrolled',
             ]);
+            return $this->enrolledSubject($enrolled->id);
         } else {
             if ($request->status == "upperclass") {
                 $student = Student::where('roll_no', $request->roll_no)->first();
@@ -129,9 +149,18 @@ class EnrollmentController extends Controller
         );
     }
 
-    public function destroy(Enrollment $enrollment)
+    public function destroy($enrollment)
     {
-        return $enrollment->delete();
+        $enroll = Enrollment::join('students', 'enrollments.student_id', 'students.id')->where('enrollments.id', $enrollment)->first();
+        $subjects = Subject::where('grade_level', $enroll->grade_level)->whereIn('subject_for', [$enroll->curriculum, 'GENERAL'])->get();
+        foreach ($subjects as $subject) {
+            Grade::where('student_id', $enroll->student_id)->whereIn('subject_id', [$subject->id])->delete();
+        }
+        Enrollment::find($enrollment)->delete();
+        if (Auth::user()->chairman->grade_level == 7) {
+            Student::where('id', $enroll->student_id)->delete();
+            Student::where('id', $enroll->student_id)->withTrashed()->first()->forceDelete();
+        }
     }
 
     public function checkLRN($lrn, $curriculum)
@@ -189,24 +218,41 @@ class EnrollmentController extends Controller
                 return response()->json(['warning' => 'This section reach the maximum number of student']);
             } else {
 
-                return Enrollment::where('id', $request->enroll_id)
+                Enrollment::where('id', $request->enroll_id)
                     ->where('school_year_id', Helper::activeAY()->id)
                     ->update([
                         'section_id' => $request->section,
                         'enroll_status' => 'Enrolled',
                     ]);
+
+                return $this->enrolledSubject($request->enroll_id);
             }
         } else {
             if ($totalStudentInSection >= 3) {
                 return response()->json(['warning' => 'Section is full']);
             } else {
 
-                return Enrollment::where('id', $request->enroll_id)
+                Enrollment::where('id', $request->enroll_id)
                     ->where('school_year_id', Helper::activeAY()->id)
                     ->update([
                         'section_id' => $request->section,
                         'enroll_status' => 'Enrolled',
                     ]);
+
+                return $this->enrolledSubject($request->enroll_id);
+                // $enrolledSubject = Enrollment::select('enrollments.grade_level', 'students.curriculum')
+                //     ->join('students', 'enrollments.student_id', 'students.id')
+                //     ->where('id', $request->enroll_id)
+                //     ->where('school_year_id', Helper::activeAY()->id)->first();
+                // $subjects = Subject::where('grade_level', $enrolledSubject->grade_level)->where('subject_for', $enrolledSubject->curriculum)->get();
+                // // $leftsubject = Student::where('curriculum',)
+                // foreach ($subjects as $subject) {
+
+                //     Grade::create([
+                //         'student_id' => $enrolledSubject->student_id,
+                //         'subject_id' => $subject->id
+                //     ]);
+                // }
             }
         }
     }

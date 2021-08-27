@@ -37,7 +37,9 @@ const studentTable = $("#studentTable").DataTable({
                 <button type="button" class="btn btn-sm btn-info sedit btnEdit_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
                 <i class="fas fa-edit"></i>
                 </button>&nbsp;
-               
+                    <a href="student/view/record/${data.id}" class="btn btn-sm btn-secondary vstudent btnView_${data.id} pt-0 pb-0 " id="${data.id}">
+                         <i class="fas fa-eye"></i>
+                    </a>
                 `;
             },
             /**
@@ -49,6 +51,14 @@ const studentTable = $("#studentTable").DataTable({
         },
     ],
 });
+
+/**
+ * view student record
+ */
+/**
+ * end student record
+ */
+
 $("#btnStudentModal").on("click", function () {
     $(".modal-title").text("New Student");
     $("#studentForm")[0].reset();

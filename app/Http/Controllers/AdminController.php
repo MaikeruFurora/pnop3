@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Models\Enrollment;
 use App\Models\SchoolProfile;
 use App\Models\SchoolYear;
+use App\Models\Section;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
@@ -18,8 +20,27 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-
-        return view('administrator/dashboard');
+        $data = response()->json(
+            Enrollment::select('enrollments.grade_level', DB::raw("COUNT(enrollments.grade_level) as total"))
+                ->join('sections', 'enrollments.section_id', 'sections.id')
+                ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                ->where('school_years.status', 1)
+                ->where('enrollments.enroll_status', 'Enrolled')
+                ->groupBy('enrollments.grade_level')
+                ->orderBy('enrollments.grade_level')
+                ->get()
+        );
+        $enrollTotal = Enrollment::join('school_years', 'enrollments.school_year_id', 'school_years.id')
+            ->where('school_years.status', 1)
+            ->whereIn('enroll_status', ['Pending', 'Enrolled'])->get()->count();
+        $studentTotal = Student::get()->count();
+        $teacherTotal = Teacher::get()->count();
+        $ectionTotal = Section::join('school_years', 'sections.school_year_id', 'school_years.id')
+            ->where('school_years.status', 1)
+            ->get()
+            ->count();
+        $activeAY = SchoolYear::where('status', 1)->first();
+        return view('administrator/dashboard', compact('enrollTotal', 'studentTotal', 'teacherTotal', 'ectionTotal', 'data', 'activeAY'));
     }
     public function admission()
     {
@@ -45,6 +66,11 @@ class AdminController extends Controller
     public function archive()
     {
         return view('administrator/masterlist/archive');
+    }
+
+    public function backrecord()
+    {
+        return view('administrator/masterlist/backrecord');
     }
 
     public function profile()

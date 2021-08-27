@@ -33,4 +33,9 @@ class Student extends Authenticatable
     {
         return $this->hasMany(Enrollment::class);
     }
+
+    public function backsubject()
+    {
+        return $this->hasMany(BackSubject::class);
+    }
 }

@@ -33,9 +33,14 @@
             <div class="container mt-5">
                 <div class="page-error">
                     <div class="page-inner">
-                        <h1>403</h1>
-                        <div class="page-description">
-                            You do not have access to this page.
+                        <img src="{{ asset('image/logo/logo.png') }}" alt="">
+
+                        <div class="page-description mt-5">
+                            <h3>Online Enrollment has been ended <br> please contact or go to school</h3>
+                            <br><br>
+                            <p><i class="fa fa-address-book"></i> 09918742564</p>
+                            <p><i class="fa fa-at"></i> pnhs@gmail.com</p>
+                            <p><i class="fa fa-map-marker-alt"></i> Zone 2, Lapaz Pawili, Pili Camarines Sur</p>
                         </div>
                     </div>
                 </div>

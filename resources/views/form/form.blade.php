@@ -147,7 +147,7 @@
                                                     </div>
                                                     <div class="form-group col-lg-4">
                                                         <label>Gender</label>
-                                                        <select name="gender" class="form-control" id="">
+                                                        <select name="gender" class="form-control" id="" required>
                                                             <option value=""></option>
                                                             <option value="Male">Male</option>
                                                             <option value="Female">Female</option>
@@ -164,22 +164,24 @@
                                                 <div class="form-row">
                                                     <div class="form-group col-md-3">
                                                         <label>Region</label>
-                                                        <select name="region_text" id="region" class="custom-select">
+                                                        <select name="region_text" id="region" class="custom-select"
+                                                            required>
                                                             {{-- <option value="region"></option> --}}
                                                         </select>
                                                         <input type="hidden" name="region" id="">
                                                     </div>
                                                     <div class="form-group col-md-3">
                                                         <label>Province</label>
-                                                        <select name="province_text" id="province"
-                                                            class="custom-select">
+                                                        <select name="province_text" id="province" class="custom-select"
+                                                            required>
                                                             {{-- <option value="province"></option> --}}
                                                         </select>
                                                         <input type="hidden" name="province" id="">
                                                     </div>
                                                     <div class="form-group col-md-3">
                                                         <label>Town</label>
-                                                        <select name="city_text" id="city" class="custom-select">
+                                                        <select name="city_text" id="city" class="custom-select"
+                                                            required>
                                                             {{-- <option value="city"></option> --}}
 
                                                             <input type="hidden" name="city" id="">
@@ -187,8 +189,8 @@
                                                     </div>
                                                     <div class="form-group col-md-3">
                                                         <label>Barangay</label>
-                                                        <select name="barangay_text" id="barangay"
-                                                            class="custom-select">
+                                                        <select name="barangay_text" id="barangay" class="custom-select"
+                                                            required>
                                                             {{-- <option value="barangay"></option> --}}
                                                         </select>
                                                         <input type="hidden" name="barangay" id="">
@@ -269,11 +271,12 @@
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
     <script src="{{ asset('js/toast/iziToast.min.js') }}"></script>
-    <script src="{{ asset('js/global.js') }}"></script>
-
-    <!-- Page Specific JS File -->
     <script type="text/javascript" src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js">
     </script>
+    <script src="{{ asset('js/global.js') }}">
+    </script>
+
+    <!-- Page Specific JS File -->
     <script src="{{ asset('js/form.js') }}"></script>
 </body>
 

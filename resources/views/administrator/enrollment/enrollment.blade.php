@@ -38,7 +38,7 @@
 
                 <div class="">
                     {{-- table-responsive--}}
-                    <table class="table table-striped" id="enrollmentTable" style="font-size: 11px">
+                    <table class="table table-striped" id="enrollmentTable" style="font-size: 13px">
                         <thead>
                             <tr>
                                 <th>LRN</th>

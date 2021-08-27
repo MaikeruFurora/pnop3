@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BackSubject;
+use App\Models\Enrollment;
 use App\Models\Grade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -74,6 +76,22 @@ class GradeController extends Controller
                         'fourth' => $request->value,
                         'avg' => $request->avg,
                     ]);
+
+
+                    $dataAvg = Grade::select('avg', 'student_id', 'subject_id')->find($request->grade_id);
+                    if ($dataAvg->avg < 75) {
+                        $enrollGradeLevel = Enrollment::select('grade_level')
+                            ->join('students', 'enrollments.student_id', 'students.id')
+                            ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                            ->where('school_years.status', 1)
+                            ->where('students.id', $dataAvg->student_id)->first();
+                        return BackSubject::create([
+                            'student_id' => $dataAvg->student_id,
+                            'subject_id' => $dataAvg->subject_id,
+                            'grade_level' => $enrollGradeLevel->grade_level,
+                            'prev_avg' => $dataAvg->avg,
+                        ]);
+                    }
                     break;
                 default:
                     return false;

@@ -33,11 +33,11 @@
                         </div>
                         </form>
                         <div class="table-responsive pb-0">
-                            <table class="table table-striped" style="font-size: 11px">
+                            <table class="table table-striped" style="font-size: 13px">
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Section</th>
+                                        <th>Code</th>
                                         <th>Descriptive Title</th>
                                         <th>Subject Teacher</th>
                                         <th width="10%">Action</th>

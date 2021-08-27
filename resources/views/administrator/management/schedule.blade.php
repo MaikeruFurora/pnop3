@@ -42,7 +42,7 @@
                             <div class="card-body pb-1">
                                 {{-- <label class="d-flex showME">Narra</label> --}}
                                 <div class="table-responsive">
-                                    <table class="table table-striped" style="font-size: 11px">
+                                    <table class="table table-striped" style="font-size: 13px">
                                         <thead>
                                             <tr>
                                                 <th width="1%">#</th>

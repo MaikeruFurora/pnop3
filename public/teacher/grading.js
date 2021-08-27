@@ -7,7 +7,9 @@ let filterMyLoadSection = () => {
     })
         .done(function (data) {
             data.forEach((val) => {
-                filterSectionHTML += `<option value="${val.id}_${val.subject_id}">${val.section_name}</option>`;
+                filterSectionHTML += `<option value="${val.id}_${
+                    val.subject_id
+                }">${val.section_name + `- ` + val.descriptive_title}</option>`;
             });
             $("select[name='filterMyLoadSection']").html(filterSectionHTML);
         })
@@ -224,15 +226,17 @@ $(document).on("blur", "input[name='inGrade']", function () {
                 // },
             })
                 .done(function (data) {
+                    $("#4th_" + student_id).val() != ""
+                        ? myClassTable(
+                              $("select[name='filterMyLoadSection']")
+                                  .val()
+                                  .split("_")[0],
+                              $("select[name='filterMyLoadSection']")
+                                  .val()
+                                  .split("_")[1]
+                          )
+                        : "";
                     console.log(data);
-                    myClassTable(
-                        $("select[name='filterMyLoadSection']")
-                            .val()
-                            .split("_")[0],
-                        $("select[name='filterMyLoadSection']")
-                            .val()
-                            .split("_")[1]
-                    );
                 })
                 .fail(function (jqxHR, textStatus, errorThrown) {
                     console.log(jqxHR, textStatus, errorThrown);

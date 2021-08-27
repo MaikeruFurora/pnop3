@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
+
+    use Traits\StudentStatus;
+
     public function dashboard()
     {
-        return view('student/dashboard');
+        $enrolledData = Enrollment::join('students', 'enrollments.student_id', 'students.id')
+            ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+            ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+            ->where('school_years.status', 1)
+            ->where('students.id', Auth::user()->id)
+            ->first();
+        return view('student/dashboard', compact('enrolledData'));
     }
 
     public function store(Request $request)
@@ -146,6 +155,18 @@ class StudentController extends Controller
 
     public function enrollment()
     {
-        return view('student/enrollment');
+        $eStatus = $this->enrollStatus();
+        return view('student/enrollment', compact('eStatus'));
+    }
+
+
+    public function viewRecord(Student $student)
+    {
+        return view('administrator/masterlist/student/record', compact('student'));
+    }
+
+    public function backsubject()
+    {
+        return view('student/backsubject');
     }
 }

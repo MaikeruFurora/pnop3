@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssignController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\BackSubjectController;
 use App\Http\Controllers\ChairmanController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\FormController;
@@ -12,7 +13,6 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
-use App\Models\SchoolProfile;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -43,7 +43,6 @@ Route::get('welcome', [FormController::class, 'welcome'])->name('welcome');
 Route::get('done', [FormController::class, 'done'])->name('done');
 Route::get('form', [FormController::class, 'form'])->name('form');
 Route::post('form/save', [FormController::class, 'store']);
-
 Route::get('form/check/lrn/{lrn}', [FormController::class, 'checkLRN']);
 
 
@@ -73,12 +72,19 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('student/list', [StudentController::class, 'list']);
     Route::delete('student/delete/{student}', [StudentController::class, 'destroy']);
     Route::get('student/edit/{student}', [StudentController::class, 'edit']);
+    Route::get('student/view/record/{student}', [StudentController::class, 'viewRecord']);
 
     // archive
     Route::get('archive', [AdminController::class, 'archive'])->name('archive');
     Route::get('archive/list/{type}', [AdminController::class, 'archiveList']);
     Route::delete('archive/force/delete/{type}/{id}', [AdminController::class, 'archieveForceDelete']);
     Route::post('archive/restore/{type}/{id}', [AdminController::class, 'archiveRestore']);
+
+    // backrecord
+    Route::get('backrecord', [AdminController::class, 'backrecord'])->name('backrecord');
+    Route::get('backrecord/list', [BackSubjectController::class, 'backrecordList']);
+    Route::get('backrecord/view/{id}', [BackSubjectController::class, 'backrecordView']);
+    Route::patch('backrecord/update/{id}', [BackSubjectController::class, 'updateNow']);
 
     // profile-route
     Route::get('profile', [AdminController::class, 'profile'])->name('profile');
@@ -200,6 +206,8 @@ Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->pre
     Route::get('grade/list/{level}', [StudentController::class, 'gradeList']);
     Route::get('level/list', [StudentController::class, 'levelList']);
     Route::get('enrollment', [StudentController::class, 'enrollment'])->name('enrollment');
+    Route::get('backsubject', [StudentController::class, 'backsubject'])->name('backsubject');
+    Route::get('backsubject/list', [BackSubjectController::class, 'backsubjectList']);
 });
 
 
