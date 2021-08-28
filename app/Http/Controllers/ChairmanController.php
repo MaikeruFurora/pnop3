@@ -242,6 +242,8 @@ class ChairmanController extends Controller
                     "student_firstname",
                     "student_middlename",
                     "student_lastname",
+                    "isbalik_aral",
+                    "last_schoolyear_attended",
                     "roll_no",
                     "student_contact",
                     "section_name"
@@ -265,6 +267,8 @@ class ChairmanController extends Controller
                     "student_firstname",
                     "student_middlename",
                     "student_lastname",
+                    "isbalik_aral",
+                    "last_schoolyear_attended",
                     "roll_no",
                     "student_contact",
                     "section_name"

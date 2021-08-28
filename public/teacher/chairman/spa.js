@@ -57,6 +57,16 @@ let tableCurriculumSpa = (barangay) => {
             {
                 data: null,
                 render: function (data) {
+                    if (data.isbalik_aral == "Yes") {
+                        return `${data.isbalik_aral} - ${data.last_schoolyear_attended}`;
+                    } else {
+                        return `${data.isbalik_aral}`;
+                    }
+                },
+            },
+            {
+                data: null,
+                render: function (data) {
                     if (data.enroll_status == "Dropped") {
                         return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
                         Delete

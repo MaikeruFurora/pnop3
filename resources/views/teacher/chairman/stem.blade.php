@@ -56,6 +56,7 @@
                                     <th>Fullname</th>
                                     <th width="10%">Section</th>
                                     <th>Status</th>
+                                    <th>Balik Aral</th>
                                     <th width="20%">Action</th>
                                 </tr>
                             </thead>

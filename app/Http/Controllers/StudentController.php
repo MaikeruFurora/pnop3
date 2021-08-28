@@ -32,7 +32,6 @@ class StudentController extends Controller
         if (isset($request->id)) {
             $dataret = Student::findOrFail($request->id);
         }
-        $dataPass = Helper::create_password(7);
         return Student::updateOrCreate(['id' => $request->id], [
             'roll_no' => $request->roll_no,
             'curriculum' => empty($dataret->curriculum) ? $request->curriculum : $dataret->curriculum,
@@ -47,6 +46,8 @@ class StudentController extends Controller
             'city' => empty($request->city) ? $request->city : $dataret->city,
             'barangay' => empty($request->barangay) ? $request->barangay : $dataret->barangay,
             'last_school_attended' => $request->last_school_attended,
+            'last_schoolyear_attended' => $request->last_schoolyear_attended,
+            'isbalik_aral' => !empty($request->last_schoolyear_attended) ? 'Yes' : 'No',
             'mother_name' => $request->mother_name,
             'mother_contact_no' => $request->mother_contact_no,
             'father_name' => $request->father_name,

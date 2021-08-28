@@ -24,6 +24,7 @@ class CreateEnrollmentsTable extends Migration
             $table->string("grade_level")->nullable();
             $table->string("date_of_enroll");
             $table->string("enroll_status")->default('Pending');
+            $table->string("action_taken")->nullable();
             $table->timestamps();
         });
     }

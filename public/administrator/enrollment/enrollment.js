@@ -35,11 +35,21 @@ let enrollmentTable = (level) => {
                     }
                 },
             },
+            {
+                data: null,
+                render: function (data) {
+                    if (data.isbalik_aral == "Yes") {
+                        return `${data.isbalik_aral} - ${data.last_schoolyear_attended}`;
+                    } else {
+                        return `${data.isbalik_aral}`;
+                    }
+                },
+            },
             { data: "date_of_enroll" },
         ],
     });
 };
-enrollmentTable(7);
+enrollmentTable("all");
 $("select[name='selectedGL']").on("change", function () {
     enrollmentTable($(this).val());
 });

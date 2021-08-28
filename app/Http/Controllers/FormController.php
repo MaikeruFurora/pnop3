@@ -50,6 +50,8 @@ class FormController extends Controller
                 'city' => $request->city,
                 'barangay' => $request->barangay,
                 'last_school_attended' => $request->last_school_attended,
+                'last_schoolyear_attended' => $request->last_schoolyear_attended,
+                'isbalik_aral' => !empty($request->last_schoolyear_attended) ? 'Yes' : 'No',
                 'mother_name' => Str::title($request->mother_name),
                 'mother_contact_no' => $request->mother_contact_no,
                 'father_name' => Str::title($request->father_name),

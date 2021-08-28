@@ -95,23 +95,30 @@
                                                 </div>
                                             </div>
 
-                                            <div class="form-group floating-addon">
+                                            <div class="form-group">
                                                 <label>Status</label>
                                                 <select name="status" class="form-control" id="">
                                                     <option value="new">Incoming grade 7</option>
                                                     <option value="transferee">Transferee</option>
+                                                    <option value="balikAral">Balik Aral</option>
                                                 </select>
+                                            </div>
+                                            <div class="form-group" id="forBalik">
+                                                <label>Last school year attended</label>
+                                                <input name="last_schoolyear_attended" type="text" class="form-control"
+                                                    placeholder="eg. 2018-2019">
                                             </div>
                                             <div class="form-group floating-addon">
                                                 <label>Grade level to Enroll</label>
                                                 <select name="grade_level" class="form-control" id="">
                                                     <option></option>
+                                                    <option value="7">Grade 7</option>
                                                     <option value="8">Grade 8</option>
                                                     <option value="9">Grade 9</option>
                                                     <option value="10">Grade 10</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group floating-addon">
+                                            <div class="form-group">
                                                 <label>Curriculum</label>
                                                 <select name="curriculum" class="form-control" required>
                                                     <option value=""></option>
@@ -130,7 +137,7 @@
                                                             <i class="fa fa-graduation-cap" style="font-size: 13px"></i>
                                                         </div>
                                                     </div>
-                                                    <input id="last_school_attended" type="text" class="form-control"
+                                                    <input name="last_school_attended" type="text" class="form-control"
                                                         required>
                                                 </div>
                                             </div>

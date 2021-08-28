@@ -29,24 +29,40 @@ class EnrollmentController extends Controller
     }
     public function masterList($level)
     {
-        return response()->json(
-            [
-                'data' =>
-                Enrollment::select(
-                    "enrollments.*",
-                    "roll_no",
-                    "students.curriculum",
-                    "sections.section_name",
-                    DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname")
-                )->orderBy('sections.section_name')
-                    ->join('students', 'enrollments.student_id', 'students.id')
-                    ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-                    ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
-                    ->where('school_years.status', 1)
-                    ->where('enrollments.grade_level', $level)
-                    ->get()
-            ]
-        );
+        if ($level == "all") {
+            $data = Enrollment::select(
+                "enrollments.*",
+                "roll_no",
+                "students.curriculum",
+                "students.isbalik_aral",
+                "students.last_schoolyear_attended",
+                "sections.section_name",
+                DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname")
+            )->orderBy('sections.section_name')
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+                ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                ->where('school_years.status', 1)
+                ->get();
+        } else {
+            $data = Enrollment::select(
+                "enrollments.*",
+                "roll_no",
+                "students.curriculum",
+                "students.isbalik_aral",
+                "students.last_schoolyear_attended",
+                "sections.section_name",
+                DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname")
+            )->orderBy('sections.section_name')
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+                ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                ->where('school_years.status', 1)
+                ->where('enrollments.grade_level', $level)
+                ->get();
+        }
+
+        return response()->json(['data' => $data]);
     }
 
     public function enrolledSubject($enrolled)
@@ -122,6 +138,8 @@ class EnrollmentController extends Controller
             'city' => $request->city,
             'barangay' => $request->barangay,
             'last_school_attended' => $request->last_school_attended,
+            'last_schoolyear_attended' => $request->last_schoolyear_attended,
+            'isbalik_aral' => !empty($request->last_schoolyear_attended) ? 'yes' : 'no',
             'mother_name' => Str::title($request->mother_name),
             'mother_contact_no' => $request->mother_contact_no,
             'father_name' => Str::title($request->father_name),

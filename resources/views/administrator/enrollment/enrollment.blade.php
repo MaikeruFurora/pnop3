@@ -18,6 +18,7 @@
 
                             <div class="col-auto my-1">
                                 <select class="custom-select mr-sm-2" name="selectedGL">
+                                    <option value="all">All</option>
                                     <option value="7">Grade 7</option>
                                     <option value="8">Grade 8</option>
                                     <option value="9">Grade 9</option>
@@ -44,6 +45,7 @@
                                 <th>Curriculum</th>
                                 <th>Section</th>
                                 <th>Status</th>
+                                <th>Balik Aral</th>
                                 <th>Enrolled Date</th>
                             </tr>
                         </thead>

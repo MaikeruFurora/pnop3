@@ -28,6 +28,8 @@ class CreateStudentsTable extends Migration
             $table->string('city')->nullable();
             $table->string('barangay')->nullable();
             $table->string('last_school_attended')->nullable();
+            $table->string('last_schoolyear_attended')->nullable();
+            $table->string('isbalik_aral')->default('No');
             $table->string('mother_name')->nullable();
             $table->string('mother_contact_no')->nullable();
             $table->string('father_name')->nullable();

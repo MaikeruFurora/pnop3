@@ -46,17 +46,18 @@ $("input[name='roll_no']").on("blur", function () {
  *
  *
  */
-
+$("#forBalik").hide();
 $('select[name="grade_level"]').attr("disabled", true);
 $('select[name="status"]').on("change", function () {
-    if ($(this).val() != "") {
-        if ($(this).val() == "new") {
-            $('select[name="grade_level"]').val("").attr("disabled", true);
-        } else {
-            $('select[name="grade_level"]').attr("disabled", false);
-        }
-    } else {
+    if ($(this).val() == "new") {
         $('select[name="grade_level"]').val("").attr("disabled", true);
+    } else {
+        $('select[name="grade_level"]').attr("disabled", false);
+    }
+    if ($(this).val() == "balikAral") {
+        $("#forBalik").show();
+    } else {
+        $("#forBalik").hide();
     }
 });
 
@@ -84,6 +85,8 @@ $("#enrollForm").submit(function (e) {
                     "Warning",
                     data.warning + ", please contact the administrator"
                 );
+                $(".btnEnroll").html("Submit");
+                $(".btnEnroll").attr("disabled", false);
             } else {
                 window.location.href = "/done";
             }
@@ -93,6 +96,8 @@ $("#enrollForm").submit(function (e) {
             // document.getElementById("enrollForm").reset();
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
+            $(".btnEnroll").html("Submit");
+            $(".btnEnroll").attr("disabled", false);
             getToast("error", "Eror", errorThrown);
         });
 });
