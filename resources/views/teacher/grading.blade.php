@@ -34,9 +34,6 @@
             <div class="row justify-content-between">
                 <div class="col-lg-5 col-md-8">
                     <h2 class="section-title">Grading</h2>
-                    <p class="section-lead">We provide advanced input fields, such as date picker, color picker, and so
-                        on.
-                    </p>
                 </div>
                 <div class="col-lg-2 col-md-2 my-4">
                     <div class="float-right ">

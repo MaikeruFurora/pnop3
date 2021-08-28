@@ -72,29 +72,15 @@
                                     <div class="form-group">
                                         <div class="d-block">
                                             <label for="password" class="control-label">Password</label>
-                                            {{-- <div class="float-right">
-                                                <a href="auth-forgot-password.html" class="text-small">
-                                                    Forgot Password?
-                                                </a>
-                                            </div> --}}
                                         </div>
                                         <input id="password" type="password" class="form-control" name="password"
                                             tabindex="2" required>
                                         <div class="invalid-feedback">
                                             Please fill in your password
                                         </div>
-
                                     </div>
-                                    {{-- <div class="form-group">
-                                        <label for="user_type">Login as</label>
-                                        <select name="user_type" class="custom-select">
-                                            <option value="Student">Student</option>
-                                            <option value="Teacher">Teacher</option>
-                                            <option value="Administrator">Administrator</option>
-                                        </select>
-                                    </div> --}}
 
-                                    <div class="form-group">
+                                    <div class="form-group mt-4">
                                         <button type="submit" class="btn btn-primary btn-lg btn-block">
                                             Login
                                         </button>

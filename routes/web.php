@@ -210,10 +210,6 @@ Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->pre
     Route::get('backsubject/list', [BackSubjectController::class, 'backsubjectList']);
 });
 
-
-
-
-
 Route::get('/clear', function () { //-> tawagin mo to url sa browser -> 127.0.0.1:8000/clear
     Artisan::call('view:clear'); //   -> Clear all compiled files
     Artisan::call('route:clear'); //  -> Remove the route cache file 

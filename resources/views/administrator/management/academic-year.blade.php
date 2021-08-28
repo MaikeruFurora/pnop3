@@ -8,7 +8,6 @@
 <section class="section">
     <div class="section-body">
         <h2 class="section-title">Academic Year</h2>
-        <p class="section-lead">We provide advanced input fields, such as date picker, color picker, and so on.</p>
         <div class="col-lg-6 offset-lg-3 mt-5">
             <div class="card">
                 <div class="card-body">

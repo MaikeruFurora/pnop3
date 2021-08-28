@@ -4,9 +4,6 @@
     <div class="section-body">
         <h2 class="section-title">Back Subject&nbsp;&nbsp;&nbsp;<span style="font-size: 15px"
                 class="txtSectionName badge badge-warning pt-1 pb-1"></span></h2>
-        <p class="section-lead">We provide advanced input fields, such as date picker, color picker, and so
-            on.
-        </p>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body pb-1">

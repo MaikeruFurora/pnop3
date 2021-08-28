@@ -51,11 +51,30 @@
             </div>
         </div>
         <section class="section">
-            <div class="container mt-5">
+            <div class="container mt-2">
                 <form id="enrollForm">@csrf
                     <div class="row">
-                        <div class="col-12 col-md-10 offset-md-1 col-lg-12 offset-lg-0 center-screen">
-                            <div class="card card-primary">
+                        <div class="col-12 col-md-10 offset-md-1 col-lg-12 offset-lg-0 ">
+                            <div class="card shadow">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-1 text-center">
+                                            <img src="{{ asset('image/logo/logo.png') }}" class="" width="120%">
+                                        </div>
+                                        <div class="col-10">
+                                            <h6 class="mb-1">REQUIREMENTS FOR INCOMING GRADE 7 AND TRANSFEREES</h6>
+                                            <p class="mb-0">&middot; Copy of Latest Grades &middot; Copy of Good Moral
+                                                Certificate &middot; Copy of PSA Birth
+                                                Certificate</p>
+                                            <p class="mb-0">
+                                                <i class="fa fa-phone"></i>&nbsp;&nbsp;0917-112-7716&nbsp;&nbsp;
+                                                <i class="fa fa-at"></i>&nbsp;&nbsp;302016@deped.gov.ph&nbsp;&nbsp;
+                                                <i class="fab fa-facebook"></i>&nbsp;&nbsp;@PiliNationalHS </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-primary shadow">
                                 <div class="row m-0">
                                     <div class="col-12 col-md-12 col-lg-4 p-0">
                                         <div class="card-header text-center">
@@ -246,7 +265,9 @@
 
                                 </div>
                             </div>
+
                         </div>
+                        <!--- end -->
                     </div>
                 </form>
             </div>
