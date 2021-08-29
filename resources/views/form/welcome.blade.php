@@ -43,7 +43,7 @@
                                     <div class="row">
                                         <div class="col-lg-5 text-center">
                                             <img src="{{ asset('image/logo/logo.png') }}" class="">
-                                            <h1 class="lead mt-3">PNHS ENROLLMENT</h1>
+                                            <h1 class="lead mt-3">PNHS PRE-ENROLLMENT</h1>
                                         </div>
                                         <div class="col-lg-7"><br>
                                             <p>Dear Parent/Guardian,<br>

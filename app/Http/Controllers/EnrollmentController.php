@@ -20,8 +20,6 @@ class EnrollmentController extends Controller
 {
     public function changeStatus(Request $request)
     {
-
-        // return $request->value;
         SchoolProfile::where('id', $request->id)
             ->update([
                 'school_enrollment_url' => $request->value == 'yes' ? true : false
@@ -73,6 +71,13 @@ class EnrollmentController extends Controller
             ->where('school_year_id', Helper::activeAY()->id)->first();
         $subjects = Subject::where('grade_level', $enrolledSubject->grade_level)->whereIn('subject_for', [$enrolledSubject->curriculum, 'GENERAL'])->get();
 
+        if ($enrolledSubject->grade_level == 7) {
+            Student::where('id', $enrolledSubject->student_id)->update([
+                'orig_password' => Crypt::encrypt("pnhs"),
+                'password' => Hash::make("pnhs"),
+            ]);
+        }
+
         foreach ($subjects as $subject) {
 
             Grade::create([
@@ -93,6 +98,7 @@ class EnrollmentController extends Controller
                 'school_year_id' => Helper::activeAY()->id,
                 'date_of_enroll' => date("d/m/Y"),
                 'enroll_status' => empty($request->section_id) ? 'Pending' : 'Enrolled',
+                'state' => 'New',
             ]);
             return $this->enrolledSubject($enrolled->id);
         } else {
@@ -105,6 +111,7 @@ class EnrollmentController extends Controller
                     'school_year_id' => Helper::activeAY()->id,
                     'date_of_enroll' => date("d/m/Y"),
                     'enroll_status' => 'Pending',
+                    'state' => 'Old',
                 ]);
             } elseif ($request->status = "transferee") {
                 $student = $this->storeStudenRequest($request);
@@ -115,6 +122,7 @@ class EnrollmentController extends Controller
                     'school_year_id' => Helper::activeAY()->id,
                     'date_of_enroll' => date("d/m/Y"),
                     'enroll_status' => empty($request->section_id) ? 'Pending' : 'Enrolled',
+                    'state' => 'Transferee',
                 ]);
             } else {
                 return false;
@@ -228,6 +236,7 @@ class EnrollmentController extends Controller
             ->get());
     }
 
+
     public function setSection(Request $request)
     {
         $totalStudentInSection = Enrollment::where("section_id", $request->section)->where('school_year_id', Helper::activeAY()->id)->count();
@@ -242,7 +251,6 @@ class EnrollmentController extends Controller
                         'section_id' => $request->section,
                         'enroll_status' => 'Enrolled',
                     ]);
-
                 return $this->enrolledSubject($request->enroll_id);
             }
         } else {
@@ -258,19 +266,6 @@ class EnrollmentController extends Controller
                     ]);
 
                 return $this->enrolledSubject($request->enroll_id);
-                // $enrolledSubject = Enrollment::select('enrollments.grade_level', 'students.curriculum')
-                //     ->join('students', 'enrollments.student_id', 'students.id')
-                //     ->where('id', $request->enroll_id)
-                //     ->where('school_year_id', Helper::activeAY()->id)->first();
-                // $subjects = Subject::where('grade_level', $enrolledSubject->grade_level)->where('subject_for', $enrolledSubject->curriculum)->get();
-                // // $leftsubject = Student::where('curriculum',)
-                // foreach ($subjects as $subject) {
-
-                //     Grade::create([
-                //         'student_id' => $enrolledSubject->student_id,
-                //         'subject_id' => $subject->id
-                //     ]);
-                // }
             }
         }
     }

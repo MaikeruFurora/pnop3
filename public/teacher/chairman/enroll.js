@@ -361,6 +361,11 @@ let filterSection = (curriculum) => {
     }
 };
 
+$("#sectionFilter").on("change", function () {
+    $(".btnSaveSectionNow").text("Save");
+    $(".alert-warning").hide();
+});
+
 /**
  * SET SECTION
  */
@@ -504,7 +509,7 @@ $(document).on("click", ".cEdit", function () {
             );
             $('select[name="section"]').val(response.section_id);
             $("input[name='enroll_id']").val(response.id);
-            $(".btnEdit_" + id).html("Section");
+            $(".btnEdit_" + id).html("Set Section");
             $("#setSectionModal").modal("show");
         })
         .fail(function (jqxHR, textStatus, errorThrown) {

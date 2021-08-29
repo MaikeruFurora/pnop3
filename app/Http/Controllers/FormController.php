@@ -26,9 +26,9 @@ class FormController extends Controller
         return $this->authority('form/form');
     }
 
-    public function done()
+    public function done($tracking)
     {
-        return $this->authority('form/done');
+        return $this->authority('form/done', $tracking);
     }
 
     public function store(Request $request)
@@ -59,18 +59,20 @@ class FormController extends Controller
                 'guardian_name' => Str::title($request->guardian_name),
                 'guardian_contact_no' => $request->guardian_contact_no,
                 'username' => Helper::create_username($request->student_firstname, $request->student_lastname),
-                'orig_password' => Crypt::encrypt("pnhs"),
-                'password' => Hash::make("pnhs"),
-            ]);
 
-            return Enrollment::create([
+            ]);
+            $tracking_no = rand(99, 1000) . '-' . rand(99, 1000);
+            Enrollment::create([
                 'student_id' => $student->id,
                 'section_id' => null,
                 'grade_level' => empty($request->grade_level) ? '7' : $request->grade_level,
                 'school_year_id' => Helper::activeAY()->id,
                 'date_of_enroll' => date("d/m/Y"),
                 'enroll_status' => 'Pending',
+                'tracking_no' => $tracking_no,
+                'state' => 'New',
             ]);
+            return $tracking_no;
         }
     }
 
@@ -82,13 +84,21 @@ class FormController extends Controller
         }
     }
 
-    public function authority($viewFile)
+    public function authority($viewFile, $data = null)
     {
         $school = SchoolProfile::find(1);
-        if ($school->school_enrollment_url) {
-            return view($viewFile);
+        if ($data == null) {
+            if ($school->school_enrollment_url) {
+                return view($viewFile);
+            } else {
+                return $this->forbidden();
+            }
         } else {
-            return $this->forbidden();
+            if ($school->school_enrollment_url) {
+                return view($viewFile, compact('data'));
+            } else {
+                return $this->forbidden();
+            }
         }
     }
 }

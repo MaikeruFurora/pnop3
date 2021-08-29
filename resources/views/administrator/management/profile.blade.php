@@ -10,7 +10,7 @@
             <div class="modal-body text-center">
                 <p class="mt-3 showText"></p>
                 <button type="button" class="btn btn-warning btn-sm pl-3 pr-3 btnYes">Yes</button>&nbsp;&nbsp;
-                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary btn-sm btnClose">Close</button>
             </div>
         </div>
     </div>
@@ -93,9 +93,6 @@
                                         Disabled
                                     </option>
                                 </select>
-                                <small id="passwordHelpInline" class="text-muted">
-                                    Must be 8-20 characters long.
-                                </small>
                             </div>
                         </form>
                     </div>

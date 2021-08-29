@@ -10,6 +10,7 @@ let tableCurriculum = $("#tableCurriculum").DataTable({
 
     ajax: "table/list/" + current_curriculum,
     columns: [
+        { data: "tracking_no" },
         { data: "roll_no" },
         {
             data: null,
@@ -64,18 +65,37 @@ let tableCurriculum = $("#tableCurriculum").DataTable({
         {
             data: null,
             render: function (data) {
+                if (data.action_taken == null || data.action_taken == "") {
+                    return `--- Nothing ---`;
+                } else {
+                    return data.action_taken;
+                }
+            },
+        },
+        { data: "state" },
+        {
+            data: null,
+            render: function (data) {
                 if (data.enroll_status == "Dropped") {
                     return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
                     Delete
                     </button>
                     `;
                 } else {
-                    return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
+                    return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${
+                        data.id
+                    }  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
                     Delete
                     </button>&nbsp;
-                    <button type="button" class="btn btn-sm btn-info cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
-                        Section
-                    </button>
+                   ${
+                       data.enroll_status == "Enrolled"
+                           ? ` <button type="button" class="btn btn-sm btn-primary cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
+                    Change
+               </button>`
+                           : ` <button type="button" class="btn btn-sm btn-info cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
+                   Set Section
+               </button>`
+                   }
                     `;
                 }
             },

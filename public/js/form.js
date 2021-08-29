@@ -24,7 +24,7 @@ $("input[name='roll_no']").on("blur", function () {
                 if (data.warning) {
                     $("#staticBackdrop").modal("show");
                     $(".modal-title").text("Warning");
-                    $(".txt").text("You are already enrolled");
+                    $(".txt").text("You are already registered");
                     $(".btnEnroll").hide();
                     document.getElementById("enrollForm").reset();
                 } else {
@@ -88,7 +88,7 @@ $("#enrollForm").submit(function (e) {
                 $(".btnEnroll").html("Submit");
                 $(".btnEnroll").attr("disabled", false);
             } else {
-                window.location.href = "/done";
+                window.location.href = "/done/" + data;
             }
             // $("#staticBackdrop").modal("show");
             // $(".modal-title").text("Successful");

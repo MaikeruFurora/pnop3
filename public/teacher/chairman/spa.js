@@ -13,6 +13,7 @@ let tableCurriculumSpa = (barangay) => {
 
         ajax: "table/list/filtered/" + current_curriculum + "/" + barangay,
         columns: [
+            { data: "tracking_no" },
             { data: "roll_no" },
             {
                 data: null,
@@ -64,6 +65,17 @@ let tableCurriculumSpa = (barangay) => {
                     }
                 },
             },
+            {
+                data: null,
+                render: function (data) {
+                    if (data.action_taken == null || data.action_taken == "") {
+                        return `--- Nothing ---`;
+                    } else {
+                        return data.action_taken;
+                    }
+                },
+            },
+            { data: "state" },
             {
                 data: null,
                 render: function (data) {

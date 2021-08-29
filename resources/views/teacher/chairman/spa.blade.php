@@ -16,7 +16,10 @@
         <div class="col-12">
             <div class="row justify-content-between">
                 <div class="col-lg-5 col-md-8">
-                    <h2 class="section-title">Enrolle's Today [ SPA Student ] </h2>
+                    <h2 class="section-title">Enrolle's Today [ Grade {{ Auth::user()->chairman->grade_level }} | SPA
+                        Student
+                        ]
+                    </h2>
                 </div>
                 <div class="col-lg-2 col-md-2">
                     <button class="btn float-right btn-primary my-4" id="btnModalStudent">
@@ -38,17 +41,20 @@
                         <table class="table table-striped" style="font-size: 11px;" id="tableCurriculum">
                             <thead>
                                 <tr>
+                                    <th width="10%">Enrollment No</th>
                                     <th>LRN</th>
                                     <th>Fullname</th>
                                     <th width="10%">Section</th>
-                                    <th>Status</th>
-                                    <th>Balik Aral</th>
-                                    <th width="20%">Action</th>
+                                    <th width="8%">Status</th>
+                                    <th width="10%">Balik Aral</th>
+                                    <th width="10%">Action Taken</th>
+                                    <th width="10%">State</th>
+                                    <th width="12%">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td colspan="6" class="text-center">No available data</td>
+                                    <td colspan="9" class="text-center">No available data</td>
                                 </tr>
                             </tbody>
                         </table>

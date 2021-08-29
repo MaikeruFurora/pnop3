@@ -62,7 +62,8 @@
                                             <img src="{{ asset('image/logo/logo.png') }}" class="" width="120%">
                                         </div>
                                         <div class="col-10">
-                                            <h6 class="mb-1">REQUIREMENTS FOR INCOMING GRADE 7 AND TRANSFEREES</h6>
+                                            <h6 class="mb-1">REQUIREMENTS FOR INCOMING GRADE 7, TRANSFEREES AND BALIK
+                                                ARAL</h6>
                                             <p class="mb-0">&middot; Copy of Latest Grades &middot; Copy of Good Moral
                                                 Certificate &middot; Copy of PSA Birth
                                                 Certificate</p>

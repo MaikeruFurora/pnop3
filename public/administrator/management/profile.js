@@ -59,6 +59,12 @@ let eStatus = (value, id) => {
             console.log(jqxHR, textStatus, errorThrown);
         });
 };
+
+$(".btnClose").on("click", function () {
+    $("#endModalOnlineENrollment").modal("hide");
+    $("select[name='statusEnrollment']").prop("selectedIndex", 1).val();
+});
+
 $("select[name='statusEnrollment']").on("change", function () {
     let decide = $(this).val();
     if ($('input[name="id"]').val() != "") {

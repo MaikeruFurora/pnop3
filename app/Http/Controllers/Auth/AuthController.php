@@ -75,6 +75,7 @@ class AuthController extends Controller
                 if (Auth::guard('student')->attempt($credits)) {
                     return redirect()->route('student.dashboard'); //if student
                 } else {
+                    return redirect()->route('auth.login')->with('msg', 'Login credentials are invalid');
                 }
             }
         }

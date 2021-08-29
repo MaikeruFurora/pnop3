@@ -69,7 +69,7 @@ class StudentController extends Controller
     public function list()
     {
         $data = array();
-        $sqlData = Student::select("*")->get();
+        $sqlData = Student::select("*")->whereNotNull('orig_password')->get();
         foreach ($sqlData as $key => $value) {
             $arr = array();
             $arr['id'] = $value->id;

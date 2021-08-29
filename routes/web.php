@@ -40,7 +40,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
 
 
 Route::get('welcome', [FormController::class, 'welcome'])->name('welcome');
-Route::get('done', [FormController::class, 'done'])->name('done');
+Route::get('done/{tracking}', [FormController::class, 'done'])->name('done');
 Route::get('form', [FormController::class, 'form'])->name('form');
 Route::post('form/save', [FormController::class, 'store']);
 Route::get('form/check/lrn/{lrn}', [FormController::class, 'checkLRN']);
