@@ -28,10 +28,10 @@ $("select[name='grade_level']").on("change", function () {
     $("select[name='teacher_id']").val(null).trigger("change");
 });
 searchBySection(7);
-let searhBySubject = (section) => {
+let searhBySubject = (section, action) => {
     let subjectHTML = "";
     $.ajax({
-        url: `search/subject/${section}`,
+        url: `assign/search/subject/${section}/${action}`,
         type: "GET",
         dataType: "json",
     })
@@ -56,7 +56,7 @@ let searhBySubject = (section) => {
 };
 $("select[name='section_id']").on("change", function () {
     if ($(this).val() != "") {
-        searhBySubject($(this).val());
+        searhBySubject($(this).val(), "adding");
     }
 });
 
@@ -254,10 +254,11 @@ $(document).on("click", ".editAssign", function () {
             $("select[name='section_id']").val(data.section_id);
             $("select[name='section_id']").trigger("change"); // Notify any JS components that the value changed
 
+            searhBySubject(data.section_id, "editing");
             setTimeout(() => {
                 $("select[name='subject_id']").val(data.subject_id);
                 $("select[name='subject_id']").trigger("change"); // Notify any JS components that the value changed
-            }, 300);
+            }, 400);
 
             $("select[name='class_type']").val(data.class_type);
             $("select[name='teacher_id']").val(data.teacher_id); // Select the option with a value of '1'

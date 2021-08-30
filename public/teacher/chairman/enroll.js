@@ -97,8 +97,9 @@ $("input[name='roll_no']").on("blur", function () {
             .attr("readonly", true);
         $("input[name='roll_no']").removeClass("is-valid is-invalid");
     } else {
+        let status = $("select[name='status']").val();
         $.ajax({
-            url: `check/lrn/${$(this).val()}/${current_curriculum}`,
+            url: `check/lrn/${$(this).val()}/${current_curriculum}/${status}`,
             type: "GET",
         })
             .done(function (data) {

@@ -63,10 +63,24 @@ class AssignController extends Controller
             return response()->json(Section::where([['grade_level', $grade_level], ['school_year_id', Helper::activeAY()->id]])->get());
         }
     }
-    public function searchBySubject(Section $section)
+    public function searchBySubject(Section $section, $action)
     {
-        // return $section;
-        return response()->json(Subject::where('grade_level', $section->grade_level)->whereIn('subject_for', [$section->class_type, 'GENERAL'])->get());
+        if (empty(Helper::activeAY())) {
+            return response()->json(['warning' => 'No Academic Year Active']);
+        } else {
+            // return $section;
+            if ($action == "adding") {
+                $data = Assign::select('subject_id')->where('section_id', $section->id)->pluck('subject_id')->toArray();
+                return response()->json(Subject::where('grade_level', $section->grade_level)
+                    ->whereIn('subject_for', [$section->class_type, 'GENERAL'])
+                    ->whereNotIn('id', $data)
+                    ->get());
+            } else {
+                return response()->json(Subject::where('grade_level', $section->grade_level)
+                    ->whereIn('subject_for', [$section->class_type, 'GENERAL'])
+                    ->get());
+            }
+        }
     }
 
     public function list($section)

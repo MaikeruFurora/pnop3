@@ -3,7 +3,7 @@ let tableCurriculumSpa = (barangay) => {
     $("#tableCurriculum").dataTable({
         processing: true,
         destroy: true,
-        order: [2, "asc"],
+        order: [3, "asc"],
         language: {
             processing: `
             <div class="spinner-grow" role="status">

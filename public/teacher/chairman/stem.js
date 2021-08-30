@@ -1,6 +1,6 @@
 let tableCurriculum = $("#tableCurriculum").DataTable({
     processing: true,
-    order: [2, "asc"],
+    order: [3, "asc"],
     language: {
         processing: `
                 <div class="spinner-border spinner-border-sm" role="status">

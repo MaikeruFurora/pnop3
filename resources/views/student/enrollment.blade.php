@@ -6,8 +6,18 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body text-center">
+                            @if ($eStatus['status']==200)
+                            <h6 class="mt-4">{{ $eStatus['msg'] }}</h6>
+                            <p class="mb-0">Section: <b>{{ $eStatus['section'].' - '.$eStatus['gl'] }}</b></p>
+                            <p>School Year: <b>{{ $eStatus['ay'] }}</b></p>
+                            @elseif($eStatus['status']==100)
+                            <h6 class="mt-4">{{ $eStatus['msg'] }}</h6>
+                            <p>School Year: <b>{{ $eStatus['ay'] }}</b></p>
+                            <button class="btn btn-primary">Enroll</button>
+                            @else
 
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -120,7 +120,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('assign', [AdminController::class, 'assign'])->name('assign');
     Route::get('search/{grade_level}', [AssignController::class, 'search']);
     Route::get('assign/search/section/{grade_level}', [AssignController::class, 'searchBySection']);
-    Route::get('assign/search/subject/{section}', [AssignController::class, 'searchBySubject']);
+    Route::get('assign/search/subject/{section}/{action}', [AssignController::class, 'searchBySubject']);
     Route::post('assign/save', [AssignController::class, 'store']);
     Route::get('assign/list/{section}', [AssignController::class, 'list']);
     Route::delete('assign/delete/{assign}', [AssignController::class, 'destroy']);
@@ -182,7 +182,7 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     // Route::get('autofill/{roll_no}', [ChairmanController::class, 'autofill']);
 
     //enrollment form manually aading student
-    Route::get('check/lrn/{lrn}/{curriculum}', [EnrollmentController::class, 'checkLRN']);
+    Route::get('check/lrn/{lrn}/{curriculum}/{status}', [EnrollmentController::class, 'checkLRN']);
     Route::post('save', [EnrollmentController::class, 'store']);
 
     // for advicer route
