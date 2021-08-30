@@ -22,6 +22,7 @@ trait StudentStatus
         $data = Enrollment::select(
             'sections.section_name',
             'enrollments.grade_level',
+            'enrollments.enroll_status',
             DB::raw("CONCAT(school_years.from,' - ',school_years.to) as ay")
         )
             ->join('students', 'enrollments.student_id', 'students.id')
@@ -44,6 +45,7 @@ trait StudentStatus
             return [
                 'msg' => 'Enrollment is open',
                 'ay' => $ay->ay,
+                // 'enroll_status' => $data->enroll_status,
                 'status' => 100
             ];
         }

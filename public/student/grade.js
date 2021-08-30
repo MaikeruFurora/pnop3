@@ -123,8 +123,9 @@ let filterGradeLevel = () => {
         .done(function (data) {
             $(".txtSectionName").text(data[0].section_name);
             data.forEach((val) => {
+                console.log(val.status);
                 filterGradeLevelHTML += `<option ${
-                    val.status == 1 ? "selected" : ""
+                    val.status == "1" ? "selected" : ""
                 } value="${val.grade_level}">Grade - ${
                     val.grade_level
                 }</option>`;
@@ -143,3 +144,7 @@ setTimeout(() => {
         $("select[name='filterGradeLevel']").prop("selectedIndex", 0).val()
     );
 }, 1000);
+
+$("select[name='filterGradeLevel']").on("change", function () {
+    gradeTable($(this).val());
+});

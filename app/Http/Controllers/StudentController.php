@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Helpers\Helper;
+use App\Models\BackSubject;
 use App\Models\Enrollment;
 use App\Models\Grade;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -105,9 +107,6 @@ class StudentController extends Controller
 
     public function gradeList($level)
     {
-
-
-        // return Enrollment::with('student', 'section')->where('enrollments.student_id', Auth::user()->id)->get();
         return response()->json(
             Grade::select(
                 "grades.id as gid",
@@ -124,20 +123,11 @@ class StudentController extends Controller
                 ->join('enrollments', 'grades.student_id', 'enrollments.student_id')
                 ->join('sections', 'enrollments.section_id', 'sections.id')
                 ->where('students.id', Auth::user()->id)
-                ->where('enrollments.grade_level', $level)
+                ->where('sections.grade_level', $level)
+                // ->where('enrollments.grade_level', $level)
                 ->get()
             // ->groupBy('enrollments.grade_level')
         );
-
-
-        // return Enrollment::select('enrollments.grade_level', 'sections.section_name', 'grades.first', 'grades.second', 'grades.third')
-        //     ->join('students', 'enrollments.student_id', 'students.id')
-        //     ->join('sections', 'enrollments.section_id', 'sections.id')
-        //     ->join('grades', 'enrollments.student_id', 'grades.student_id')
-        //     ->join('subjects', 'grades.subject_id', 'subjects.id')
-        //     ->where('students.id', Auth::user()->id)
-        //     // ->groupBy('enrollments.grade_level',)
-        //     ->get();
     }
 
     public function levelList()
@@ -149,17 +139,53 @@ class StudentController extends Controller
                 ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
                 ->where('students.id', Auth::user()->id)
                 ->groupBy('enrollments.grade_level', 'school_years.status', 'sections.section_name')
-                ->orderBy('enrollments.grade_level', 'asc')
+                ->orderBy('school_years.status', 'desc')
                 ->get()
         );
     }
 
     public function enrollment()
     {
+        $dataArr = array();
+        $ifexist = Enrollment::join('students', 'enrollments.student_id', 'students.id')
+            ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+            ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+            ->where('school_years.status', 1)
+            ->where('students.id', Auth::user()->id)
+            ->first();
+
+        if ($ifexist) {
+            $dataArr['status'] = $ifexist->enroll_status;
+            $dataArr['action_taken'] = $ifexist->action_taken;
+        } else {
+            $dataArr['status'] = 'Ongoing';
+            $dataArr['action_taken'] = 'None';
+        }
         $eStatus = $this->enrollStatus();
-        return view('student/enrollment', compact('eStatus'));
+        return view('student/enrollment', compact('eStatus', 'dataArr'));
     }
 
+    public function checkSubjectBalance(Student $student)
+    {
+        return Grade::where('student_id', $student->id)->WhereNull('avg')->orWhere('avg', '')->get()->count();
+    }
+
+    public function selfEnroll(Request $request)
+    {
+        $countFail =  BackSubject::where('back_subjects.student_id', $request->id)->where('remarks', 'none')->get();
+        $action_taken = $countFail->count() == 0 ? 'Promoted' : ($countFail->count() < 3 ? 'Partialy Promoted' : 'Retained');
+        $grade_level = Enrollment::select('grade_level')->where('student_id', $request->id)->latest()->first();
+        return Enrollment::create([
+            'student_id' => $request->id,
+            // 'section_id' => $request->section_id,
+            'grade_level' => $countFail->count() >= 3 ? $countFail[0]->grade_level : ($grade_level->grade_level + 1),
+            'school_year_id' => Helper::activeAY()->id,
+            'date_of_enroll' => date("d/m/Y"),
+            'action_taken' => $action_taken,
+            'enroll_status' => 'Pending',
+            'state' => 'Old',
+        ]);
+    }
 
     public function viewRecord(Student $student)
     {

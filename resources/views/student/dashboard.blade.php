@@ -7,7 +7,7 @@
                 <div class="col-lg-2">
                     <p><b>Enrollment Status:</b>
                         @if (empty($enrolledData->enroll_status))
-                        <span class="badge badge-warning">N/A</span>
+                        <span class="badge badge-warning">Ongoing</span>
                         @else
                         <span class="badge badge-info">{{ $enrolledData->enroll_status }}</span>
                         @endif

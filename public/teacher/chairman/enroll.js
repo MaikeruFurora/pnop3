@@ -251,6 +251,7 @@ $("#forUpper").hide();
 //         });
 // };
 
+//form enroll
 let searchSecionByLevel = (curriculum) => {
     if (curriculum != "") {
         let htmlHold = "";
@@ -340,6 +341,7 @@ $(".modalClose").on("click", function () {
  *
  */
 
+//
 $(".alert-warning").hide();
 let filterSection = (curriculum) => {
     if (curriculum != "") {

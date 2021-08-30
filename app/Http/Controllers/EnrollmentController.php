@@ -66,7 +66,7 @@ class EnrollmentController extends Controller
 
     public function enrolledSubject($enrolled)
     {
-        $enrolledSubject = Enrollment::select('enrollments.student_id', 'enrollments.grade_level', 'students.curriculum')
+        $enrolledSubject = Enrollment::select('enrollments.student_id', 'enrollments.section_id', 'enrollments.grade_level', 'students.curriculum')
             ->join('students', 'enrollments.student_id', 'students.id')
             ->where('enrollments.id', $enrolled)
             ->where('school_year_id', Helper::activeAY()->id)->first();
@@ -83,6 +83,7 @@ class EnrollmentController extends Controller
 
             Grade::create([
                 'student_id' => $enrolledSubject->student_id,
+                'section_id' => $enrolledSubject->section_id,
                 'subject_id' => $subject->id
             ]);
         }
@@ -129,10 +130,12 @@ class EnrollmentController extends Controller
             'date_of_enroll' => date("d/m/Y"),
             'action_taken' => $request->status == 'transferee' ? NULL : $action_taken,
             'enroll_status' => empty($request->section_id) ? 'Pending' : 'Enrolled',
-            'state' => $request->status == 'upperclass' ? 'Old' : 'transferee',
+            'state' => $request->status == 'upperclass' ? 'Old' : 'Transferee',
         ]);
         return $this->enrolledSubject($enrolled->id);
     }
+
+
 
     public function storeStudenRequest($request)
     {
@@ -261,7 +264,8 @@ class EnrollmentController extends Controller
     public function filterSection($curriculum)
     {
         return response()->json(
-            Section::join('school_years', 'sections.school_year_id', 'school_years.id')
+            Section::select('sections.section_name', 'sections.id')
+                ->join('school_years', 'sections.school_year_id', 'school_years.id')
                 ->where('school_years.status', 1)
                 ->where("grade_level", auth()->user()->chairman->grade_level)
                 ->where("class_type", $curriculum)

@@ -13,6 +13,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Models\Enrollment;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -208,6 +209,8 @@ Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->pre
     Route::get('enrollment', [StudentController::class, 'enrollment'])->name('enrollment');
     Route::get('backsubject', [StudentController::class, 'backsubject'])->name('backsubject');
     Route::get('backsubject/list', [BackSubjectController::class, 'backsubjectList']);
+    Route::get('check/subject/balance/{student}', [StudentController::class, 'checkSubjectBalance']);
+    Route::post('self/enroll', [StudentController::class, 'selfEnroll']);
 });
 
 Route::get('/clear', function () { //-> tawagin mo to url sa browser -> 127.0.0.1:8000/clear

@@ -19,6 +19,8 @@ class CreateGradesTable extends Migration
             $table->foreign('student_id')->references('id')->on('students');
             $table->unsignedBigInteger('subject_id');
             $table->foreign('subject_id')->references('id')->on('subjects');
+            $table->unsignedBigInteger('section_id');
+            $table->foreign('section_id')->references('id')->on('sections');
             $table->tinyInteger('first')->nullable();
             $table->tinyInteger('second')->nullable();
             $table->tinyInteger('third')->nullable();

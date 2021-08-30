@@ -187,9 +187,13 @@ class ChairmanController extends Controller
 
     public function searchSecionByLevel($curriculum)
     {
-        return response()->json(Section::where("grade_level", auth()->user()->chairman->grade_level)
-            ->where("class_type", $curriculum)
-            ->get());
+        return response()->json(
+            Section::join('school_years', 'sections.school_year_id', 'school_years.id')
+                ->where("grade_level", auth()->user()->chairman->grade_level)
+                ->where("school_years.status", 1)
+                ->where("class_type", $curriculum)
+                ->get()
+        );
     }
 
 

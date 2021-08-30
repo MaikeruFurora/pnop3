@@ -4,24 +4,80 @@
     <div class="section-body">
         <div class="col-md-12 mt-5">
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            @if ($eStatus['status']==200)
-                            <h6 class="mt-4">{{ $eStatus['msg'] }}</h6>
-                            <p class="mb-0">Section: <b>{{ $eStatus['section'].' - '.$eStatus['gl'] }}</b></p>
-                            <p>School Year: <b>{{ $eStatus['ay'] }}</b></p>
-                            @elseif($eStatus['status']==100)
-                            <h6 class="mt-4">{{ $eStatus['msg'] }}</h6>
-                            <p>School Year: <b>{{ $eStatus['ay'] }}</b></p>
-                            <button class="btn btn-primary">Enroll</button>
-                            @else
 
-                            @endif
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h4>INFORMATION</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>Enrollment Status:
+                                                <span class="badge badge-info">{{ $dataArr['status'] }}</span>
+                                            </p>
+                                            <p>Action taken:
+                                                <span class="badge badge-info">{{ $dataArr['action_taken'] }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{--  --}}
+                                @if(Auth::user()->backsubject()->where('back_subjects.remarks','none')->get()->count()!=0)
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h4>OTHERS</h4>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <p>
+                                                Back Subject:
+                                                <span class="badge badge-danger">
+                                                    {{ Auth::user()->backsubject()->where('back_subjects.remarks','none')->get()->count() }}
+                                                </span><br>
+                                                <small>* Note
+                                                    <em> Must enroll in remedial classes for learning areas with
+                                                        failing mark
+                                                        and obtain at least 75 or higher</em>
+                                                </small>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h4>Enrollment</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <input type="hidden" name="student_id" value="{{ Auth::user()->id }}">
+
+                                            @if ($dataArr['status']=='Pending')
+                                            <button class="btn btn-primary" disabled>
+                                                Waiting for Sectioning
+                                            </button>
+                                            @elseif($dataArr['status']=='Enrolled')
+                                            <button class="btn btn-primary" disabled>FINALIZED</button>
+                                            @else
+                                            <p class="noteTxt"></p>
+                                            @csrf
+                                            <button type="submit"
+                                                class="btn btn-primary btnCheckandVerify">Enroll</button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6">
                     <div class="card card-success">
                         <div class="card-header card-success">
                             <h5> <i class="fa fa-bell"></i>&nbsp;&nbsp;&nbsp;Reminders</h5>
@@ -77,4 +133,7 @@
         </div>
     </div>
 </section>
+@endsection
+@section('moreJs')
+<script src="{{ asset('student/enrollment.js') }}"></script>
 @endsection
