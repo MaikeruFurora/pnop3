@@ -66,16 +66,34 @@
                 </div>
             </div>
         </div>
-        <div class="card">
-            <div class="card-body">
-                <div class="col-12 col-md-6 col-lg-6">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4>Bar Chart</h4>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="myChart2"></canvas>
-                        </div>
+        <div class="row">
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h6>Population by Grade Level</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart2"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h6>Population by Sex</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart4"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h6>Population by Curriculum</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="myChart3"></canvas>
                     </div>
                 </div>
             </div>
@@ -85,50 +103,5 @@
 @endsection
 @section('moreJs')
 <script src="{{ asset('js/chart/chart.min.js') }}"></script>
-<script>
-    // const labels  = {!! json_encode($data) !!}
-    // console.log(labels.original.grade_level);
-    var ctx = document.getElementById("myChart2").getContext('2d');
-var myChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    datasets: [{
-      label: 'Statistics',
-      data: [460, 458, 330, 502, 430, 610, 488],
-      borderWidth: 2,
-      backgroundColor: '#6777ef',
-      borderColor: '#6777ef',
-      borderWidth: 2.5,
-      pointBackgroundColor: '#ffffff',
-      pointRadius: 4
-    }]
-  },
-  options: {
-    legend: {
-      display: false
-    },
-    scales: {
-      yAxes: [{
-        gridLines: {
-          drawBorder: false,
-          color: '#f2f2f2',
-        },
-        ticks: {
-          beginAtZero: true,
-          stepSize: 150
-        }
-      }],
-      xAxes: [{
-        ticks: {
-          display: false
-        },
-        gridLines: {
-          display: false
-        }
-      }]
-    },
-  }
-});
-</script>
+<script src="{{ asset('administrator/dashboard.js') }}"></script>
 @endsection

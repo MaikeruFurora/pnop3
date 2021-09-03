@@ -3,17 +3,17 @@
         <div class="sidebar-brand">
             <a href="{{ route('admin.dashboard') }}">PNOP</a>
             <p style="font-size: 11px;margin-top:-21px">
-                {{ empty(session('sessionAY'))?'No active academic year':'S/Y '.session('sessionAY')->from.'-'.session('sessionAY')->to }}
+                {{ empty($activeAY)?'No active academic year':'S/Y '.$activeAY->from.'-'.$activeAY->to }}
             </p>
 
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('admin.dashboard') }}">OP</a>
             <p style="font-size: 11px;margin-top:-21px">
-                @if (empty(session('sessionAY')))
+                @if (empty($activeAY))
                 No active
                 @else
-                {{ Str::substr(session('sessionAY')->from, 2) }}-{{ Str::substr(session('sessionAY')->to, 2) }}
+                {{ Str::substr($activeAY->from, 2) }}-{{ Str::substr($activeAY->to, 2) }}
                 @endif
             </p>
         </div>
@@ -98,7 +98,7 @@
             <li class="{{ request()->is('teacher/my/dashboard')?'active':'' }}"><a class="nav-link"
                     href="{{ route('teacher.dashboard') }}"><i class="fas fa-cube"></i><span>Dashboard</span></a>
             </li>
-            @if (Auth::user()->section()->where('school_year_id', session('sessionAY')->id)->exists())
+            @if (Auth::user()->section()->where('school_year_id', $activeAY->id)->exists())
             <li class="{{ request()->is('teacher/my/class/monitor')?'active':'' }}">
                 <a class="nav-link" href="{{ route('teacher.class.monitor') }}">
                     <i class="fas fa-puzzle-piece"></i><span>
@@ -110,7 +110,7 @@
             <li class="{{ request()->is('teacher/my/grading')?'active':'' }}"><a class="nav-link"
                     href="{{ route('teacher.grading') }}"><i class="fas fa-cube"></i><span>Grading</span></a>
             </li>
-            @if (Auth::user()->chairman()->where('school_year_id', session('sessionAY')->id)->exists())
+            @if (Auth::user()->chairman()->where('school_year_id', $activeAY->id)->exists())
             <li class="menu-header">Chairman Setting</li>
             <li class="{{ request()->is('teacher/my/section')?'active':'' }}">
                 <a class="nav-link" href="{{ route('teacher.section') }}">

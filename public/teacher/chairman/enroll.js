@@ -10,8 +10,11 @@ let filterBarangay = () => {
         dataType: "json",
     })
         .done(function (data) {
+            barangayHTML = `<option>All</option>`;
             data.forEach((val) => {
-                barangayHTML += `<option>${val.barangay}</option>`;
+                barangayHTML += `<option>${
+                    ucwords(val.city.toLowerCase()) + ` - ` + val.barangay
+                }</option>`;
             });
             $("select[name='selectBarangay']").html(barangayHTML);
         })
@@ -62,7 +65,7 @@ let findTableToRefresh = (current_curriculum) => {
                         .prop("selectedIndex", 0)
                         .val()
                 );
-            }, 2000);
+            }, 1000);
             break;
 
         case "SPA":
@@ -72,7 +75,7 @@ let findTableToRefresh = (current_curriculum) => {
                         .prop("selectedIndex", 0)
                         .val()
                 );
-            }, 2000);
+            }, 1000);
             break;
         case "SPJ":
             setTimeout(() => {
@@ -81,7 +84,7 @@ let findTableToRefresh = (current_curriculum) => {
                         .prop("selectedIndex", 0)
                         .val()
                 );
-            }, 2000);
+            }, 1000);
             break;
         default:
             break;
@@ -428,23 +431,6 @@ $(".btnCancelSectionNow").on("click", function () {
     $("input[name='status_now']").val("");
 });
 
-// $("select[name='section']").on("change", function () {
-//     let enroll_id = $('input[name="enroll_id"]').val();
-//     let section_id = $(this).val();
-//     $.ajax({
-//         url: `check/vacant/${section_id}/${enroll_id}`,
-//         type: "GET",
-//         dataType: "json",
-//     })
-//         .done(function (data) {
-//             console.log(data);
-//         })
-//         .fail(function (jqxHR, textStatus, errorThrown) {
-//             getToast("error", "Eror", errorThrown);
-//             $(".btnSaveSectionNow").html("Save").attr("disabled", false);
-//         });
-// });
-
 /**
  *
  * DELETE FUNCTIONALLITES PER CURRICULUM
@@ -486,7 +472,6 @@ $(document).on("click", ".cDelete", function () {
  *
  * EDIT FUNCTIONALITIES PER CURRICULUM
  *
- *
  */
 
 $(document).on("click", ".cEdit", function () {
@@ -512,7 +497,9 @@ $(document).on("click", ".cEdit", function () {
             );
             $('select[name="section"]').val(response.section_id);
             $("input[name='enroll_id']").val(response.id);
-            $(".btnEdit_" + id).html("Set Section");
+            $(".btnEdit_" + id).html(
+                response.section_id != "" ? "Change" : "Section"
+            );
             $("#setSectionModal").modal("show");
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
@@ -569,4 +556,27 @@ $(document).on("click", ".printBtn", function () {
         w: 1200,
         h: 800,
     });
+});
+
+/**
+ *
+ *
+ * ----------------------exporting--------------------
+ *
+ *
+ **/
+
+$("#btnModalExport").on("click", function () {
+    $("#modalExport").modal("show");
+});
+
+$(".btnGenerate").on("click", function (e) {
+    e.preventDefault();
+    let myFormat = $("#myFormat").val();
+    let mystatus = $("#mystatus").val();
+    console.log(mystatus);
+    window.open(
+        `export/excel/${myFormat}/${mystatus}/${current_curriculum}/${current_glc}`,
+        "_blank"
+    );
 });

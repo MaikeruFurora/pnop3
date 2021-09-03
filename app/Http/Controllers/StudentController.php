@@ -105,7 +105,7 @@ class StudentController extends Controller
     }
 
 
-    public function gradeList($level)
+    public function gradeList($level, $section)
     {
         return response()->json(
             Grade::select(
@@ -116,29 +116,23 @@ class StudentController extends Controller
                 "grades.fourth",
                 "grades.avg",
                 "subjects.descriptive_title",
-                "enrollments.grade_level",
-                "sections.section_name",
             )->join('students', 'grades.student_id', 'students.id')
                 ->join('subjects', 'grades.subject_id', 'subjects.id')
-                ->join('enrollments', 'grades.student_id', 'enrollments.student_id')
-                ->join('sections', 'enrollments.section_id', 'sections.id')
-                ->where('students.id', Auth::user()->id)
-                ->where('sections.grade_level', $level)
-                // ->where('enrollments.grade_level', $level)
+                ->where('grades.student_id', Auth::user()->id)
+                ->where('grades.section_id', $section)
                 ->get()
-            // ->groupBy('enrollments.grade_level')
         );
     }
 
     public function levelList()
     {
         return response()->json(
-            Enrollment::select('enrollments.grade_level', 'school_years.status', 'sections.section_name')
+            Enrollment::select('enrollments.grade_level', 'school_years.status', 'sections.section_name', 'enrollments.section_id')
                 ->join('students', 'enrollments.student_id', 'students.id')
                 ->join('sections', 'enrollments.section_id', 'sections.id')
                 ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
                 ->where('students.id', Auth::user()->id)
-                ->groupBy('enrollments.grade_level', 'school_years.status', 'sections.section_name')
+                ->groupBy('enrollments.grade_level', 'school_years.status', 'sections.section_name', 'enrollments.section_id')
                 ->orderBy('school_years.status', 'desc')
                 ->get()
         );
@@ -175,6 +169,11 @@ class StudentController extends Controller
         $countFail =  BackSubject::where('back_subjects.student_id', $request->id)->where('remarks', 'none')->get();
         $action_taken = $countFail->count() == 0 ? 'Promoted' : ($countFail->count() < 3 ? 'Partialy Promoted' : 'Retained');
         $grade_level = Enrollment::select('grade_level')->where('student_id', $request->id)->latest()->first();
+
+        if ($action_taken == 'Retained') { //if student retained if year level means this is backsubject will reset in grade level
+            BackSubject::where('student_id', $request->id)->where('grade_level', $countFail[0]->grade_level)->delete();
+        }
+
         return Enrollment::create([
             'student_id' => $request->id,
             // 'section_id' => $request->section_id,

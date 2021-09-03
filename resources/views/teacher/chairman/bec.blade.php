@@ -8,6 +8,7 @@
 <!-- Modal -->
 @include('teacher/chairman/partial/enrollForm')
 @include('teacher/chairman/partial/setSectionForm')
+@include('teacher/chairman/partial/exportExcel')
 @include('teacher/chairman/partial/listEnrolled')
 {{-- Modal end --}}
 <section class="section">
@@ -21,8 +22,11 @@
                         ]
                     </h2>
                 </div>
-                <div class="col-lg-2 col-md-2">
-                    <button class="btn float-right btn-primary my-4" id="btnModalStudent">
+                <div class="col-lg-2 col-md-2 float-right">
+                    <button class="ml-5 btn btn-primary my-4" id="btnModalExport">
+                        <i class="fas fa-file-export"></i>&nbsp;Export
+                    </button>
+                    <button class="btn btn-primary my-4" id="btnModalStudent">
                         <i class="fas fa-plus-circle"></i>&nbsp;Student
                     </button>
                 </div>

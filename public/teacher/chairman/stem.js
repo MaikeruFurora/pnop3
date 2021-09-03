@@ -93,7 +93,7 @@ let tableCurriculum = $("#tableCurriculum").DataTable({
                     Change
                </button>`
                            : ` <button type="button" class="btn btn-sm btn-info cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
-                   Set Section
+                Section
                </button>`
                    }
                     `;

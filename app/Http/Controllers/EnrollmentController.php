@@ -72,20 +72,44 @@ class EnrollmentController extends Controller
             ->where('school_year_id', Helper::activeAY()->id)->first();
         $subjects = Subject::where('grade_level', $enrolledSubject->grade_level)->whereIn('subject_for', [$enrolledSubject->curriculum, 'GENERAL'])->get();
 
-        if ($enrolledSubject->grade_level == 7) {
+        if ($enrolledSubject->grade_level == 7) { //if grade 7
             Student::where('id', $enrolledSubject->student_id)->update([
                 'orig_password' => Crypt::encrypt("pnhs"),
                 'password' => Hash::make("pnhs"),
             ]);
         }
 
-        foreach ($subjects as $subject) {
+        $checkIfExistStudentGrade = Grade::where('student_id', $enrolledSubject->student_id)
+            ->whereIn('subject_id', [
+                Subject::select('id')->where('grade_level', $enrolledSubject->grade_level)
+                    ->whereIn('subject_for', [$enrolledSubject->curriculum, 'GENERAL'])
+                    ->pluck('id')
+            ])
+            ->exists();
 
-            Grade::create([
-                'student_id' => $enrolledSubject->student_id,
-                'section_id' => $enrolledSubject->section_id,
-                'subject_id' => $subject->id
-            ]);
+        if ($checkIfExistStudentGrade) { //if student enrolled change section here
+            $val = Subject::select('id')->where('grade_level', $enrolledSubject->grade_level)
+                ->whereIn('subject_for', [$enrolledSubject->curriculum, 'GENERAL'])
+                ->pluck('id');
+            foreach ($val as $key => $value) {
+                Grade::where(
+                    'id',
+                    Grade::select('id')
+                        ->where('subject_id', $value)
+                        ->where('student_id', $enrolledSubject->student_id)
+                        ->pluck('id')
+                )->update([
+                    'section_id' => $enrolledSubject->section_id
+                ]);
+            }
+        } else {
+            foreach ($subjects as $subject) {
+                Grade::create([
+                    'student_id' => $enrolledSubject->student_id,
+                    'section_id' => $enrolledSubject->section_id,
+                    'subject_id' => $subject->id
+                ]);
+            }
         }
     }
     public function store(Request $request)

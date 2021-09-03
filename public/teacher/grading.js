@@ -171,95 +171,99 @@ $(document).on("mouseup", "input[name='inGrade']", function () {
 });
 
 $(document).on("blur", "input[name='inGrade']", function () {
-    if ($(this).val() != "" && $(this).val() != selectedValue) {
-        let student_id = $(this).attr("id").split("_")[1];
-        let subject_id = $(this).attr("data-subject");
-        let grade_id =
-            $(this).attr("data-grade") == "null"
-                ? "Nothing"
-                : $(this).attr("data-grade");
-        let flag = false;
-        switch ($(this).attr("id").split("_")[0]) {
-            case "2nd":
-                flag = $("#1st_" + student_id).val() == "";
-                break;
-            case "3rd":
-                flag =
-                    $("#1st_" + student_id).val() == "" ||
-                    $("#2nd_" + student_id).val() == "";
-                break;
-            case "4th":
-                flag =
-                    $("#1st_" + student_id).val() == "" ||
-                    $("#2nd_" + student_id).val() == "" ||
-                    $("#3rd_" + student_id).val() == "";
-                break;
-
-            default:
-                break;
-        }
-        if (!flag) {
-            let avg =
-                $("#4th_" + student_id).val() != ""
-                    ? Math.round(
-                          (parseInt($("#1st_" + student_id).val()) +
-                              parseInt($("#2nd_" + student_id).val()) +
-                              parseInt($("#3rd_" + student_id).val()) +
-                              parseInt($("#4th_" + student_id).val())) /
-                              4
-                      )
-                    : "";
-            $.ajax({
-                url: "grade/student/now",
-                type: "POST",
-                data: {
-                    _token: $('input[name="_token"]').val(),
-                    student_id,
-                    subject_id,
-                    grade_id,
-                    avg,
-                    columnIn: $(this).attr("id").split("_")[0],
-                    value: $(this).val(),
-                },
-                // beforeSend: function () {
-                //     $("input[name='inGrade']").addClass("is-valid");
-                // },
-            })
-                .done(function (data) {
-                    $("#4th_" + student_id).val() != ""
-                        ? myClassTable(
-                              $("select[name='filterMyLoadSection']")
-                                  .val()
-                                  .split("_")[0],
-                              $("select[name='filterMyLoadSection']")
-                                  .val()
-                                  .split("_")[1]
-                          )
-                        : "";
-                    console.log(data);
-                })
-                .fail(function (jqxHR, textStatus, errorThrown) {
-                    console.log(jqxHR, textStatus, errorThrown);
-                    getToast("error", "Eror", errorThrown);
-                });
-        } else {
-            $("#fillGradeInPrevious").modal("show");
+    if ($(this).val() < 70 || $(this).val() > 99) {
+        $(this).val("");
+    } else {
+        if ($(this).val() != "" && $(this).val() != selectedValue) {
+            let student_id = $(this).attr("id").split("_")[1];
+            let subject_id = $(this).attr("data-subject");
+            let grade_id =
+                $(this).attr("data-grade") == "null"
+                    ? "Nothing"
+                    : $(this).attr("data-grade");
+            let flag = false;
             switch ($(this).attr("id").split("_")[0]) {
-                case "1st":
-                    $("#1st_" + student_id).val("");
-                    break;
                 case "2nd":
-                    $("#2nd_" + student_id).val("");
+                    flag = $("#1st_" + student_id).val() == "";
                     break;
                 case "3rd":
-                    $("#3rd_" + student_id).val("");
+                    flag =
+                        $("#1st_" + student_id).val() == "" ||
+                        $("#2nd_" + student_id).val() == "";
                     break;
                 case "4th":
-                    $("#4th_" + student_id).val("");
+                    flag =
+                        $("#1st_" + student_id).val() == "" ||
+                        $("#2nd_" + student_id).val() == "" ||
+                        $("#3rd_" + student_id).val() == "";
                     break;
 
                 default:
                     break;
+            }
+            if (!flag) {
+                let avg =
+                    $("#4th_" + student_id).val() != ""
+                        ? Math.round(
+                              (parseInt($("#1st_" + student_id).val()) +
+                                  parseInt($("#2nd_" + student_id).val()) +
+                                  parseInt($("#3rd_" + student_id).val()) +
+                                  parseInt($("#4th_" + student_id).val())) /
+                                  4
+                          )
+                        : "";
+                $.ajax({
+                    url: "grade/student/now",
+                    type: "POST",
+                    data: {
+                        _token: $('input[name="_token"]').val(),
+                        student_id,
+                        subject_id,
+                        grade_id,
+                        avg,
+                        columnIn: $(this).attr("id").split("_")[0],
+                        value: $(this).val(),
+                    },
+                    // beforeSend: function () {
+                    //     $("input[name='inGrade']").addClass("is-valid");
+                    // },
+                })
+                    .done(function (data) {
+                        $("#4th_" + student_id).val() != ""
+                            ? myClassTable(
+                                  $("select[name='filterMyLoadSection']")
+                                      .val()
+                                      .split("_")[0],
+                                  $("select[name='filterMyLoadSection']")
+                                      .val()
+                                      .split("_")[1]
+                              )
+                            : "";
+                        console.log(data);
+                    })
+                    .fail(function (jqxHR, textStatus, errorThrown) {
+                        console.log(jqxHR, textStatus, errorThrown);
+                        getToast("error", "Eror", errorThrown);
+                    });
+            } else {
+                $("#fillGradeInPrevious").modal("show");
+                switch ($(this).attr("id").split("_")[0]) {
+                    case "1st":
+                        $("#1st_" + student_id).val("");
+                        break;
+                    case "2nd":
+                        $("#2nd_" + student_id).val("");
+                        break;
+                    case "3rd":
+                        $("#3rd_" + student_id).val("");
+                        break;
+                    case "4th":
+                        $("#4th_" + student_id).val("");
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
     }

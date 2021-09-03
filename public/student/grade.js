@@ -1,7 +1,7 @@
-let gradeTable = (level) => {
+let gradeTable = (level, section) => {
     let htmlHold = "";
     $.ajax({
-        url: "grade/list/" + level,
+        url: `grade/list/${level}/${section}`,
         type: "GET",
         dataType: "json",
         beforeSend: function () {
@@ -126,7 +126,7 @@ let filterGradeLevel = () => {
                 console.log(val.status);
                 filterGradeLevelHTML += `<option ${
                     val.status == "1" ? "selected" : ""
-                } value="${val.grade_level}">Grade - ${
+                } value="${val.grade_level}_${val.section_id}">Grade - ${
                     val.grade_level
                 }</option>`;
             });
@@ -140,11 +140,14 @@ let filterGradeLevel = () => {
 
 filterGradeLevel();
 setTimeout(() => {
-    gradeTable(
-        $("select[name='filterGradeLevel']").prop("selectedIndex", 0).val()
-    );
+    let val = $("select[name='filterGradeLevel']")
+        .prop("selectedIndex", 0)
+        .val()
+        .split("_");
+    gradeTable(val[0], val[1]);
 }, 1000);
 
 $("select[name='filterGradeLevel']").on("change", function () {
-    gradeTable($(this).val());
+    let data = $(this).val().split("_");
+    gradeTable(data[0], data[1]);
 });

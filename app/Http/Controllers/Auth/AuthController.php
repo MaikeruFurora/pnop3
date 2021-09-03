@@ -66,17 +66,22 @@ class AuthController extends Controller
             if (Auth::guard('web')->attempt($credits)) {
                 return redirect()->route('admin.dashboard'); //if admin
             } else {
-                return redirect()->route('auth.login')->with('msg', 'Login credentials are invalid');
+                return $this->partofIt($credits);
             }
         } else {
-            if (Auth::guard('teacher')->attempt($credits)) {
-                return redirect()->route('teacher.dashboard'); //if teacher or faculty
+            return $this->partofIt($credits);
+        }
+    }
+
+    public function partofIt($credits)
+    {
+        if (Auth::guard('teacher')->attempt($credits)) {
+            return redirect()->route('teacher.dashboard'); //if teacher or faculty
+        } else {
+            if (Auth::guard('student')->attempt($credits)) {
+                return redirect()->route('student.dashboard'); //if student
             } else {
-                if (Auth::guard('student')->attempt($credits)) {
-                    return redirect()->route('student.dashboard'); //if student
-                } else {
-                    return redirect()->route('auth.login')->with('msg', 'Login credentials are invalid');
-                }
+                return redirect()->route('auth.login')->with('msg', 'Login credentials are invalid');
             }
         }
     }

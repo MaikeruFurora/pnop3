@@ -52,7 +52,7 @@
         </div>
         <section class="section">
             <div class="container mt-2">
-                <form id="enrollForm">@csrf
+                <form id="enrollForm" autocomplete="off">@csrf
                     <div class="row">
                         <div class="col-12 col-md-10 offset-md-1 col-lg-12 offset-lg-0 ">
                             <div class="card shadow">

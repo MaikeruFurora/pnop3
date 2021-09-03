@@ -16,8 +16,6 @@ use Illuminate\Support\Str as SupportStr;
 
 class AdminController extends Controller
 {
-
-
     public function dashboard()
     {
         $data = response()->json(
@@ -39,8 +37,7 @@ class AdminController extends Controller
             ->where('school_years.status', 1)
             ->get()
             ->count();
-        $activeAY = SchoolYear::where('status', 1)->first();
-        return view('administrator/dashboard', compact('enrollTotal', 'studentTotal', 'teacherTotal', 'ectionTotal', 'data', 'activeAY'));
+        return view('administrator/dashboard', compact('enrollTotal', 'studentTotal', 'teacherTotal', 'ectionTotal', 'data'));
     }
     public function admission()
     {
@@ -54,12 +51,10 @@ class AdminController extends Controller
     }
     public function teacher()
     {
-
         return view('administrator/masterlist/teacher');
     }
     public function student()
     {
-
         return view('administrator/masterlist/student');
     }
 

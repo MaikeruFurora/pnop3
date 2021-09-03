@@ -188,7 +188,8 @@ class ChairmanController extends Controller
     public function searchSecionByLevel($curriculum)
     {
         return response()->json(
-            Section::join('school_years', 'sections.school_year_id', 'school_years.id')
+            Section::select('sections.id', 'sections.section_name')
+                ->join('school_years', 'sections.school_year_id', 'school_years.id')
                 ->where("grade_level", auth()->user()->chairman->grade_level)
                 ->where("school_years.status", 1)
                 ->where("class_type", $curriculum)
@@ -263,29 +264,46 @@ class ChairmanController extends Controller
     }
     public function tableListFiltred($curriculum, $barangay)
     {
-        return response()->json(
-            [
-                'data' =>
-                Enrollment::select(
-                    "enrollments.*",
-                    "student_firstname",
-                    "student_middlename",
-                    "student_lastname",
-                    "isbalik_aral",
-                    "last_schoolyear_attended",
-                    "roll_no",
-                    "student_contact",
-                    "section_name"
-                )
-                    ->join('students', 'enrollments.student_id', 'students.id')
-                    ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-                    ->where('students.curriculum', $curriculum)
-                    ->where('students.barangay', $barangay)
-                    ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
-                    ->where('enrollments.school_year_id', Helper::activeAY()->id)
-                    ->get()
-            ]
-        );
+        if ($barangay === 'All') {
+            $data = Enrollment::select(
+                "enrollments.*",
+                "student_firstname",
+                "student_middlename",
+                "student_lastname",
+                "isbalik_aral",
+                "last_schoolyear_attended",
+                "roll_no",
+                "student_contact",
+                "section_name"
+            )
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+                ->where('students.curriculum', $curriculum)
+                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                ->where('enrollments.school_year_id', Helper::activeAY()->id)
+                ->get();
+        } else {
+            $data = Enrollment::select(
+                "enrollments.*",
+                "student_firstname",
+                "student_middlename",
+                "student_lastname",
+                "isbalik_aral",
+                "last_schoolyear_attended",
+                "roll_no",
+                "student_contact",
+                "section_name"
+            )
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+                ->where('students.curriculum', $curriculum)
+                ->where('students.barangay', $barangay)
+                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                ->where('enrollments.school_year_id', Helper::activeAY()->id)
+                ->get();
+        }
+
+        return response()->json(['data' => $data]);
     }
 
     public function tableListEnrolledStudent($section)
@@ -323,12 +341,12 @@ class ChairmanController extends Controller
     public function filterbarangay($curriculum)
     {
         return response()->json(
-            Enrollment::select('students.barangay')
+            Enrollment::select('students.city', 'students.barangay')
                 ->join('students', 'enrollments.student_id', 'students.id')
                 ->where('students.curriculum', $curriculum)
                 ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
-                ->groupBy('barangay')
+                ->groupBy('barangay', 'city')
                 ->get()
         );
     }

@@ -5,7 +5,9 @@ use App\Http\Controllers\AssignController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BackSubjectController;
 use App\Http\Controllers\ChairmanController;
+use App\Http\Controllers\ChartController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\ScheduleController;
@@ -51,6 +53,12 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
 
     // dashboard route
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    // chart
+    Route::get('chart/population/by/level', [ChartController::class, 'populationByGradeLevel']);
+    Route::get('chart/population/by/sex', [ChartController::class, 'populationBySex']);
+    Route::get('chart/population/by/curriculum', [ChartController::class, 'populationByCurriculum']);
+
 
     // admission route
     Route::get('admission', [AdminController::class, 'admission'])->name('admission');
@@ -197,6 +205,9 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::get('grading/load/subject', [TeacherController::class, 'loadMySection']);
     Route::get('grading/load/student/{section}/{subject}', [TeacherController::class, 'loadMyStudent']);
     Route::post('grade/student/now', [GradeController::class, 'gradeStudentNow']);
+
+    // export file
+    Route::get('export/excel/{format}/{status}/{curriculum}/{grade_level}', [ExportController::class, 'exportNewEnrollee']);
 });
 
 Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->prefix('student/my/')->group(function () {
@@ -204,7 +215,7 @@ Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->pre
     Route::get('profile', [StudentController::class, 'profile'])->name('profile');
     Route::post('student/save', [StudentController::class, 'store']);
     Route::get('grade', [StudentController::class, 'grade'])->name('grade');
-    Route::get('grade/list/{level}', [StudentController::class, 'gradeList']);
+    Route::get('grade/list/{level}/{section}', [StudentController::class, 'gradeList']);
     Route::get('level/list', [StudentController::class, 'levelList']);
     Route::get('enrollment', [StudentController::class, 'enrollment'])->name('enrollment');
     Route::get('backsubject', [StudentController::class, 'backsubject'])->name('backsubject');
