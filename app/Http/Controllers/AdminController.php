@@ -44,6 +44,12 @@ class AdminController extends Controller
 
         return view('administrator/enrollment/admission');
     }
+
+    public function appointment()
+    {
+        return view('administrator/appointment/appointment');
+    }
+
     public function enrollment()
     {
 

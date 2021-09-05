@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AssignController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BackSubjectController;
@@ -40,13 +41,15 @@ Route::middleware(['guest:web', 'guest:teacher', 'guest:student', 'preventBackHi
 
 //logout
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout');
-
-
+//pre enrollment
 Route::get('welcome', [FormController::class, 'welcome'])->name('welcome');
 Route::get('done/{tracking}', [FormController::class, 'done'])->name('done');
 Route::get('form', [FormController::class, 'form'])->name('form');
 Route::post('form/save', [FormController::class, 'store']);
 Route::get('form/check/lrn/{lrn}', [FormController::class, 'checkLRN']);
+
+//appointment
+Route::get('appoint/register', [AppointmentController::class, 'appoint'])->name('appoint');
 
 
 Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('admin/my/')->group(function () {
@@ -67,6 +70,9 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('enrollment', [AdminController::class, 'enrollment'])->name('enrollment');
     Route::get('enrollment/list/{level}', [EnrollmentController::class, 'masterList']);
     Route::post('enrollment/status', [EnrollmentController::class, 'changeStatus']);
+
+    // appointment route
+    Route::get('appointment', [AdminController::class, 'appointment'])->name('appointment');
 
     // teacher-route
     Route::get('teacher', [AdminController::class, 'teacher'])->name('teacher');
@@ -181,6 +187,7 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::get('table/list/enrolled/student/{section}', [ChairmanController::class, 'tableListEnrolledStudent']);
     Route::get('section/search/by/level/{curriculum}', [ChairmanController::class, 'searchSecionByLevel']);
     Route::post('section/set', [EnrollmentController::class, 'setSection']);
+    Route::post('section/mass/sectioning', [EnrollmentController::class, 'massSectioning']);
     Route::get('edit/{enrollment}', [EnrollmentController::class, 'edit']);
     Route::get('filter/section/{curriculum}', [EnrollmentController::class, 'filterSection']);
     Route::delete('delete/{enrollment}', [EnrollmentController::class, 'destroy']);

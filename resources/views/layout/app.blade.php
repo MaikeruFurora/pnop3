@@ -13,6 +13,7 @@
     <!-- CSS Libraries -->
     @yield('moreCss')
     <link rel="stylesheet" href="{{ asset('css/toast/iziToast.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
 
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -43,6 +44,7 @@
     <script src="https://f001.backblazeb2.com/file/buonzz-assets/jquery.ph-locations.js"></script>
     <script src="{{ asset('js/global.js') }}"></script>
     <!-- JS Libraies -->
+    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
     @yield('moreJs')
     <!-- Template JS File -->
     <script src="{{ asset('js/scripts.js') }}"></script>

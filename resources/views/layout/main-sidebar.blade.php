@@ -23,6 +23,11 @@
             <li class="{{ request()->is('admin/my/dashboard')?'active':'' }}"><a class="nav-link"
                     href="{{ route('admin.dashboard') }}"><i class="fas fa-cube"></i><span>Dashboard</span></a>
             </li>
+            <li class="menu-header">Appointment</li>
+            <li class="{{ request()->is('admin/my/enrollment')?'active':'' }}">
+                <a class="nav-link" href="{{ route('admin.appointment') }}">
+                    <i class="fas fa-calendar-check"></i><span>Appointment</span></a>
+            </li>
             <li class="menu-header">Enrollment</li>
             <li class="{{ request()->is('admin/my/enrollment')?'active':'' }}">
                 <a class="nav-link" href="{{ route('admin.enrollment') }}">

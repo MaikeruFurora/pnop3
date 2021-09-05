@@ -170,7 +170,7 @@ class StudentController extends Controller
         $action_taken = $countFail->count() == 0 ? 'Promoted' : ($countFail->count() < 3 ? 'Partialy Promoted' : 'Retained');
         $grade_level = Enrollment::select('grade_level')->where('student_id', $request->id)->latest()->first();
 
-        if ($action_taken == 'Retained') { //if student retained if year level means this is backsubject will reset in grade level
+        if ($action_taken == 'Retained') { //if student retained in year level means this is backsubject will reset in grade level
             BackSubject::where('student_id', $request->id)->where('grade_level', $countFail[0]->grade_level)->delete();
         }
 

@@ -43,7 +43,7 @@
                                     <div class="row">
                                         <div class="col-lg-5 text-center">
                                             <img src="{{ asset('image/logo/logo.png') }}" class="">
-                                            <h1 class="lead mt-3">PNHS PRE-ENROLLMENT</h1>
+                                            <p class="mt-4 pb-0 mb-0">PNHS PRE-ENROLLMENT</p>
                                         </div>
                                         <div class="col-lg-7"><br>
                                             <p>Dear Parent/Guardian,<br>
@@ -69,9 +69,7 @@
 
                             </div>
                         </div>
-                        <div class="simple-footer">
-                            Copyright &copy; Stisla 2018
-                        </div>
+
                     </div>
                 </div>
             </div>

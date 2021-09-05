@@ -37,36 +37,40 @@
                 <div class="row sectionListAvailable mb-3"></div>
                 <div class="card">
                     <div class="card-body">
-                        <div class="col-lg-2 float-left">
-                            <select class="custom-select mr-sm-2" name="selectBarangay">
-                            </select>
-                        </div>
+
                         {{-- <div class="table-responsive"> --}}
-                        <table class="table table-striped" style="font-size: 11px;" id="tableCurriculum">
-                            <thead>
-                                <tr>
-                                    <th width="10%">Enrollment No</th>
-                                    <th>LRN</th>
-                                    <th>Fullname</th>
-                                    <th width="10%">Section</th>
-                                    <th width="8%">Status</th>
-                                    <th width="10%">Balik Aral</th>
-                                    <th width="10%">Action Taken</th>
-                                    <th width="10%">State</th>
-                                    <th width="12%">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="9" class="text-center">No available data</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <form id="massSectioningForm">
+                            @include('teacher/chairman/partial/massSection')
+                            <div class="col-lg-2 float-left">
+                                <select class="custom-select mr-sm-2" name="selectBarangay">
+                                </select>
+                            </div>
+                            <table class="table table-striped" style="font-size: 11px;" id="tableCurriculum">
+                                <thead>
+                                    <tr>
+                                        <th width="2%"></th>
+                                        <th width="10%">Enrollment No</th>
+                                        <th>LRN</th>
+                                        <th>Fullname</th>
+                                        <th width="10%">Section</th>
+                                        <th width="8%">Status</th>
+                                        <th width="10%">Balik Aral</th>
+                                        <th width="10%">Action Taken</th>
+                                        <th width="8%">State</th>
+                                        <th width="13%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="9" class="text-center">No available data</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
                         {{-- </div> --}}
                     </div>
                 </div>
             </div>
-
 
         </div><!-- row -->
     </div><!-- section-body -->
@@ -79,5 +83,5 @@
 <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
 <script src="{{ asset('teacher/chairman/enroll.js') }}"></script>
-<script src="{{ asset('teacher/chairman/bec.js') }}"></script>
+<script src="{{ asset('teacher/chairman/threeCurriculum.js') }}"></script>
 @endsection

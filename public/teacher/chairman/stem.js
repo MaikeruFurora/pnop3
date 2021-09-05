@@ -1,4 +1,32 @@
 let tableCurriculum = $("#tableCurriculum").DataTable({
+    columnDefs: [
+        {
+            orderable: false,
+            targets: 0,
+            data: null,
+            defaultContent: "",
+            render: function (data, type, row, meta) {
+                data = '<input type="checkbox" class="dt-checkboxes">';
+                if (row.enroll_status === "Enrolled") {
+                    data = "";
+                }
+                return data;
+            },
+            checkboxes: {
+                selectRow: true,
+                selectAll: false,
+            },
+        },
+        {
+            targets: [2],
+            visible: false,
+            searchable: false,
+        },
+    ],
+    select: {
+        style: "multi",
+        selector: "td:first-child",
+    },
     processing: true,
     order: [3, "asc"],
     language: {
@@ -10,6 +38,7 @@ let tableCurriculum = $("#tableCurriculum").DataTable({
 
     ajax: "table/list/" + current_curriculum,
     columns: [
+        { data: "id" },
         { data: "tracking_no" },
         { data: "roll_no" },
         {

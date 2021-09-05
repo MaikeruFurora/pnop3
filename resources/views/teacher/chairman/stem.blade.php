@@ -2,6 +2,7 @@
 @section('moreCss')
 <link rel="stylesheet" href="{{ asset('css/datatable/dataTables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/datatable/dataTables.checkboxes.css') }}">
 <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}">
 @endsection
 @section('content')
@@ -35,47 +36,36 @@
         </div>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                {{-- <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-                    <button type="button" class="btn btn-info btn-icon icon-left">
-                        <i class="far fa-user"></i><span class="badge badge-transparent ">2</span></button>
-                    <div class="btn-group" role="group">
-                        <button id="btnGroupDrop1" type="button" class="btn btn-info dropdown-toggle"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                            <a class="dropdown-item" href="#">Dropdown link</a>
-                            <a class="dropdown-item" href="#">Dropdown link</a>
-                        </div>
-                    </div>
-                </div> --}}
                 <div class="row sectionListAvailable mb-3"></div>
 
                 <div class="card">
                     <div class="card-body">
-
                         {{-- <div class="table-responsive"> --}}
 
-                        <table class="table table-striped" style="font-size: 11px;" id="tableCurriculum">
-                            <thead>
-                                <tr>
-                                    <th width="10%">Enrollment No</th>
-                                    <th>LRN</th>
-                                    <th>Fullname</th>
-                                    <th width="10%">Section</th>
-                                    <th width="8%">Status</th>
-                                    <th width="10%">Balik Aral</th>
-                                    <th width="10%">Action Taken</th>
-                                    <th width="8%">State</th>
-                                    <th width="13%">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td colspan="9" class="text-center">No available data</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <form id="massSectioningForm">
+                            @include('teacher/chairman/partial/massSection')
+                            <table class="table table-striped" style="font-size: 11px;" id="tableCurriculum">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th width="10%">Enrollment No</th>
+                                        <th>LRN</th>
+                                        <th>Fullname</th>
+                                        <th width="10%">Section</th>
+                                        <th width="8%">Status</th>
+                                        <th width="10%">Balik Aral</th>
+                                        <th width="10%">Action Taken</th>
+                                        <th width="8%">State</th>
+                                        <th width="13%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="9" class="text-center">No available data</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </form>
                         {{-- </div> --}}
                     </div>
                 </div>
@@ -91,6 +81,7 @@
 <script src="{{ asset('js/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('js/datatable/dataTables.checkboxes.min.js') }}"></script>
 <script src="{{ asset('js/select2/select2.full.min.js') }}"></script>
 <script src="{{ asset('teacher/chairman/enroll.js') }}"></script>
 <script src="{{ asset('teacher/chairman/stem.js') }}"></script>

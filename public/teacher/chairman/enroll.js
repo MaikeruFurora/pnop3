@@ -1,7 +1,7 @@
 // global variable for all curriculum
 let current_curriculum = $('input[name="current_curriculum"]').val();
 let current_glc = $("input[name='current_glc']").val();
-
+$("#sectionGrouping").hide();
 let filterBarangay = () => {
     let barangayHTML;
     $.ajax({
@@ -12,7 +12,7 @@ let filterBarangay = () => {
         .done(function (data) {
             barangayHTML = `<option>All</option>`;
             data.forEach((val) => {
-                barangayHTML += `<option>${
+                barangayHTML += `<option value="${val.barangay}">${
                     ucwords(val.city.toLowerCase()) + ` - ` + val.barangay
                 }</option>`;
             });
@@ -60,30 +60,45 @@ let findTableToRefresh = (current_curriculum) => {
             break;
         case "BEC":
             setTimeout(() => {
-                tableCurriculumBec(
-                    $('select[name="selectBarangay"]')
-                        .prop("selectedIndex", 0)
-                        .val()
-                );
+                tableCurriculum.ajax
+                    .url(
+                        "table/list/filtered/" +
+                            current_curriculum +
+                            "/" +
+                            $('select[name="selectBarangay"]')
+                                .prop("selectedIndex", 0)
+                                .val()
+                    )
+                    .load();
             }, 1000);
             break;
 
         case "SPA":
             setTimeout(() => {
-                tableCurriculumSpa(
-                    $('select[name="selectBarangay"]')
-                        .prop("selectedIndex", 0)
-                        .val()
-                );
+                tableCurriculum.ajax
+                    .url(
+                        "table/list/filtered/" +
+                            current_curriculum +
+                            "/" +
+                            $('select[name="selectBarangay"]')
+                                .prop("selectedIndex", 0)
+                                .val()
+                    )
+                    .load();
             }, 1000);
             break;
         case "SPJ":
             setTimeout(() => {
-                tableCurriculumSpj(
-                    $('select[name="selectBarangay"]')
-                        .prop("selectedIndex", 0)
-                        .val()
-                );
+                tableCurriculum.ajax
+                    .url(
+                        "table/list/filtered/" +
+                            current_curriculum +
+                            "/" +
+                            $('select[name="selectBarangay"]')
+                                .prop("selectedIndex", 0)
+                                .val()
+                    )
+                    .load();
             }, 1000);
             break;
         default:
@@ -358,6 +373,7 @@ let filterSection = (curriculum) => {
                 data.forEach((element) => {
                     htmlHold += `<option value="${element.id}">${element.section_name}</option>`;
                 });
+                $("#massSectioning").html(htmlHold);
                 $("#sectionFilter").html(htmlHold);
             })
             .fail(function (jqxHR, textStatus, errorThrown) {
@@ -579,4 +595,71 @@ $(".btnGenerate").on("click", function (e) {
         `export/excel/${myFormat}/${mystatus}/${current_curriculum}/${current_glc}`,
         "_blank"
     );
+});
+
+/**
+ *
+ * ----------------------  Mass sectioing fucntionalities --------------------------------
+ *
+ */
+filterSection(current_curriculum);
+$("#tableCurriculum").on("click", 'input[type="checkbox"]', function () {
+    if ($("input[type='checkbox']:checked").length > 0) {
+        $("#sectionGrouping").fadeIn(1000);
+    } else {
+        $("#sectionGrouping").fadeOut(1000);
+    }
+});
+$("#massSectioningForm").on("submit", function (e) {
+    e.preventDefault();
+    let array_selected = [];
+    let tblData = tableCurriculum.rows(".selected").data();
+    $.each(tblData, function (i, val) {
+        array_selected.push(val.id);
+    });
+    if ($('select[name="sectioningNow"]').val() != "") {
+        $.ajax({
+            url: `section/mass/sectioning`,
+            type: "POST",
+            data: {
+                _token: $('input[name="_token"]').val(),
+                enroll_id: array_selected,
+                section: $('select[name="sectioningNow"]').val(),
+            },
+            beforeSend: function () {
+                $(".btnmassSectioning")
+                    .html(
+                        `Saving ...
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>`
+                    )
+                    .attr("disabled", true);
+            },
+        })
+            .done(function (data) {
+                if (data.warning) {
+                    getToast("warning", "Warning", data.warning);
+                    $(".btnmassSectioning")
+                        .html("Save")
+                        .attr("disabled", false);
+                } else {
+                    $(".btnmassSectioning")
+                        .html("Save")
+                        .attr("disabled", false);
+                    $('select[name="sectioningNow"]').val("");
+                    $("#sectionGrouping").fadeOut(1000);
+                    monitorSection(current_curriculum);
+                    findTableToRefresh(current_curriculum);
+                    tableCurriculum.ajax.reload();
+                }
+            })
+            .fail(function (jqxHR, textStatus, errorThrown) {
+                $(".btnmassSectioning").html("Save").attr("disabled", false);
+                getToast("error", "Eror", errorThrown);
+                $(".btnSaveSection").html("Submit").attr("disabled", false);
+            });
+    } else {
+        alert("Select Section");
+    }
 });

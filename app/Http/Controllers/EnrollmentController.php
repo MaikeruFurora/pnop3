@@ -298,36 +298,57 @@ class EnrollmentController extends Controller
     }
 
 
-    public function setSection(Request $request)
+    public function totalStudentInSection($section)
     {
-        $totalStudentInSection = Enrollment::where("section_id", $request->section)->where('school_year_id', Helper::activeAY()->id)->count();
-        if ($request->status_now == 'force') {
-            if ($totalStudentInSection >= 5) {
-                return response()->json(['warning' => 'This section reach the maximum number of student']);
-            } else {
+        return Enrollment::where("section_id", $section)->where('school_year_id', Helper::activeAY()->id)->count();
+    }
 
-                Enrollment::where('id', $request->enroll_id)
-                    ->where('school_year_id', Helper::activeAY()->id)
-                    ->update([
-                        'section_id' => $request->section,
-                        'enroll_status' => 'Enrolled',
-                    ]);
-                return $this->enrolledSubject($request->enroll_id);
+    public function enrolled($enroll_id, $section)
+    {
+        Enrollment::where('id', $enroll_id)
+            ->where('school_year_id', Helper::activeAY()->id)
+            ->update([
+                'section_id' => $section,
+                'enroll_status' => 'Enrolled',
+            ]);
+    }
+
+    public function updateSection($request)
+    {
+        if (is_array($request->enroll_id)) {
+            foreach ($request->enroll_id as  $value) {
+                $this->enrolled($value, $request->section);
             }
         } else {
-            if ($totalStudentInSection >= 3) {
+            $this->enrolled($request->enroll_id, $request->section);
+        }
+        return $this->enrolledSubject($request->enroll_id);
+    }
+
+    public function setSection(Request $request)
+    {
+        if ($request->status_now == 'force') {
+            if ($this->totalStudentInSection($request->section) >= 5) {
+                return response()->json(['warning' => 'This section reach the maximum number of student']);
+            } else {
+                $this->updateSection($request);
+            }
+        } else {
+            if ($this->totalStudentInSection($request->section) > 3) {
                 return response()->json(['warning' => 'Section is full']);
             } else {
-
-                Enrollment::where('id', $request->enroll_id)
-                    ->where('school_year_id', Helper::activeAY()->id)
-                    ->update([
-                        'section_id' => $request->section,
-                        'enroll_status' => 'Enrolled',
-                    ]);
-
-                return $this->enrolledSubject($request->enroll_id);
+                $this->updateSection($request);
             }
+        }
+    }
+
+    public function massSectioning(Request $request)
+    {
+        $totalEnrollId = count($request->enroll_id);
+        if (($this->totalStudentInSection($request->section) + $totalEnrollId) > 3) {
+            return response()->json(['warning' => 'This section reach the maximum number of student']);
+        } else {
+            $this->updateSection($request);
         }
     }
 

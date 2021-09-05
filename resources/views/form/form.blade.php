@@ -91,8 +91,7 @@
                                                         </div>
                                                     </div>
                                                     <input name="roll_no" type="text" class="form-control" autofocus
-                                                        pattern="^[0-9]{12}$" onkeypress="return numberOnly(event)"
-                                                        maxlength="12" required>
+                                                        onkeypress="return numberOnly(event)" maxlength="12" required>
                                                 </div>
                                             </div>
 
@@ -183,8 +182,7 @@
                                                     <div class="form-group col-lg-4">
                                                         <label>Your Contact No.</label>
                                                         <input type="text" class="form-control" name="student_contact"
-                                                            pattern="^[0-9]{11}$" onkeypress="return numberOnly(event)"
-                                                            maxlength="11">
+                                                            onkeypress="return numberOnly(event)" maxlength="11">
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -231,8 +229,7 @@
                                                     <div class="form-group col-lg-4">
                                                         <label>Contact No.</label>
                                                         <input type="text" class="form-control" name="father_contact_no"
-                                                            pattern="^[0-9]{11}$" onkeypress="return numberOnly(event)"
-                                                            maxlength="11">
+                                                            onkeypress="return numberOnly(event)" maxlength="11">
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
@@ -243,8 +240,7 @@
                                                     <div class="form-group col-lg-4">
                                                         <label>Contact No.</label>
                                                         <input type="text" class="form-control" name="mother_contact_no"
-                                                            pattern="^[0-9]{11}$" onkeypress="return numberOnly(event)"
-                                                            maxlength="11">
+                                                            onkeypress="return numberOnly(event)" maxlength="11">
                                                     </div>
                                                 </div>
                                                 <div class="form-row">
@@ -255,7 +251,7 @@
                                                     <div class="form-group col-lg-4">
                                                         <label>Contact No.</label>
                                                         <input type="text" class="form-control"
-                                                            name="guardian_contact_no" pattern="^[0-9]{11}$"
+                                                            name="guardian_contact_no"
                                                             onkeypress="return numberOnly(event)" maxlength="11">
                                                     </div>
 
