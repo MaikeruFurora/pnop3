@@ -75,10 +75,13 @@ class AppointmentController extends Controller
     public function getAvailAppoint($month)
     {
         $lastDayOfMonth = $this->days_in_month(strval($month), date("Y"));
-        $lastDateOfMonth = date("m/") . $lastDayOfMonth . date("/Y");
-        $currentDate = date('m/d/Y'); //, strtotime(' +1 day')
-        $data = Appointment::select('set_date as start', DB::raw('COUNT(set_date) as title'))
-            ->whereBetween('set_date', [$currentDate, $lastDateOfMonth])
+        $lastDateOfMonth = "12/" . $lastDayOfMonth . date("/Y");
+        $firstDateOfMonth = date('m/') . "01" . date('/Y'); //, strtotime(' +1 day')
+        $currentDateNow = date("m/d/Y");
+        $data = Appointment::select('set_date as start', DB::raw('COUNT(set_date) as title')) //
+            // ->where('set_date', '>=', $firstDateOfMonth)
+            // ->where('set_date', '<=', $lastDateOfMonth)
+            ->whereBetween('set_date', [$currentDateNow, $lastDateOfMonth])
             ->groupBy('set_date')
             ->orderBy('set_date', 'asc')
             ->get();
@@ -91,22 +94,23 @@ class AppointmentController extends Controller
             $arr['title'] = $value->description;
             $arr['backgroundColor'] = "rgba(0, 255, 0, 0)";
             $arr['borderColor'] = "rgba(0, 255, 0, 0)";
-            $arr['textColor'] = "#fff";
+            $arr['textColor'] = "white";
             $arr['className'] = "holiday";
             $arrayData0[] = $arr;
         }
+
         $arrayData1 = array();
+
         foreach ($data as $value) {
             $arr = array();
-            $arr['start'] = date('Y-m-d', strtotime($value->start));
+            $arr['start'] = date('Y-m-d', strtotime(strval($value->start)));
             $arr['title'] = "Total - " . $value->title;
             $arr['backgroundColor'] = "rgba(0, 255, 0, 0)";
             $arr['borderColor'] = "rgba(0, 255, 0, 0)";
-            $arr['textColor'] =  $value->title > 10 ? "white" : "black";
-            $arr['className'] = $value->title > 10 ? "full" : "vacant";
+            $arr['textColor'] =  $value->title >= 100 ? "white" : "black";
+            $arr['className'] = $value->title >= 100 ? "full" : "vacant";
             $arrayData1[] = $arr;
         }
-
         return response()->json(array_merge($arrayData0, $arrayData1));
     }
 

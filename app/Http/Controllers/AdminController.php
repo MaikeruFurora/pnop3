@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Models\Appointment;
 use App\Models\Enrollment;
 use App\Models\SchoolProfile;
 use App\Models\SchoolYear;
@@ -18,6 +19,8 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
+        $appointies = Appointment::select('fullname', 'address', 'purpose')
+            ->where('set_date', date('m/d/Y'))->limit(5)->orderBy('fullname')->get();
         $data = response()->json(
             Enrollment::select('enrollments.grade_level', DB::raw("COUNT(enrollments.grade_level) as total"))
                 ->join('sections', 'enrollments.section_id', 'sections.id')
@@ -37,7 +40,7 @@ class AdminController extends Controller
             ->where('school_years.status', 1)
             ->get()
             ->count();
-        return view('administrator/dashboard', compact('enrollTotal', 'studentTotal', 'teacherTotal', 'ectionTotal', 'data'));
+        return view('administrator/dashboard', compact('enrollTotal', 'studentTotal', 'teacherTotal', 'ectionTotal', 'data', 'appointies'));
     }
     public function admission()
     {

@@ -281,16 +281,18 @@ let myEvent = () => {
                     .css("color", "black")
                     .css("border-top", "1px solid white")
                     .css("border-right", "1px solid white");
-                element.find(".fc-title").prepend(
-                    //<i class='fas fa-shoe-prints'></i>
-                    "<i class='fas fa-users'></i>&nbsp;&nbsp;"
-                );
+                element
+                    .find(".fc-title")
+                    .prepend("<i class='fas fa-users'></i>&nbsp;&nbsp;");
             } else {
                 $('td[data-date="' + dateString + '"]')
                     .css("background", "#9999ff")
                     .css("color", "white")
                     .css("border-top", "1px solid white")
                     .css("border-right", "1px solid white");
+                element
+                    .find(".fc-title")
+                    .prepend("<i class='fas fa-thumbtack'></i>&nbsp;&nbsp;");
             }
         },
         viewRender: function (i) {
@@ -307,4 +309,6 @@ let myEvent = () => {
         },
         events: eventList,
     });
+
+    console.table(eventList);
 };

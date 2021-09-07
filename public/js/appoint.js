@@ -103,7 +103,7 @@ $(".datepicker").datepicker({
         let changeColor = dateFetch.find((item) => {
             let datew = $.datepicker.formatDate("mm/dd/yy", date);
             if (item.set_date.toString() == datew.toString()) {
-                return item.inTotal > 10;
+                return item.inTotal >= 100;
             }
         });
 

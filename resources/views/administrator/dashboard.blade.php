@@ -67,33 +67,62 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6 col-lg-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h6>Population by Grade Level</h6>
+            <div class="col-lg-8 col-md-8 col-12 col-sm-12">
+                <div class="row">
+                    <div class="col-md-6 col-lg-6 col-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Population by Sex</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="myChart4"></canvas>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <canvas id="myChart2"></canvas>
+                    <div class="col-md-6 col-lg-6 col-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Population by Curriculum</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="myChart3"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Population by Grade Level</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="myChart2"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4">
+
+            <div class="col-lg-4 col-md-12 col-12 col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <h6>Population by Sex</h6>
+                        <h4>Appointment Today</h4>
                     </div>
                     <div class="card-body">
-                        <canvas id="myChart4"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h6>Population by Curriculum</h6>
-                    </div>
-                    <div class="card-body">
-                        <canvas id="myChart3"></canvas>
+                        <ul class="list-unstyled list-unstyled-border">
+                            @foreach ($appointies as $item)
+                            <li class="media">
+                                <div class="media-body">
+                                    <div class="media-title">{{ $item->fullname }}</div>
+                                    <span class="text-small text-muted">{{ $item->address }}</span>
+                                </div>
+                            </li>
+                            @endforeach
+                        </ul>
+                        <div class="text-center pt-1 pb-1">
+                            <a href="{{ route('admin.appointment') }}" class="btn btn-primary btn-lg btn-round">
+                                View All
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
