@@ -50,6 +50,10 @@ Route::get('form/check/lrn/{lrn}', [FormController::class, 'checkLRN']);
 
 //appointment
 Route::get('appoint/register', [AppointmentController::class, 'appoint'])->name('appoint');
+Route::get('appoint/holiday/list', [AppointmentController::class, 'showHolidayList']);
+Route::post('appoint/save', [AppointmentController::class, 'appointSave'])->name('appoint.save');
+Route::get('appoint/success/{appointment}', [AppointmentController::class, 'showSucccess']);
+Route::get('appoint/list', [AppointmentController::class, 'showAppointList']);
 
 
 Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('admin/my/')->group(function () {
@@ -73,6 +77,12 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
 
     // appointment route
     Route::get('appointment', [AdminController::class, 'appointment'])->name('appointment');
+    Route::post('holiday/save', [AppointmentController::class, 'holidaySave']);
+    Route::get('holiday/list', [AppointmentController::class, 'holidayList']);
+    Route::get('holiday/edit/{holiday}', [AppointmentController::class, 'holidayEdit']);
+    Route::delete('holiday/delete/{holiday}', [AppointmentController::class, 'holidayDelete']);
+    Route::get('appointment/list/{month}', [AppointmentController::class, 'getAvailAppoint']);
+    Route::get('appointment/list/selected/{selectedDate}', [AppointmentController::class, 'selectedDate']);
 
     // teacher-route
     Route::get('teacher', [AdminController::class, 'teacher'])->name('teacher');

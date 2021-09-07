@@ -17,10 +17,11 @@ class CreateAppointmentsTable extends Migration
             $table->id();
             $table->string('fullname', 100);
             $table->string('contact_no', 20);
-            $table->string('email', 45);
+            $table->string('email', 45)->nullable();
             $table->string('address');
             $table->string('purpose');
-            $table->string('set_date');
+            $table->string('set_date', 20);
+            $table->string('appoint_no', 10);
             $table->timestamps();
         });
     }

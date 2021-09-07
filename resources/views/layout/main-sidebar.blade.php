@@ -24,7 +24,7 @@
                     href="{{ route('admin.dashboard') }}"><i class="fas fa-cube"></i><span>Dashboard</span></a>
             </li>
             <li class="menu-header">Appointment</li>
-            <li class="{{ request()->is('admin/my/enrollment')?'active':'' }}">
+            <li class="{{ request()->is('admin/my/appointment')?'active':'' }}">
                 <a class="nav-link" href="{{ route('admin.appointment') }}">
                     <i class="fas fa-calendar-check"></i><span>Appointment</span></a>
             </li>
@@ -93,6 +93,14 @@
                     <li class="{{ request()->is('admin/my/academic-year')?'active':'' }}">
                         <a class="nav-link" href="{{ route('admin.academicYear') }}">
                             <i class="fas fa-graduation-cap"></i><span>Academic Year</span></a>
+                    </li>
+                    <li class="{{ request()->is('admin/my/profile')?'active':'' }}">
+                        <a class="nav-link" href="{{ route('admin.profile') }}">
+                            <i class="fas fa-users"></i><span>Manage Users</span></a>
+                    </li>
+                    <li class="{{ request()->is('admin/my/profile')?'active':'' }}">
+                        <a class="nav-link" href="{{ route('admin.profile') }}">
+                            <i class="fas fa-database"></i><span>Back-up Database</span></a>
                     </li>
                 </ul>
             </li>

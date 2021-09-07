@@ -2,9 +2,18 @@
 @section('moreCss')
 <link rel="stylesheet" href="{{ asset('css/datatable/dataTables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/fullcalendar/fullcalendar.min.css') }}">
 @endsection
 @section('content')
 @include('administrator/appointment/partial/holidayForm')
+@include('administrator/appointment/partial/viewAppointed')
+<style>
+    .full {
+        color: red;
+        border: 1px solid red;
+        background: black;
+    }
+</style>
 <section class="section">
     <div class="section-body">
         <div class="col-12">
@@ -25,14 +34,29 @@
             <div class="col-lg-7">
                 <div class="card">
                     <div class="card-body">
-
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="fc-overflow">
+                                    <div id="myEvent"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-5">
                 <div class="card">
                     <div class="card-body">
-
+                        <table class="table table-striped" id="tableHoliday">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th width="20%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -45,5 +69,6 @@
 <script src="{{ asset('js/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
 <script src="{{ asset('administrator/appointment/appointment.js') }}"></script>
 @endsection

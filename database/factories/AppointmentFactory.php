@@ -22,7 +22,13 @@ class AppointmentFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'fullname' => $this->faker->name(),
+            'contact_no' => $this->faker->e164PhoneNumber(),
+            'email' => $this->faker->email(),
+            'address' => $this->faker->address(),
+            'purpose' => $this->faker->name(),
+            'set_date' => date("m/") . $this->faker->numberBetween(6, 15) . date("/Y"),
+            'appoint_no' => $this->faker->postcode()
         ];
     }
 }

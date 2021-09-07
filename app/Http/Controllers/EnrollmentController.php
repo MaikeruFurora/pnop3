@@ -328,13 +328,13 @@ class EnrollmentController extends Controller
     public function setSection(Request $request)
     {
         if ($request->status_now == 'force') {
-            if ($this->totalStudentInSection($request->section) >= 5) {
+            if ($this->totalStudentInSection($request->section) >= 45) {
                 return response()->json(['warning' => 'This section reach the maximum number of student']);
             } else {
                 $this->updateSection($request);
             }
         } else {
-            if ($this->totalStudentInSection($request->section) > 3) {
+            if ($this->totalStudentInSection($request->section) > 40) {
                 return response()->json(['warning' => 'Section is full']);
             } else {
                 $this->updateSection($request);
@@ -345,7 +345,7 @@ class EnrollmentController extends Controller
     public function massSectioning(Request $request)
     {
         $totalEnrollId = count($request->enroll_id);
-        if (($this->totalStudentInSection($request->section) + $totalEnrollId) > 3) {
+        if (($this->totalStudentInSection($request->section) + $totalEnrollId) > 40) {
             return response()->json(['warning' => 'This section reach the maximum number of student']);
         } else {
             $this->updateSection($request);

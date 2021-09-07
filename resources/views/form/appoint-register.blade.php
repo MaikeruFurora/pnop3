@@ -24,25 +24,27 @@
             min-height: 90vh;
         }
 
-        .blue-highlight {
-            background-color: #0C91FF !important;
-            color: white !important;
+        .full .ui-state-default {
+            color: red;
+            border: 1px solid red;
         }
 
-        .blue-highlight:hover {
-            background-color: #0A70FF !important;
+        .vacant .ui-state-default {
+            color: green;
+            border: .5px solid green;
         }
 
-        .red-highlight {
-            background-color: #FF3205 !important;
-            color: white !important;
+        .not .ui-state-default {
+            color: gray;
+            border: 1px solid gray;
         }
 
-        .red-highlight:hover {
-            background-color: #FF0800 !important;
+        .ui-datepicker-unselectable .ui-state-default {
+            background: gray;
+            color: black;
+            border: none
         }
     </style>
-
 </head>
 
 <body>
@@ -65,43 +67,48 @@
                         <p style="font-size: 20px" class="mt-4">Thank you</p>
                     </div>
                     <div class="col-lg">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Appointment Form</h4>
-                            </div>
-                            <div class="card-body pb-0">
-                                <div class="form-group">
-                                    <label>Full name</label>
-                                    <input type="text" class="form-control">
+                        <form action="{{ route('appoint.save') }}" method="POST">@csrf
+                            <div class="card shadow">
+                                <div class="card-header">
+                                    <h4>Appointment Form</h4>
                                 </div>
-                                <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                        <label>Contact no.</label>
-                                        <input type="text" class="form-control" placeholder="Contact no.">
+                                <div class="card-body pb-0">
+                                    <div class="form-group">
+                                        <label>Full name</label>
+                                        <input type="text" class="form-control" name="fullname" required>
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label>Email</label>
-                                        <input type="email" class="form-control" placeholder="Email">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Contact no.</label>
+                                            <input type="text" class="form-control" placeholder="Contact no."
+                                                name="contact_no" required onkeypress="return numberOnly(event)"
+                                                maxlength="11">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label>Email</label>
+                                            <input type="email" class="form-control" placeholder="Email" name="email">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Address</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Select Date</label>
-                                    <input class="form-control datepicker">
-                                </div>
-                                <div class="form-group">
-                                    <label>Purpose</label>
-                                    <textarea class="form-control" data-height="80"></textarea>
-                                </div>
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <input type="text" class="form-control" name="address" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Select Date</label>
+                                        <input class="form-control datepicker" name="set_date" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Purpose</label>
+                                        <textarea class="form-control" data-height="80" name="purpose"
+                                            required></textarea>
+                                    </div>
 
+                                </div>
+                                <div class="card-footer">
+                                    <button class="btn btn-primary">Submit</button>
+                                </div>
                             </div>
-                            <div class="card-footer">
-                                <button class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -125,37 +132,13 @@
     <!-- Template JS File -->
     <script src="{{ asset('js/scripts.js') }}"></script>
     <script src="{{ asset('js/custom.js') }}"></script>
-    <style>
-        .full .ui-state-default {
-            color: red;
-            border: 1px solid red;
-        }
-
-        .vacant .ui-state-default {
-            color: green;
-            border: 1px solid green;
-        }
-    </style>
     <!-- Page Specific JS File -->
     <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-    <script>
-        $('.datepicker').datepicker({
-            dateFormat: "mm/dd/yy",
-            minDate:0,
-            // beforeShowDay : function (date) {
-            //       var dayOfWeek = date.getDay ();
-            //       // 0 : Sunday, 1 : Monday, ...
-            //       return dayOfWeek == 0 || dayOfWeek == 6? [false]: [true];
-                
-            //    },
-            beforeShowDay : function (date) {
-                let datew=$.datepicker.formatDate("mm/dd/yy",date);
-                console.log(datew);
-                return[true,datew=='09/23/2021'?'full':'vacant'];
-                
-               }
-        });
-    </script>
+
+    {{-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css" />
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script> --}}
+    <script src="{{ asset('js/appoint.js') }}"></script>
 </body>
 
 </html>
