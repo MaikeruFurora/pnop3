@@ -69,6 +69,8 @@ class FormController extends Controller
                 'school_year_id' => Helper::activeAY()->id,
                 'date_of_enroll' => date("d/m/Y"),
                 'enroll_status' => 'Pending',
+                'curriculum' => $request->curriculum,
+                'student_type' => (intval($request->grade_level) > 10) ? 'SHS' : 'JHS',
                 'tracking_no' => $tracking_no,
                 'state' => 'New',
             ]);

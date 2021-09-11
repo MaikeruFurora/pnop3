@@ -49,6 +49,30 @@ let ucwords = (str) => {
     });
 };
 
+let months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+function monthNameToNum(monthname) {
+    let oneDigit = "0";
+    let month = months.indexOf(monthname);
+    return month
+        ? /^\d$/.test(month)
+            ? oneDigit.concat(month + 1)
+            : month + 1
+        : 0;
+}
+
 /**
  *
  * SET GLOBAL
@@ -141,3 +165,5 @@ $("#city").ph_locations({ location_type: "cities" });
 $("#barangay").ph_locations({ location_type: "barangays" });
 
 $("#region").ph_locations("fetch_list");
+
+$("#modalForBackUp").on("click", function () {});

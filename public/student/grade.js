@@ -28,6 +28,9 @@ let gradeTable = (level, section) => {
                             val.avg < 75 && val.avg != null ? "#ffe6e6" : ""
                         }">
                             <td class="">
+                            ${val.fullname == null ? "---" : val.fullname}
+                            </td>
+                            <td class="">
                             ${val.descriptive_title}
                             </td>
                             <td class="text-center">
@@ -95,7 +98,7 @@ let gradeTable = (level, section) => {
             } else {
                 htmlHold = `
                     <tr>
-                        <td colspan="7" class="text-center">
+                        <td colspan="8" class="text-center">
                             No subjects available
                         </td>
                     </tr>

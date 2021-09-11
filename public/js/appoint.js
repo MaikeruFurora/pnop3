@@ -1,28 +1,5 @@
 let d = new Date();
 let n = d.getFullYear();
-let months = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-];
-function monthNameToNum(monthname) {
-    let oneDigit = "0";
-    let month = months.indexOf(monthname);
-    return month
-        ? /^\d$/.test(month)
-            ? oneDigit.concat(month + 1)
-            : month + 1
-        : 0;
-}
 
 let eventHoliday = [];
 $.ajax({
@@ -32,13 +9,29 @@ $.ajax({
     .done(function (data) {
         data.forEach((element) => {
             eventHoliday.push(
-                monthNameToNum(element.holi_date.split(" ")[0]) +
+                monthNameToNum(element.holi_date_from.split(" ")[0]) +
                     "/" +
-                    element.holi_date.split(" ")[1] +
+                    element.holi_date_from.split(" ")[1] +
                     "/" +
                     n
             );
+            if (element.holi_date_to != null) {
+                for (
+                    let i = parseInt(element.holi_date_from.split(" ")[1]);
+                    i <= parseInt(element.holi_date_to.split(" ")[1]);
+                    i++
+                ) {
+                    eventHoliday.push(
+                        monthNameToNum(element.holi_date_to.split(" ")[0]) +
+                            "/" +
+                            i +
+                            "/" +
+                            n
+                    );
+                }
+            }
         });
+        console.log(eventHoliday);
     })
     .fail(function (a, b, c) {
         console.log(a, b, c);
@@ -62,12 +55,6 @@ $.ajax({
 //         return [eventHoliday.indexOf(datew) == -1];
 //     },
 // });
-
-let numberOnly = (evt) => {
-    var charCode = evt.which ? evt.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) return false;
-    return true;
-};
 
 let dateFetch = [];
 $.ajax({

@@ -42,6 +42,12 @@ class AdminController extends Controller
             ->count();
         return view('administrator/dashboard', compact('enrollTotal', 'studentTotal', 'teacherTotal', 'ectionTotal', 'data', 'appointies'));
     }
+
+    public function announcement()
+    {
+        return view('administrator/announcement/announcement');
+    }
+
     public function admission()
     {
 
@@ -83,6 +89,11 @@ class AdminController extends Controller
         return view('administrator/management/profile', compact('data'));
     }
 
+    public function strandAndTrack()
+    {
+        return view('administrator/management/strandAndTrack');
+    }
+
     public function section()
     {
         $academicYear = SchoolYear::all();
@@ -119,6 +130,10 @@ class AdminController extends Controller
         return view('administrator/management/academic-year');
     }
 
+    public function user()
+    {
+        return view('administrator/management/adminUser');
+    }
 
 
     public function storeProfile(Request $request)

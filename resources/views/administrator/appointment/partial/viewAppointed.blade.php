@@ -10,10 +10,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped" id="appointedTable">
+                <table class="table table-striped" id="appointedTable" style="font-size: 12px">
                     <thead>
                         <tr>
-                            <th width="10%">Trans No.</th>
+                            <th width="13%">Transaction No.</th>
                             <th width="15%">Name</th>
                             <th width="15%">Contact</th>
                             <th width="10%">Email</th>

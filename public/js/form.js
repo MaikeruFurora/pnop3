@@ -37,7 +37,21 @@ $("input[name='roll_no']").on("blur", function () {
             });
     }
 });
-
+/**
+ *
+ *
+ *
+ */
+// $("#forStrand").hide();
+// $('select[name="grade_level"]').on("change", function () {
+//     if (parseInt($(this).val()) > 10) {
+//         $("#forStrand").show();
+//         $("#forcurriculum").hide();
+//     } else {
+//         $("#forStrand").hide();
+//         $("#forcurriculum").show();
+//     }
+// });
 /**
  *
  *

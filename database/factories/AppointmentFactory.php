@@ -28,7 +28,7 @@ class AppointmentFactory extends Factory
             'address' => $this->faker->address(),
             'purpose' => $this->faker->name(),
             'set_date' => date("m/") . "07" . date("/Y"),
-            'appoint_no' => $this->faker->postcode()
+            'appoint_no' => rand(99, 1000) . '-' . rand(99, 1000)
         ];
     }
 }

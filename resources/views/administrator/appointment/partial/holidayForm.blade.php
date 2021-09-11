@@ -12,11 +12,15 @@
                 <div class="modal-body pb-0">
                     <input type="hidden" name="id">
                     <div class="form-group">
-                        <label for="myFormat">Select Date</label>
-                        <input class="form-control datepicker" name="holi_date" required>
+                        <label>Select date from</label>
+                        <input class="form-control datepicker1" name="holi_date_from" required>
                     </div>
                     <div class="form-group">
-                        <label for="myFormat">Description</label>
+                        <label>Select date to</label>
+                        <input class="form-control datepicker2" name="holi_date_to">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
                         <textarea class="form-control" data-height="80" name="description" required></textarea>
                     </div>
                     <div class="form-group">

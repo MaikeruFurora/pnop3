@@ -55,7 +55,7 @@
                 <form id="enrollForm" autocomplete="off">@csrf
                     <div class="row">
                         <div class="col-12 col-md-10 offset-md-1 col-lg-12 offset-lg-0 ">
-                            <div class="card shadow">
+                            <div class="card shadow-sm">
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-1 text-center">
@@ -116,9 +116,11 @@
                                                     <option value="8">Grade 8</option>
                                                     <option value="9">Grade 9</option>
                                                     <option value="10">Grade 10</option>
+                                                    {{-- <option value="11">Grade 11</option>
+                                                    <option value="12">Grade 12</option> --}}
                                                 </select>
                                             </div>
-                                            <div class="form-group">
+                                            <div class="form-group" id="forcurriculum">
                                                 <label>Curriculum</label>
                                                 <select name="curriculum" class="form-control" required>
                                                     <option value=""></option>
@@ -129,6 +131,17 @@
                                                     <option value="SPJ">SPJ - Special Program Journalism</option>
                                                 </select>
                                             </div>
+                                            {{-- <div class="form-group" id="forStrand">
+                                                <label>Strand</label>
+                                                <select name="strand" class="form-control">
+                                                    <option value=""></option>
+                                                    <option value="STEM">STEM - Science Technology Engineering and
+                                                        Mathematics</option>
+                                                    <option value="BEC">BEC - Basic Education Curriculum</option>
+                                                    <option value="SPA">SPA - Special Program Art</option>
+                                                    <option value="SPJ">SPJ - Special Program Journalism</option>
+                                                </select>
+                                            </div> --}}
                                             <div class="form-group floating-addon">
                                                 <label>Last school attended</label>
                                                 <div class="input-group">
@@ -180,7 +193,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group col-lg-4">
-                                                        <label>Your Contact No.</label>
+                                                        <label>Student Contact No.</label>
                                                         <input type="text" class="form-control" name="student_contact"
                                                             onkeypress="return numberOnly(event)" maxlength="11">
                                                     </div>

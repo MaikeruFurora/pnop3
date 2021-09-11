@@ -3,7 +3,8 @@
 <section class="section">
     <div class="section-body">
         <h2 class="section-title">Dashboard</h2>
-        <p class="section-lead">Active Academic Year :{{ $activeAY->from.'-'.$activeAY->to }}</p>
+        <p class="section-lead">Active Academic Year
+            :{{ empty($activeAY)?'No active academic year':'S/Y '.$activeAY->from.'-'.$activeAY->to }}</p>
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6 col-12">
                 <div class="card card-statistic-1">
@@ -109,14 +110,16 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled list-unstyled-border">
-                            @foreach ($appointies as $item)
+                            @forelse ($appointies as $item)
                             <li class="media">
                                 <div class="media-body">
                                     <div class="media-title">{{ $item->fullname }}</div>
                                     <span class="text-small text-muted">{{ $item->address }}</span>
                                 </div>
                             </li>
-                            @endforeach
+                            @empty
+                            <div class="media-body text-center">No data available</div>
+                            @endforelse
                         </ul>
                         <div class="text-center pt-1 pb-1">
                             <a href="{{ route('admin.appointment') }}" class="btn btn-primary btn-lg btn-round">

@@ -22,6 +22,8 @@ class CreateEnrollmentsTable extends Migration
             $table->unsignedBigInteger('school_year_id');
             $table->foreign('school_year_id')->references('id')->on('school_years');
             $table->string("grade_level")->nullable();
+            $table->string("curriculum")->nullable();
+            $table->string("student_type")->nullable();
             $table->string("date_of_enroll");
             $table->string("enroll_status")->default('Pending');
             $table->string("action_taken")->nullable();

@@ -13,9 +13,11 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SectionController;
+use App\Http\Controllers\StrandController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\UserController;
 use App\Models\Enrollment;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
@@ -60,6 +62,9 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
 
     // dashboard route
     Route::get('dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
+    // announcement route
+    Route::get('announcement', [AdminController::class, 'announcement'])->name('announcement');
 
     // chart
     Route::get('chart/population/by/level', [ChartController::class, 'populationByGradeLevel']);
@@ -115,6 +120,13 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('profile', [AdminController::class, 'profile'])->name('profile');
     Route::post('profile/save', [AdminController::class, 'storeProfile']);
 
+    //strand and track
+    Route::get('strand', [AdminController::class, 'strandAndTrack'])->name('strand');
+    Route::post('strand/save', [StrandController::class, 'storeStrand']);
+    Route::get('strand/list', [StrandController::class, 'listStrand']);
+    Route::get('strand/edit/{strand}', [StrandController::class, 'editStrand']);
+    Route::delete('strand/delete/{strand}', [StrandController::class, 'destroyStrand']);
+
     // section-route
     Route::get('section', [AdminController::class, 'section'])->name('section');
     Route::get('section/list/{grade_level}', [SectionController::class, 'list']);
@@ -165,6 +177,13 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::post('academic-year/change/{id}', [AdminController::class, 'changeAY']);
     Route::delete('academic-year/delete/{id}', [AdminController::class, 'deleteAY']);
     Route::get('academic-year/edit/{schoolYear}', [AdminController::class, 'editAY']);
+
+    //admin users
+    Route::get('user', [AdminController::class, 'user'])->name('user');
+    Route::post('user/save', [UserController::class, 'store']);
+    Route::get('user/list', [UserController::class, 'list']);
+    Route::delete('user/delete/{user}', [UserController::class, 'destroy']);
+    Route::get('user/edit/{user}', [UserController::class, 'edit']);
 });
 
 Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->prefix('teacher/my/')->group(function () {
@@ -239,6 +258,7 @@ Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->pre
     Route::get('backsubject/list', [BackSubjectController::class, 'backsubjectList']);
     Route::get('check/subject/balance/{student}', [StudentController::class, 'checkSubjectBalance']);
     Route::post('self/enroll', [StudentController::class, 'selfEnroll']);
+    Route::get('report', [StudentController::class, 'reportBug'])->name('report');
 });
 
 Route::get('/clear', function () { //-> tawagin mo to url sa browser -> 127.0.0.1:8000/clear

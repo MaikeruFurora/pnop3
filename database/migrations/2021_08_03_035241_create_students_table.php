@@ -39,7 +39,8 @@ class CreateStudentsTable extends Migration
             $table->string('username', 45)->nullable();
             $table->string('orig_password')->nullable();
             $table->string('password')->nullable();
-            $table->string('student_status')->nullable();
+            $table->string('student_status', 5)->nullable();
+            $table->string('completer', 5)->default('No');
             $table->timestamps();
         });
     }

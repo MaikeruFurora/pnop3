@@ -11,6 +11,7 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
@@ -116,10 +117,14 @@ class StudentController extends Controller
                 "grades.fourth",
                 "grades.avg",
                 "subjects.descriptive_title",
+                DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as fullname")
             )->join('students', 'grades.student_id', 'students.id')
                 ->join('subjects', 'grades.subject_id', 'subjects.id')
+                ->leftjoin('assigns', 'grades.subject_id', 'assigns.subject_id')
+                ->leftjoin('teachers', 'assigns.teacher_id', 'teachers.id')
                 ->where('grades.student_id', Auth::user()->id)
                 ->where('grades.section_id', $section)
+                ->where('assigns.section_id', $section)
                 ->get()
         );
     }
@@ -188,11 +193,43 @@ class StudentController extends Controller
 
     public function viewRecord(Student $student)
     {
-        return view('administrator/masterlist/student/record', compact('student'));
+        $recordSeven = $this->gradeViewAll($student->id, 7);
+        $recordEight = $this->gradeViewAll($student->id, 8);
+        $recordNine = $this->gradeViewAll($student->id, 9);
+        $recordTen = $this->gradeViewAll($student->id, 10);
+
+        return view('administrator/masterlist/student/record', compact('student', 'recordSeven', 'recordEight', 'recordNine', 'recordTen'));
     }
 
+
+
+    public function gradeViewAll($id, $gl)
+    {
+        return Grade::select(
+            "first",
+            'second',
+            'third',
+            'fourth',
+            'sections.section_name',
+            'subjects.descriptive_title',
+            'subjects.grade_level',
+            DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as fullname")
+        )
+            ->join("students", "grades.student_id", "students.id")
+            ->join('subjects', 'grades.subject_id', 'subjects.id')
+            ->join('sections', 'grades.section_id', 'sections.id')
+            ->join('teachers', 'sections.teacher_id', 'teachers.id')
+            ->where('students.id', $id)
+            ->where('subjects.grade_level', $gl)
+            ->get();
+    }
     public function backsubject()
     {
         return view('student/backsubject');
+    }
+
+    public function reportBug()
+    {
+        return view("student/reportBug");
     }
 }

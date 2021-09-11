@@ -31,8 +31,9 @@
                         </div>
                         {{-- table-responsive--}}
                         <table class="table  table-bordered table-hover" id="myClassTable" style="font-size: 14px">
-                            <thead class="bg-dark ">
+                            <thead class="bg-info ">
                                 <tr>
+                                    <th class="text-white">Teacher</th>
                                     <th class="text-white">Subjects</th>
                                     <th class="text-center text-white " width="8%">1st</th>
                                     <th class="text-center text-white " width="8%">2nd</th>
@@ -45,12 +46,12 @@
                             <tbody></tbody>
                             <tbody id="gradeTable">
                                 <tr>
-                                    <td colspan="7" class="text-center text-white">No data available</td>
+                                    <td colspan="8" class="text-center text-white">No data available</td>
                                 </tr>
                             </tbody>
                             <tfoot>
-                                <tr class="bg-dark">
-                                    <td colspan="5" class="text-right text-white"><b>Final Average</b></td>
+                                <tr class="bg-info">
+                                    <td colspan="6" class="text-right text-white"><b>Final Average</b></td>
                                     <td id="overallGrade" class="text-center text-white "></td>
                                     <td id="overallRemark" class="text-center text-white "></td>
                                 </tr>

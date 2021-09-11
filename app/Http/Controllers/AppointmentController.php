@@ -22,7 +22,7 @@ class AppointmentController extends Controller
     public function holidayList()
     {
         return response()->json([
-            'data' => Holiday::select('id', 'holi_date', 'description')->get()
+            'data' => Holiday::select('id', 'holi_date_from', 'holi_date_to', 'description')->get()
         ]);
     }
     public function holidayEdit(Holiday $holiday)
@@ -37,7 +37,7 @@ class AppointmentController extends Controller
 
     public function showHolidayList()
     {
-        return response()->json(Holiday::select('holi_date')->get());
+        return response()->json(Holiday::select('holi_date_from', 'holi_date_to')->get());
     }
 
     public function days_in_month($month, $year)
@@ -81,18 +81,22 @@ class AppointmentController extends Controller
         $data = Appointment::select('set_date as start', DB::raw('COUNT(set_date) as title')) //
             // ->where('set_date', '>=', $firstDateOfMonth)
             // ->where('set_date', '<=', $lastDateOfMonth)
-            ->whereBetween('set_date', [$currentDateNow, $lastDateOfMonth])
+            ->whereBetween('set_date', [$firstDateOfMonth, $lastDateOfMonth])
             ->groupBy('set_date')
             ->orderBy('set_date', 'asc')
             ->get();
-        $dataHoliday = Holiday::select("holi_date", "description")->get();
+        $dataHoliday = Holiday::select("holi_date_from", "holi_date_to", "description")->get();
         $arrayData0 = array();
         foreach ($dataHoliday as  $value) {
             $arr = array();
-            $datee = strval($value->holi_date . ' ' . date("Y"));
-            $arr['start'] = date('Y-m-d', strtotime($datee));
+            $dateFrom = strval($value->holi_date_from . ' ' . date("Y"));
+            $dateTo = strval($value->holi_date_to . ' ' . date("Y"));
+            $arr['start'] = date('Y-m-d', strtotime($dateFrom));
+            if ($value->holi_date_to != null) {
+                $arr['end'] =  date('Y-m-d', strtotime($dateTo . '+1 days'));
+            }
             $arr['title'] = $value->description;
-            $arr['backgroundColor'] = "rgba(0, 255, 0, 0)";
+            $arr['backgroundColor'] = "#9999ff";
             $arr['borderColor'] = "rgba(0, 255, 0, 0)";
             $arr['textColor'] = "white";
             $arr['className'] = "holiday";
@@ -105,7 +109,7 @@ class AppointmentController extends Controller
             $arr = array();
             $arr['start'] = date('Y-m-d', strtotime(strval($value->start)));
             $arr['title'] = "Total - " . $value->title;
-            $arr['backgroundColor'] = "rgba(0, 255, 0, 0)";
+            $arr['backgroundColor'] = $value->title >= 100 ? "rgba(0, 255, 0, 0)" : "#66cc66";
             $arr['borderColor'] = "rgba(0, 255, 0, 0)";
             $arr['textColor'] =  $value->title >= 100 ? "white" : "black";
             $arr['className'] = $value->title >= 100 ? "full" : "vacant";

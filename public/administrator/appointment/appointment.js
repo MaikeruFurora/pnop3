@@ -15,6 +15,7 @@ let myAllAppointment = () => {
             data.forEach((element) => {
                 eventList.push({
                     start: element.start,
+                    end: element.end == null ? element.start : element.end,
                     title: element.title,
                     backgroundColor: element.backgroundColor,
                     borderColor: element.borderColor,
@@ -43,17 +44,11 @@ $("#btnModalHoliday").on("click", function () {
     $("#holidayModal").modal("show");
 });
 
-$(".datepicker").datepicker({
+$(".datepicker1").datepicker({
     dateFormat: "MM dd",
-    dayNames: [
-        "Dimanche",
-        "Lundi",
-        "Mardi",
-        "Mercredi",
-        "Jeudi",
-        "Vendredi",
-        "Samedi",
-    ],
+});
+$(".datepicker2").datepicker({
+    dateFormat: "MM dd",
 });
 
 $("#holidayForm").submit(function (e) {
@@ -108,7 +103,18 @@ let tableHoliday = $("#tableHoliday").DataTable({
     },
     ajax: "holiday/list",
     columns: [
-        { data: "holi_date" },
+        {
+            data: null,
+            render: function (data) {
+                if (data.holi_date_to == null) {
+                    return `${data.holi_date_from}`;
+                } else {
+                    return `${data.holi_date_from}-${
+                        data.holi_date_to.split(" ")[1]
+                    }`;
+                }
+            },
+        },
         { data: "description" },
         {
             data: null,
@@ -120,6 +126,18 @@ let tableHoliday = $("#tableHoliday").DataTable({
             },
         },
     ],
+});
+
+$(".datepicker2").on("blur", function () {
+    setTimeout(() => {
+        let fromData = $("input[name='holi_date_from']").val().split(" ");
+        let fromTo = $(this).val().split(" ");
+        let from = monthNameToNum(fromData[0]) + "/" + fromData[1];
+        let to = monthNameToNum(fromTo[0]) + "/" + fromTo[1];
+        if (from > to) {
+            $(this).val("");
+        }
+    }, 1000);
 });
 
 $(document).on("click", ".btnEdit", function () {
@@ -144,7 +162,8 @@ $(document).on("click", ".btnEdit", function () {
                 .html("Edit")
                 .attr("disabled", false);
             $('input[name="id"]').val(response.id);
-            $('input[name="holi_date"]').val(response.holi_date);
+            $('input[name="holi_date_from"]').val(response.holi_date_from);
+            $('input[name="holi_date_to"]').val(response.holi_date_to);
             $('textarea[name="description"]').val(response.description);
             $('input[name="status"]').val(response.status);
             $("#holidayModal").modal("show");
@@ -213,31 +232,6 @@ let showListOfAppointed = (selected) => {
     });
     $("#appointedModal").modal("show");
     $("#appointedModalLabel").text(selected);
-    // $.ajax({
-    //     url: "appointment/list/selected/" + selected,
-    //     type: "GET",
-    //     // beforeSend: function () {
-    //     //     $(".btnDLoad_" + id)
-    //     //         .html(
-    //     //             `
-    //     //     <div class="spinner-border spinner-border-sm" role="status">
-    //     //         <span class="sr-only">Loading...</span>
-    //     //     </div>`
-    //     //         )
-    //     //         .attr("disabled", true);
-    //     // },
-    // })
-    //     .done(function (response) {
-    //         console.log(response);
-    //         // $(".btnDLoad_" + id)
-    //         //     .html("Edit")
-    //         //     .attr("disabled", false);
-    //         // tableHoliday.ajax.reload();
-    //     })
-    //     .fail(function (jqxHR, textStatus, errorThrown) {
-    //         console.log(jqxHR, textStatus, errorThrown);
-    //         getToast("error", "Eror", errorThrown);
-    //     });
 };
 
 let myEvent = () => {
@@ -251,19 +245,20 @@ let myEvent = () => {
         weekends: false,
         initialView: "dayGridMonth",
         // selectable: true,
-        dayClick: function (date, jsEvent, view) {
-            // $("#appointedModal").modal("show");
-            // $("#appointedModalLabel").text(date.format());
-        },
+        // dayClick: function (date, jsEvent, view) {
+        // $("#appointedModal").modal("show");
+        // $("#appointedModalLabel").text(date.format());
+        // },
         eventClick: function (info) {
             let myDateSelected = $.fullCalendar.formatDate(
                 info.start,
                 "MM-DD-Y"
             );
+            console.log(info);
             showListOfAppointed(myDateSelected);
         },
         eventRender: function (event, element) {
-            var dateString = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
+            let dateString = $.fullCalendar.formatDate(event.start, "Y-MM-DD");
 
             if (event.className == "full") {
                 $('td[data-date="' + dateString + '"]')
@@ -285,11 +280,11 @@ let myEvent = () => {
                     .find(".fc-title")
                     .prepend("<i class='fas fa-users'></i>&nbsp;&nbsp;");
             } else {
-                $('td[data-date="' + dateString + '"]')
-                    .css("background", "#9999ff")
-                    .css("color", "white")
-                    .css("border-top", "1px solid white")
-                    .css("border-right", "1px solid white");
+                // $('td[data-date="' + dateString + '"]')
+                //     .css("background", "#9999ff")
+                //     .css("color", "white")
+                //     .css("border-top", "1px solid white")
+                //     .css("border-right", "1px solid white");
                 element
                     .find(".fc-title")
                     .prepend("<i class='fas fa-thumbtack'></i>&nbsp;&nbsp;");
@@ -309,6 +304,4 @@ let myEvent = () => {
         },
         events: eventList,
     });
-
-    console.table(eventList);
 };

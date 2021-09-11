@@ -347,6 +347,7 @@ class ChairmanController extends Controller
                 ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->groupBy('barangay', 'city')
+                ->orderBy('city')
                 ->get()
         );
     }
@@ -354,7 +355,7 @@ class ChairmanController extends Controller
     public function dashMonitor()
     {
         return response()->json(
-            Enrollment::select('curriculum', DB::raw("COUNT(if (enroll_status='Enrolled',1,NULL)) as enrolled"), DB::raw("COUNT(if (enroll_status='Pending',1,NULL)) as pending"))
+            Enrollment::select('students.curriculum', DB::raw("COUNT(if (enroll_status='Enrolled',1,NULL)) as enrolled"), DB::raw("COUNT(if (enroll_status='Pending',1,NULL)) as pending"))
                 ->join('students', 'enrollments.student_id', 'students.id')
                 ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)

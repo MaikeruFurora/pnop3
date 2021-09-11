@@ -124,6 +124,8 @@ class EnrollmentController extends Controller
                 'school_year_id' => Helper::activeAY()->id,
                 'date_of_enroll' => date("d/m/Y"),
                 'enroll_status' => empty($request->section_id) ? 'Pending' : 'Enrolled',
+                'curriculum' => $request->curriculum,
+                'student_type' => 'JHS',
                 'state' => 'New',
             ]);
             return $this->enrolledSubject($enrolled->id);
@@ -318,11 +320,12 @@ class EnrollmentController extends Controller
         if (is_array($request->enroll_id)) {
             foreach ($request->enroll_id as  $value) {
                 $this->enrolled($value, $request->section);
+                $this->enrolledSubject($value);
             }
         } else {
             $this->enrolled($request->enroll_id, $request->section);
+            $this->enrolledSubject($request->enroll_id);
         }
-        return $this->enrolledSubject($request->enroll_id);
     }
 
     public function setSection(Request $request)

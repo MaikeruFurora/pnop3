@@ -41,7 +41,8 @@
                             <p>Enrollment No: <b>{{ $data }}</b></p>
                             <br>
                             <small>* Please save the <b>enrollment no.</b> for your inquries </small><br><br>
-                            <p><i class="fa fa-address-book"></i> 09918742564 | <i class="fa fa-at"></i> pnhs@gmail.com
+                            <p><i class="fa fa-address-book"></i> 09918742564 | <i class="fa fa-at"></i>
+                                302016@deped.gov.ph
                                 <br><i class="fa fa-map-marker-alt"></i> Zone 2, Lapaz Pawili, Pili Camarines Sur</p>
                         </div>
                     </div>

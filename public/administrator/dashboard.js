@@ -110,7 +110,6 @@ let loadDataCurriculum = () => {
         dataType: "json",
     })
         .done(function (data) {
-            console.log(data[0]);
             populationByCurriculum(data[0]);
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
