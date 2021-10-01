@@ -8,11 +8,13 @@ use App\Models\Enrollment;
 use App\Models\SchoolProfile;
 use App\Models\SchoolYear;
 use App\Models\Section;
+use App\Models\Strand;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str as SupportStr;
 
 class AdminController extends Controller
@@ -20,7 +22,7 @@ class AdminController extends Controller
     public function dashboard()
     {
         $appointies = Appointment::select('fullname', 'address', 'purpose')
-            ->where('set_date', date('m/d/Y'))->limit(5)->orderBy('fullname')->get();
+            ->where('set_date', date('m/d/Y'))->limit(7)->orderBy('fullname')->get();
         $data = response()->json(
             Enrollment::select('enrollments.grade_level', DB::raw("COUNT(enrollments.grade_level) as total"))
                 ->join('sections', 'enrollments.section_id', 'sections.id')
@@ -40,7 +42,13 @@ class AdminController extends Controller
             ->where('school_years.status', 1)
             ->get()
             ->count();
-        return view('administrator/dashboard', compact('enrollTotal', 'studentTotal', 'teacherTotal', 'ectionTotal', 'data', 'appointies'));
+        $njhs = Enrollment::where('enroll_status', 'Enrolled')->where('student_type', 'JHS')
+            ->where('school_year_id', Config::get('activeAY')->id)
+            ->count();
+        $nshs = Enrollment::where('enroll_status', 'Enrolled')->where('student_type', 'SHS')
+            ->where('school_year_id', Config::get('activeAY')->id)
+            ->count();
+        return view('administrator/dashboard', compact('enrollTotal', 'studentTotal', 'teacherTotal', 'ectionTotal', 'data', 'appointies', 'njhs', 'nshs'));
     }
 
     public function announcement()
@@ -103,9 +111,11 @@ class AdminController extends Controller
 
     public function subject()
     {
-        $teachers = Teacher::all();
-        return view('administrator/management/subject', compact('teachers'));
+        $strands = Strand::select('id', 'strand', 'description')->get();
+        return view('administrator/management/subject', compact('strands'));
     }
+
+
 
     public function schedule()
     {
@@ -179,8 +189,20 @@ class AdminController extends Controller
 
     public function changeAY($id)
     {
-        SchoolYear::where('id', '>', 0)->update(['status' => 0]);
-        return SchoolYear::where('id', $id)->update(['status' => 1]);
+        SchoolYear::where('id', '>', 0)->update(['status' => 0, 'first_term' => 'No', 'second_Term' => 'No']);
+        return SchoolYear::where('id', $id)->update(['status' => 1, 'first_term' => 'Yes']);
+    }
+    public function changeTerm($term)
+    {
+        if ($term == '1st') {
+            SchoolYear::where('status', 1)->update(['first_term' => 'Yes']);
+            return SchoolYear::where('status', 1)->update(['second_Term' => 'No']);
+        } elseif ($term == '2nd') {
+            SchoolYear::where('status', 1)->update(['second_term' => 'Yes']);
+            return SchoolYear::where('status', 1)->update(['first_term' => 'No']);
+        } else {
+            return false;
+        }
     }
 
     public function deleteAY($id)

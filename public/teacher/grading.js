@@ -1,5 +1,5 @@
 let filterMyLoadSection = () => {
-    let filterSectionHTML = `<option value="">Choose... &nbsp;&nbsp;&nbsp;</option>`;
+    let filterSectionHTML = `<option value="">Select Assign Section &nbsp;&nbsp;&nbsp;</option>`;
     $.ajax({
         url: "grading/load/subject",
         type: "GET",

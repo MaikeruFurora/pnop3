@@ -42,31 +42,31 @@
     </li>
 
     <li class="menu-header">Management</li>
-    {{-- <li class="{{ request()->is('admin/my/strand')?'active':'' }}">
-    <a class="nav-link" href="{{ route('admin.strand') }}">
-        <i class="fas fa-dna"></i><span>Strand &amp; Track</span></a>
-    </li> --}}
-    <li class="{{ request()->is('admin/my/section')?'active':'' }}">
-        <a class="nav-link" href="{{ route('admin.section') }}">
-            <i class="fas fa-border-all"></i><span>Section</span></a>
-    </li>
-    <li class="{{ request()->is('admin/my/subject')?'active':'' }}">
-        <a class="nav-link" href="{{ route('admin.subject') }}">
-            <i class="fas fa-book-reader"></i><span>Subject</span></a>
+
+    <li class="{{ request()->is('admin/my/chairman')?'active':'' }}">
+        <a class="nav-link" href="{{ route('admin.chairman') }}">
+            <i class="fas fa-user-shield"></i><span>Chairman</span></a>
     </li>
     {{-- <li class="{{ request()->is('admin/my/schedule')?'active':'' }}">
     <a class="nav-link" href="{{ route('admin.schedule') }}">
         <i class="fas fa-calendar-alt"></i><span>Schedule</span></a>
     </li> --}}
+    <li class="{{ request()->is('admin/my/subject')?'active':'' }}">
+        <a class="nav-link" href="{{ route('admin.subject') }}">
+            <i class="fas fa-book-reader"></i><span>Subject</span></a>
+    </li>
     <li class="{{ request()->is('admin/my/assign')?'active':'' }}">
         <a class="nav-link" href="{{ route('admin.assign') }}">
             <i class="fas fa-hands-helping"></i><span>Assign</span></a>
     </li>
-    <li class="{{ request()->is('admin/my/chairman')?'active':'' }}">
-        <a class="nav-link" href="{{ route('admin.chairman') }}">
-            <i class="fas fa-user"></i><span>Chairman</span></a>
+    <li class="{{ request()->is('admin/my/section')?'active':'' }}">
+        <a class="nav-link" href="{{ route('admin.section') }}">
+            <i class="fas fa-border-all"></i><span>Section</span></a>
     </li>
-
+    <li class="{{ request()->is('admin/my/strand')?'active':'' }}">
+        <a class="nav-link" href="{{ route('admin.strand') }}">
+            <i class="fas fa-dna"></i><span>Strand &amp; Track</span></a>
+    </li>
     <li class="menu-header">Settings</li>
     <li
         class="nav-item dropdown {{ request()->is('admin/my/profile') || request()->is('admin/my/academic-year') || request()->is('admin/my/user')?'active':''  }}">
@@ -84,10 +84,6 @@
             <li class="{{ request()->is('admin/my/user')?'active':'' }}">
                 <a class="nav-link" href="{{ route('admin.user') }}">
                     <i class="fas fa-users"></i><span>Manage Users</span></a>
-            </li>
-            <li class="">
-                <a class="nav-link" href="#" id="#modalForBackUp">
-                    <i class="fas fa-database"></i><span>Back-up Database</span></a>
             </li>
         </ul>
     </li>

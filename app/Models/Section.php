@@ -15,4 +15,9 @@ class Section extends Model
     {
         return $this->belongsTo(Teacher::class);
     }
+
+    public function strand()
+    {
+        return $this->belongsTo(Strand::class);
+    }
 }

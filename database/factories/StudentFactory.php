@@ -26,7 +26,7 @@ class StudentFactory extends Factory
     {
         return [
             'roll_no' => 1129 . Helper::create_roll_no(),
-            'curriculum' => $this->faker->randomElement($array = array('BEC', 'STEM', 'SPA', 'SPJ')),
+            // 'curriculum' => $this->faker->randomElement($array = array('BEC', 'STEM', 'SPA', 'SPJ')),
             'student_firstname' => $this->faker->firstName(),
             'student_middlename' => $this->faker->lastName(),
             'student_lastname' => $this->faker->lastName(),
@@ -48,6 +48,7 @@ class StudentFactory extends Factory
             'orig_password' => Crypt::encrypt('pnhs'),
             'password' => '$2y$10$p6lwjObc4DNSy3VaXeqNcu9XBf1W9FYQ2CD0tpihuiXlmvahnCnTW',
             'student_status' => null,
+            'completer' => 'No',
         ];
     }
 }

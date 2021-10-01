@@ -32,13 +32,15 @@ class EnrollmentController extends Controller
             $data = Enrollment::select(
                 "enrollments.*",
                 "roll_no",
-                "students.curriculum",
+                "enrollments.curriculum",
                 "students.isbalik_aral",
                 "students.last_schoolyear_attended",
                 "sections.section_name",
+                "strands.strand",
                 DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname")
             )->orderBy('sections.section_name')
                 ->join('students', 'enrollments.student_id', 'students.id')
+                ->leftjoin('strands', 'enrollments.strand_id', 'strands.id')
                 ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
                 ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
                 ->where('school_years.status', 1)
@@ -47,13 +49,15 @@ class EnrollmentController extends Controller
             $data = Enrollment::select(
                 "enrollments.*",
                 "roll_no",
-                "students.curriculum",
+                "enrollments.curriculum",
                 "students.isbalik_aral",
                 "students.last_schoolyear_attended",
                 "sections.section_name",
+                "strands.strand",
                 DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname")
             )->orderBy('sections.section_name')
                 ->join('students', 'enrollments.student_id', 'students.id')
+                ->leftjoin('strands', 'enrollments.strand_id', 'strands.id')
                 ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
                 ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
                 ->where('school_years.status', 1)
@@ -66,8 +70,7 @@ class EnrollmentController extends Controller
 
     public function enrolledSubject($enrolled)
     {
-        $enrolledSubject = Enrollment::select('enrollments.student_id', 'enrollments.section_id', 'enrollments.grade_level', 'students.curriculum')
-            ->join('students', 'enrollments.student_id', 'students.id')
+        $enrolledSubject = Enrollment::select('enrollments.student_id', 'enrollments.section_id', 'enrollments.grade_level', 'enrollments.curriculum')
             ->where('enrollments.id', $enrolled)
             ->where('school_year_id', Helper::activeAY()->id)->first();
         $subjects = Subject::where('grade_level', $enrolledSubject->grade_level)->whereIn('subject_for', [$enrolledSubject->curriculum, 'GENERAL'])->get();
@@ -115,7 +118,7 @@ class EnrollmentController extends Controller
     public function store(Request $request)
     {
 
-        if (Auth::user()->chairman->grade_level == 7) {
+        if (Auth::user()->chairman_info->grade_level == 7) {
             $student = $this->storeStudenRequest($request);
             $enrolled = Enrollment::create([
                 'student_id' => $student->id,
@@ -167,7 +170,7 @@ class EnrollmentController extends Controller
     {
         return  Student::create([
             'roll_no' => $request->roll_no,
-            'curriculum' => $request->curriculum,
+            // 'curriculum' => $request->curriculum,
             'student_firstname' => Str::title($request->student_firstname),
             'student_middlename' => Str::title($request->student_middlename),
             'student_lastname' => Str::title($request->student_lastname),
@@ -216,7 +219,7 @@ class EnrollmentController extends Controller
             Grade::where('student_id', $enroll->student_id)->whereIn('subject_id', [$subject->id])->delete();
         }
         Enrollment::find($enrollment)->delete();
-        if (Auth::user()->chairman->grade_level == 7) {
+        if (Auth::user()->chairman_info->grade_level == 7) {
             Student::where('id', $enroll->student_id)->delete();
             Student::where('id', $enroll->student_id)->withTrashed()->first()->forceDelete();
         }
@@ -225,7 +228,7 @@ class EnrollmentController extends Controller
     public function checkLRN($lrn, $curriculum, $status)
     {
 
-        if (Auth::user()->chairman->grade_level == 7) {
+        if (Auth::user()->chairman_info->grade_level == 7) {
             //grade 7 only
             $isLRN = Student::where('roll_no', $lrn)->exists();
             if ($isLRN) {
@@ -247,7 +250,11 @@ class EnrollmentController extends Controller
                 return response()->json(['warning' => 'You are already Enrolled in ' . $findStudentGL->curriculum . ' curriculum <br> grade ' . $findStudentGL->grade_level . ' student']);
             } else {
                 if ($status == "upperclass") {
-                    $isAlreadyinMasterlist = Student::where('roll_no', $lrn)->where('curriculum', $curriculum)->exists();
+                    // $isAlreadyinMasterlist = Student::where('roll_no', $lrn)->where('curriculum', $curriculum)->exists();
+                    $isAlreadyinMasterlist = Enrollment::join('students', 'enrollments.student_id', 'students.id')
+                        ->where('students.roll_no', $lrn)
+                        ->where('enrollments.curriculum', $curriculum)
+                        ->exists();
                     $findStudent = Student::where('students.roll_no', $lrn)->first();
                     if ($isAlreadyinMasterlist) {
                         //get all stundent information
@@ -293,7 +300,7 @@ class EnrollmentController extends Controller
             Section::select('sections.section_name', 'sections.id')
                 ->join('school_years', 'sections.school_year_id', 'school_years.id')
                 ->where('school_years.status', 1)
-                ->where("grade_level", auth()->user()->chairman->grade_level)
+                ->where("grade_level", auth()->user()->chairman_info->grade_level)
                 ->where("class_type", $curriculum)
                 ->get()
         );
@@ -334,13 +341,13 @@ class EnrollmentController extends Controller
             if ($this->totalStudentInSection($request->section) >= 45) {
                 return response()->json(['warning' => 'This section reach the maximum number of student']);
             } else {
-                $this->updateSection($request);
+                return $this->updateSection($request);
             }
         } else {
             if ($this->totalStudentInSection($request->section) > 40) {
                 return response()->json(['warning' => 'Section is full']);
             } else {
-                $this->updateSection($request);
+                return $this->updateSection($request);
             }
         }
     }
@@ -372,7 +379,7 @@ class EnrollmentController extends Controller
                 ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
                 ->where('sections.teacher_id', Auth::user()->id)
                 ->where('school_years.status', 1)
-                ->where('enrollments.grade_level', Auth::user()->section->grade_level)
+                ->where('enrollments.grade_level', Auth::user()->section_info->grade_level)
                 ->whereIn('enrollments.enroll_status', ['Enrolled', 'Dropped'])
                 ->orderBy('students.student_lastname')
                 ->get()

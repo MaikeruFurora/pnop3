@@ -15,12 +15,13 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->id();
-            $table->tinyInteger('grade_level');
+            $table->unsignedBigInteger('strand_id')->nullable();
+            $table->foreign('strand_id')->references('id')->on('strands');
+            $table->tinyInteger('grade_level')->nullable();
             $table->string('subject_code', 45)->unique();
-            $table->string('descriptive_title');
+            $table->string('descriptive_title')->nullable();
             $table->string('subject_for', 45)->nullable();
-            $table->string('strand', 45)->nullable();
-            $table->string('type', 45)->nullable();
+            $table->string('indicate_type', 45)->nullable();
             $table->timestamps();
         });
     }

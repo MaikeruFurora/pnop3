@@ -4,28 +4,30 @@
     <div class="section-body">
         <h2 class="section-title">Manage User</h2>
         <div class="row">
-            <div class="col-8 col-lg-8 col-md-8">
+            <div class="col-lg-8 col-md-8 col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Username</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="userTable">
-                                <tr>
-                                    <td colspan="4" class="text-center">No available data</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="table responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Name</th>
+                                        <th>Username</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userTable">
+                                    <tr>
+                                        <td colspan="4" class="text-center">No available data</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-4 col-lg-4 col-md-4">
+            <div class="col-lg-4 col-md-4 col-sm-12">
                 <div class="card">
                     <div class="card-body">
                         <form class="mt-3" id="userForm">@csrf

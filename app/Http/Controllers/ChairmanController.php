@@ -8,6 +8,7 @@ use App\Models\Enrollment;
 use App\Models\Section;
 use App\Models\Student;
 use App\Models\Teacher;
+use App\Models\Strand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -103,7 +104,7 @@ class ChairmanController extends Controller
         if (empty(Helper::activeAY())) {
             return response()->json(['error' => 'No Academic Year Active']);
         } else {
-            return response()->json(Section::with('teacher')->where([['grade_level', auth()->user()->chairman->grade_level], ['school_year_id', Helper::activeAY()->id]])->get());
+            return response()->json(Section::with('teacher')->where([['grade_level', auth()->user()->chairman_info->grade_level], ['school_year_id', Helper::activeAY()->id]])->get());
         }
     }
 
@@ -112,7 +113,7 @@ class ChairmanController extends Controller
         if (empty(Helper::activeAY())) {
             return response()->json(['error' => 'No Academic Year Active']);
         } else {
-            $grade_level =  auth()->user()->chairman->grade_level;
+            $grade_level =  auth()->user()->chairman_info->grade_level;
             /**
              * 
              * FOR UPDATE
@@ -190,7 +191,7 @@ class ChairmanController extends Controller
         return response()->json(
             Section::select('sections.id', 'sections.section_name')
                 ->join('school_years', 'sections.school_year_id', 'school_years.id')
-                ->where("grade_level", auth()->user()->chairman->grade_level)
+                ->where("grade_level", auth()->user()->chairman_info->grade_level)
                 ->where("school_years.status", 1)
                 ->where("class_type", $curriculum)
                 ->get()
@@ -255,8 +256,8 @@ class ChairmanController extends Controller
                 )
                     ->join('students', 'enrollments.student_id', 'students.id')
                     ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-                    ->where('students.curriculum', $class)
-                    ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                    ->where('enrollments.curriculum', $class)
+                    ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
                     ->where('enrollments.school_year_id', Helper::activeAY()->id)
                     ->get()
             ]
@@ -278,8 +279,8 @@ class ChairmanController extends Controller
             )
                 ->join('students', 'enrollments.student_id', 'students.id')
                 ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-                ->where('students.curriculum', $curriculum)
-                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                ->where('enrollments.curriculum', $curriculum)
+                ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->get();
         } else {
@@ -296,9 +297,9 @@ class ChairmanController extends Controller
             )
                 ->join('students', 'enrollments.student_id', 'students.id')
                 ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-                ->where('students.curriculum', $curriculum)
+                ->where('enrollments.curriculum', $curriculum)
                 ->where('students.barangay', $barangay)
-                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->get();
         }
@@ -318,7 +319,7 @@ class ChairmanController extends Controller
                 ->join('students', 'enrollments.student_id', 'students.id')
                 ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
                 ->where('sections.section_name', $section)
-                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->orderBy('students.gender', 'desc')
                 ->get()
@@ -331,7 +332,7 @@ class ChairmanController extends Controller
             Enrollment::select('sections.section_name', DB::raw('count(*) as total'))
                 ->join('sections', 'enrollments.section_id', 'sections.id')
                 ->where('sections.class_type', $curriculum)
-                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->groupBy('section_name')
                 ->get()
@@ -343,8 +344,8 @@ class ChairmanController extends Controller
         return response()->json(
             Enrollment::select('students.city', 'students.barangay')
                 ->join('students', 'enrollments.student_id', 'students.id')
-                ->where('students.curriculum', $curriculum)
-                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+                ->where('enrollments.curriculum', $curriculum)
+                ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->groupBy('barangay', 'city')
                 ->orderBy('city')
@@ -355,11 +356,10 @@ class ChairmanController extends Controller
     public function dashMonitor()
     {
         return response()->json(
-            Enrollment::select('students.curriculum', DB::raw("COUNT(if (enroll_status='Enrolled',1,NULL)) as enrolled"), DB::raw("COUNT(if (enroll_status='Pending',1,NULL)) as pending"))
-                ->join('students', 'enrollments.student_id', 'students.id')
-                ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+            Enrollment::select('enrollments.curriculum', DB::raw("COUNT(if (enroll_status='Enrolled',1,NULL)) as enrolled"), DB::raw("COUNT(if (enroll_status='Pending',1,NULL)) as pending"))
+                ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
-                ->groupBy('students.curriculum')
+                ->groupBy('enrollments.curriculum')
                 ->get()
         );
     }
@@ -375,7 +375,7 @@ class ChairmanController extends Controller
             ->join('students', 'enrollments.student_id', 'students.id')
             ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
             ->where('sections.section_name', $section)
-            ->where('enrollments.grade_level', auth()->user()->chairman->grade_level)
+            ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
             ->where('enrollments.school_year_id', Helper::activeAY()->id)
             ->orderBy('students.gender', 'desc')
             ->get();

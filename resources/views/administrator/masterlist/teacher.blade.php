@@ -75,22 +75,21 @@
             <div class="card">
 
                 <div class="card-body mt-2">
-                    {{-- <div class="table-responsive"> --}}
-                    {{-- dt-responsive nowrap --}}
-                    <table class="table table-striped" id="teacherTable">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Fullname</th>
-                                <th>Gender</th>
-                                <th>Username</th>
-                                <th>Password</th>
-                                <th width="8%">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    {{-- </div> --}}
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="teacherTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Fullname</th>
+                                    <th>Gender</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th width="8%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

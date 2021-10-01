@@ -13,15 +13,17 @@
                         <form id="chairmanForm">@csrf
                             <input type="hidden" name="id">
                             <div class="form-row mb-2">
-                                <div class="col-1">
+                                <div class="col-lg-1 col-md-12 col-sm-12 mb-2">
                                     <select name="grade_level" class="custom-select" required>
-                                        <option value="7">7</option>
-                                        <option value="8">8</option>
-                                        <option value="9">9</option>
-                                        <option value="10">10</option>
+                                        <option value="7">Grade 7</option>
+                                        <option value="8">Grade 8</option>
+                                        <option value="9">Grade 9</option>
+                                        <option value="10">Grade 10</option>
+                                        <option value="11">Grade 11</option>
+                                        <option value="12">Grade 12</option>
                                     </select>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-lg-2 col-md-12 col-sm-12 mb-2">
                                     <select name="teacher_id" class="form-control select2" id="mySelect2" required>
                                         <option value=""></option>
                                         @foreach ($teachers as $teacher)
@@ -31,7 +33,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col">
+                                <div class="col-lg-2 col-md-12 col-sm-12">
                                     <button type="submit"
                                         class="btn btn-primary my-1 pl-4 pr-4 btnSavechairman">Save</button>
                                     <button type="submit"

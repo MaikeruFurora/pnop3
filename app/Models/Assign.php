@@ -11,8 +11,8 @@ class Assign extends Model
 
     protected $guarded = [];
 
-    // public function teacher()
-    // {
-    //     return $this->hasMany(Teacher::class);
-    // }
+    public function teacher()
+    {
+        return $this->hasMany(Teacher::class);
+    }
 }

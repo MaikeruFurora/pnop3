@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-    <title>PNOP &mdash; Admission</title>
+    <title>PNOP &mdash; Pre-Enrollment</title>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
@@ -99,6 +99,7 @@
                                                 <label>Status</label>
                                                 <select name="status" class="form-control" id="">
                                                     <option value="new">Incoming grade 7</option>
+                                                    <option value="new_eleven">Incoming grade 11</option>
                                                     <option value="transferee">Transferee</option>
                                                     <option value="balikAral">Balik Aral</option>
                                                 </select>
@@ -108,7 +109,7 @@
                                                 <input name="last_schoolyear_attended" type="text" class="form-control"
                                                     placeholder="eg. 2018-2019">
                                             </div>
-                                            <div class="form-group floating-addon">
+                                            <div class="form-group floating-addon" id="forgradelevel">
                                                 <label>Grade level to Enroll</label>
                                                 <select name="grade_level" class="form-control" id="">
                                                     <option></option>
@@ -116,13 +117,13 @@
                                                     <option value="8">Grade 8</option>
                                                     <option value="9">Grade 9</option>
                                                     <option value="10">Grade 10</option>
-                                                    {{-- <option value="11">Grade 11</option>
-                                                    <option value="12">Grade 12</option> --}}
+                                                    <option value="11">Grade 11</option>
+                                                    <option value="12">Grade 12</option>
                                                 </select>
                                             </div>
                                             <div class="form-group" id="forcurriculum">
                                                 <label>Curriculum</label>
-                                                <select name="curriculum" class="form-control" required>
+                                                <select name="curriculum" class="form-control">
                                                     <option value=""></option>
                                                     <option value="STEM">STEM - Science Technology Engineering and
                                                         Mathematics</option>
@@ -131,17 +132,12 @@
                                                     <option value="SPJ">SPJ - Special Program Journalism</option>
                                                 </select>
                                             </div>
-                                            {{-- <div class="form-group" id="forStrand">
-                                                <label>Strand</label>
+                                            <div class="form-group" id="forStrand">
+                                                <label>Strand & Specialization</label>
                                                 <select name="strand" class="form-control">
                                                     <option value=""></option>
-                                                    <option value="STEM">STEM - Science Technology Engineering and
-                                                        Mathematics</option>
-                                                    <option value="BEC">BEC - Basic Education Curriculum</option>
-                                                    <option value="SPA">SPA - Special Program Art</option>
-                                                    <option value="SPJ">SPJ - Special Program Journalism</option>
                                                 </select>
-                                            </div> --}}
+                                            </div>
                                             <div class="form-group floating-addon">
                                                 <label>Last school attended</label>
                                                 <div class="input-group">

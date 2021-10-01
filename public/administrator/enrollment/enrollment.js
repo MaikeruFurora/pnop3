@@ -14,7 +14,14 @@ let enrollmentTable = (level) => {
         columns: [
             { data: "roll_no" },
             { data: "fullname" },
-            { data: "curriculum" },
+            {
+                data: null,
+                render: function (data) {
+                    return data.curriculum != null
+                        ? data.curriculum
+                        : data.strand;
+                },
+            },
             { data: "section_name" },
             {
                 data: null,

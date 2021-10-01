@@ -26,7 +26,7 @@ class BackSubjectController extends Controller
         return response()->json([
             'data' => BackSubject::select('back_subjects.student_id', 'students.roll_no', DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname"))
                 ->join('students', 'back_subjects.student_id', 'students.id')
-                ->groupBy('back_subjects.student_id', 'students.roll_no')
+                ->groupBy('back_subjects.student_id', 'students.roll_no', 'fullname')
                 ->get()
         ]);
     }
@@ -59,5 +59,17 @@ class BackSubjectController extends Controller
                 'remarks' => 'Passed',
             ]);
         }
+    }
+
+    public function monitorSeniorHighFailSubject($student)
+    {
+        return response()->json(
+            BackSubject::select('subjects.descriptive_title')
+                ->join('students', 'back_subjects.student_id', 'students.id')
+                ->join('subjects', 'back_subjects.subject_id', 'subjects.id')
+                ->where('students.id', $student)
+                ->where('back_subjects.remarks', 'none')
+                ->get()
+        );
     }
 }

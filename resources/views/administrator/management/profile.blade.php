@@ -74,31 +74,50 @@
                 </div>
             </div>
             {{--  --}}
-            @if (isset($data))
-            {{empty($data->school_enrollment_url)}}
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body pb-">
-                        <form class="form-inline" id="enrollStatusForm">@csrf
-                            <div class="form-group">
-                                <label for="selectEnrollmentStatus">Enrollment Status</label>
-                                <select name="statusEnrollment" id="selectEnrollmentStatus" class="form-control mx-sm-3"
-                                    required>
-                                    <option {{ empty($data->school_enrollment_url)?'selected':'' }} value="">
-                                    </option>
-                                    <option {{  ($data->school_enrollment_url==true)?'selected':'' }} value="yes">
-                                        Ongoing
-                                    </option>
-                                    <option {{ ($data->school_enrollment_url==false)?'selected':'' }} value="no">
-                                        Disabled
-                                    </option>
-                                </select>
+            <div class="col-lg-12">
+                <div class="row">
+                    @if (isset($data))
+                    {{empty($data->school_enrollment_url)}}
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body pb-0">
+                                <form id="enrollStatusForm">@csrf
+                                    <div class="form-row">
+                                        <div class="form-group col-lg-4 col-md-4 col-sm-12">
+                                            <label for="selectEnrollmentStatus" class="my-2">Enrollment Status</label>
+                                        </div>
+                                        <div class="form-group col-lg-8 col-md-8 col-sm-12">
+                                            <select name="statusEnrollment" id="selectEnrollmentStatus"
+                                                class="form-control" required>
+                                                <option {{ empty($data->school_enrollment_url)?'selected':'' }}
+                                                    value="">
+                                                </option>
+                                                <option {{  ($data->school_enrollment_url==true)?'selected':'' }}
+                                                    value="yes">
+                                                    Ongoing
+                                                </option>
+                                                <option {{ ($data->school_enrollment_url==false)?'selected':'' }}
+                                                    value="no">
+                                                    Disabled
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
-                        </form>
+                        </div>
+                    </div>
+                    @endif
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="{{ route('admin.backup.run') }}" class="btn btn-block btn-warning">BACK-UP
+                                    DATABASE</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            @endif
 
         </div>
     </div>

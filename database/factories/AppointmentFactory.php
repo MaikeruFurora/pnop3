@@ -26,9 +26,9 @@ class AppointmentFactory extends Factory
             'contact_no' => $this->faker->e164PhoneNumber(),
             'email' => $this->faker->email(),
             'address' => $this->faker->address(),
-            'purpose' => $this->faker->name(),
-            'set_date' => date("m/") . "07" . date("/Y"),
-            'appoint_no' => rand(99, 1000) . '-' . rand(99, 1000)
+            'purpose' => $this->faker->sentence($nbWords = 5, $variableNbWords = true),
+            'set_date' => date("m/") . date("d") . date("/Y"),
+            'appoint_no' => rand(99, 100) . '-' . rand(99, 100)
         ];
     }
 }

@@ -40,10 +40,14 @@ const subjectTable = (level) => {
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" style="font-size:9px" class="btn btn-sm btn-info pl-3 pr-3 editSubject editSub_${
                                         val.id
-                                    }" id="${val.id}">Edit</button>
-                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-danger deleteSubject deleteSub_${
+                                    }" id="${
+                        val.id
+                    }"><i class="fas fa-edit"></i></button>
+                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-danger pl-3 pr-3 deleteSubject deleteSub_${
                                         val.id
-                                    }" id="${val.id}">Delete</button>
+                                    }" id="${
+                        val.id
+                    }"><i class="fas fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -151,7 +155,7 @@ $(document).on("click", ".editSubject", function () {
         .done(function (data) {
             cancelSubject.show();
             // console.log(data.id);
-            $(".editSub_" + id).html("Edit");
+            $(".editSub_" + id).html(`<i class="fas fa-edit"></i>`);
             $(".btnSaveSubject").html("Update");
             $("input[name='id']").val(data.id);
             $("select[name='grade_level']").val(data.grade_level);
@@ -166,25 +170,29 @@ $(document).on("click", ".editSubject", function () {
 });
 
 $(document).on("click", ".deleteSubject", function () {
-    let id = $(this).attr("id");
-    $.ajax({
-        url: "subject/delete/" + id,
-        type: "DELETE",
-        data: { _token: $('input[name="_token"]').val() },
-        beforeSend: function () {
-            $(".deleteSub_" + id).html(`
+    if (confirm("Are you sure,Do you want delete this?")) {
+        let id = $(this).attr("id");
+        $.ajax({
+            url: "subject/delete/" + id,
+            type: "DELETE",
+            data: { _token: $('input[name="_token"]').val() },
+            beforeSend: function () {
+                $(".deleteSub_" + id).html(`
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
             </div>`);
-        },
-    })
-        .done(function (response) {
-            $(".deleteSub" + id).html("Delete");
-            getToast("success", "Success", "deleted one record");
-            subjectTable($("#selectedGL").val());
+            },
         })
-        .fail(function (jqxHR, textStatus, errorThrown) {
-            console.log(jqxHR, textStatus, errorThrown);
-            getToast("error", "Eror", errorThrown);
-        });
+            .done(function (response) {
+                $(".deleteSub" + id).html(`<i class="fas fa-times"></i>`);
+                getToast("success", "Success", "deleted one record");
+                subjectTable($("#selectedGL").val());
+            })
+            .fail(function (jqxHR, textStatus, errorThrown) {
+                console.log(jqxHR, textStatus, errorThrown);
+                getToast("error", "Eror", errorThrown);
+            });
+    } else {
+        return false;
+    }
 });

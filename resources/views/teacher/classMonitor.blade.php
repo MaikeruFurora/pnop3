@@ -6,8 +6,8 @@
 @section('content')
 <section class="section">
     <div class="section-body">
-        <h2 class="section-title">My Class [ {{ Auth::user()->section->section_name }} ]</h2>
-        <div class="card">
+        <h2 class="section-title">My Class [ {{ Auth::user()->section_info->section_name }} ]</h2>
+        <div class="card card-info">
             <div class="card-body pb-1">
 
                 <div class="">

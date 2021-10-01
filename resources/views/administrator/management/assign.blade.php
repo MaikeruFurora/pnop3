@@ -13,10 +13,10 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-row mb-3">
-                            <div class="col-1">
+                            <div class="col-lg-1 col-md-1 colsm-12 mb-2">
                                 <label class="my-2">Filter:</label>
                             </div>
-                            <div class="col-1">
+                            <div class="col-lg-1 col-md-1 colsm-12 mb-2">
                                 <select name="grade_level_top" class="custom-select" required>
                                     <option value=""></option>
                                     <option value="7">7</option>
@@ -25,7 +25,7 @@
                                     <option value="10">10</option>
                                 </select>
                             </div>
-                            <div class="col-3">
+                            <div class="col-lg-3 col-md-3 colsm-12 mb-2">
                                 <select name="showSection" class="form-control select2">
                                 </select>
                             </div>

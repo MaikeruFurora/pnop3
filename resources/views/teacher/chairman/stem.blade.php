@@ -19,7 +19,8 @@
         <div class="col-12">
             <div class="row justify-content-between">
                 <div class="col-lg-5 col-md-8">
-                    <h2 class="section-title">Enrolle's Today [ Grade {{ Auth::user()->chairman->grade_level }} | STEM
+                    <h2 class="section-title">Enrolle's Today [ Grade {{ Auth::user()->chairman_info->grade_level }} |
+                        STEM
                         Student
                         ]
                     </h2>

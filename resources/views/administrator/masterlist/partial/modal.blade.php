@@ -28,20 +28,21 @@
                             <div class="tab-pane fade show active mt-3" id="nav-home">
                                 {{-- start student details here --}}
                                 <div class="form-row ">
-                                    <div class="form-group col-md-6">
+                                    <div class="form-group col-md-4">
                                         <label>Learning Reference Number</label>
                                         <input type="text" name="roll_no" required class="form-control"
                                             pattern="^[0-9]{12}$" onkeypress="return numberOnly(event)" maxlength="12">
                                     </div>
-                                    <div class="form-group col-md-6">
-                                        <label>Curriculum</label>
-                                        <select name="curriculum" class="custom-select" required>
-                                            <option value="STEM">STEM - Science Technology Engineering and Mathematics
-                                            </option>
-                                            <option value="BEC">BEC - Basic Education Curriculum</option>
-                                            <option value="SPA">SPA - Special Program Art</option>
-                                            <option value="SPJ">SPJ - Special Program Journalism</option>
+                                    <div class="form-group col-md-4">
+                                        <label>Balik Aral</label>
+                                        <select name="isbalik_aral" class="custom-select" required>
+                                            <option value="No">No</option>
+                                            <option value="Yes">Yes</option>
                                         </select>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Last school year attended</label>
+                                        <input type="text" class="form-control" name="last_schoolyear_attended">
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -58,6 +59,7 @@
                                         <input type="text" class="form-control" name="student_lastname" required>
                                     </div>
                                 </div>
+
                                 <div class="form-row" id="forNew">
                                     <div class="form-group col-md-3">
                                         <label>Region</label>
@@ -86,19 +88,19 @@
                                 <div class="form-row" id="forUpdate">
                                     <div class="form-group col-md-3">
                                         <label>Region</label>
-                                        <input type="text" name="region" required class="form-control">
+                                        <input type="text" name="region_update" class="form-control">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Province</label>
-                                        <input type="text" name="province" required class="form-control">
+                                        <input type="text" name="province_update" class="form-control">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Town</label>
-                                        <input type="text" name="city" required class="form-control">
+                                        <input type="text" name="city_update" class="form-control">
                                     </div>
                                     <div class="form-group col-md-3">
                                         <label>Barangay</label>
-                                        <input type="text" name="barangay" required class="form-control">
+                                        <input type="text" name="barangay_update" class="form-control">
                                     </div>
                                 </div>
 
@@ -126,6 +128,9 @@
                                     <label>Last school attended</label>
                                     <input type="text" class="form-control" name="last_school_attended" required>
                                 </div>
+
+
+
                                 {{-- end student details here --}}
                             </div>
                             <div class="tab-pane fade mt-3" id="nav-profile">

@@ -39,7 +39,6 @@
                     <div class="float-right ">
 
                         <form class="form-inline ">
-                            <label class="my-1 mr-2" for="filterLabel">Sections</label>
                             <select name="filterMyLoadSection" class="custom-select my-1 mr-sm-2" id="filterLabel">
                             </select>
                         </form>
@@ -48,7 +47,8 @@
                 </div>
             </div>
         </div>
-        <div class="card">
+
+        <div class="card card-info">
             <div class="card-body pb-1">
 
                 <div class="">
@@ -56,25 +56,25 @@
                         <span style="font-size: 15px" class="txtSubjectName badge badge-warning pt-1 pb-1 mt-2"></span>
                     </div>
                     {{-- table-responsive--}}
-                    <table class="table  table-bordered table-hover" id="myClassTable" style="font-size: 14px">
-                        <thead class="bg-dark ">
-                            <tr>
-                                <th class="text-white">Student name</th>
-                                <th class="text-center text-white" width="7%">1st</th>
-                                <th class="text-center text-white" width="7%">2nd</th>
-                                <th class="text-center text-white" width="7%">3rd</th>
-                                <th class="text-center text-white" width="7%">4th</th>
-                                <th class="text-center text-white" width="7%">Avg</th>
-                                <th class="text-center text-white" width="8%">Remarks</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                        {{-- <tbody id="gradingTable">
+                    <div class="table-responsive">
+                        <table class="table  table-bordered table-hover" id="myClassTable" style="font-size: 14px">
+                            <thead class="bg-info ">
+                                <tr>
+                                    <th class="text-white">Student name</th>
+                                    <th class="text-center text-white" width="14%">1st</th>
+                                    <th class="text-center text-white" width="14%">2nd</th>
+                                    <th class="text-center text-white" width="7%">Avg</th>
+                                    <th class="text-center text-white" width="8%">Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            {{-- <tbody id="gradingTable">
                             <tr>
                                 <td colspan="7" class="text-center">No data available</td>
                             </tr>
                         </tbody> --}}
-                    </table>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -85,5 +85,5 @@
 <script src="{{ asset('js/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('teacher/grading.js') }}"></script>
+<script src="{{ asset('teacher/grading.shs.js') }}"></script>
 @endsection

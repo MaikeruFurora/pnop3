@@ -21,6 +21,9 @@ class CreateEnrollmentsTable extends Migration
             $table->foreign('section_id')->references('id')->on('sections');
             $table->unsignedBigInteger('school_year_id');
             $table->foreign('school_year_id')->references('id')->on('school_years');
+            $table->unsignedBigInteger('strand_id')->nullable();
+            $table->foreign('strand_id')->references('id')->on('strands');
+            $table->string("term")->nullable();
             $table->string("grade_level")->nullable();
             $table->string("curriculum")->nullable();
             $table->string("student_type")->nullable();

@@ -6,7 +6,9 @@ use App\Http\Controllers\AssignController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\BackSubjectController;
 use App\Http\Controllers\ChairmanController;
+use App\Http\Controllers\ChairmanSHSController;
 use App\Http\Controllers\ChartController;
+use App\Http\Controllers\EnrollmentSHSController;
 use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FormController;
@@ -15,8 +17,11 @@ use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StrandController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentSHSController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SubjectSHSController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeacherSHSController;
 use App\Http\Controllers\UserController;
 use App\Models\Enrollment;
 use Illuminate\Support\Facades\Artisan;
@@ -49,6 +54,7 @@ Route::get('done/{tracking}', [FormController::class, 'done'])->name('done');
 Route::get('form', [FormController::class, 'form'])->name('form');
 Route::post('form/save', [FormController::class, 'store']);
 Route::get('form/check/lrn/{lrn}', [FormController::class, 'checkLRN']);
+Route::get('form/strand', [FormController::class, 'strandListForm']);
 
 //appointment
 Route::get('appoint/register', [AppointmentController::class, 'appoint'])->name('appoint');
@@ -143,6 +149,13 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::delete('subject/delete/{subject}', [SubjectController::class, 'destroy']);
     Route::get('subject/check/{subject_code}/{grade_level}', [SubjectController::class, 'checkSubject']);
 
+    //subject shs route
+    Route::post('subject/shs/save', [SubjectSHSController::class, 'store']);
+    Route::get('subject/shs/list', [SubjectSHSController::class, 'list']);
+    Route::delete('subject/shs/delete/{subject}', [SubjectSHSController::class, 'destroy']);
+    Route::get('subject/shs/edit/{subject}', [SubjectSHSController::class, 'edit']);
+
+
     // schedule
     Route::get('schedule', [AdminController::class, 'schedule'])->name('schedule');
     Route::get('search/type/{type}', [ScheduleController::class, 'searchType']);
@@ -175,6 +188,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::post('academic-year/save', [AdminController::class, 'storeAY']);
     Route::get('academic-year/list', [AdminController::class, 'listAY']);
     Route::post('academic-year/change/{id}', [AdminController::class, 'changeAY']);
+    Route::post('academic-year/change/semester/{term}', [AdminController::class, 'changeTerm']);
     Route::delete('academic-year/delete/{id}', [AdminController::class, 'deleteAY']);
     Route::get('academic-year/edit/{schoolYear}', [AdminController::class, 'editAY']);
 
@@ -184,10 +198,19 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('user/list', [UserController::class, 'list']);
     Route::delete('user/delete/{user}', [UserController::class, 'destroy']);
     Route::get('user/edit/{user}', [UserController::class, 'edit']);
+
+    Route::get('backup/run', function () {
+        Artisan::call('backup:run');
+        return redirect()->back();
+    })->name('backup.run');
 });
 
 Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->prefix('teacher/my/')->group(function () {
     Route::get('dashboard', [TeacherController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('profile', [TeacherController::class, 'profile'])->name('profile');
+
+    Route::get('assign', [TeacherController::class, 'assign'])->name('assign');
 
     // chairman-manage-section-route
     Route::get('section', [ChairmanController::class, 'section'])->name('section');
@@ -219,6 +242,7 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::post('section/mass/sectioning', [EnrollmentController::class, 'massSectioning']);
     Route::get('edit/{enrollment}', [EnrollmentController::class, 'edit']);
     Route::get('filter/section/{curriculum}', [EnrollmentController::class, 'filterSection']);
+
     Route::delete('delete/{enrollment}', [EnrollmentController::class, 'destroy']);
     Route::get('monitor/section/{curriculum}', [ChairmanController::class, 'monitorSection']);
     Route::get('filter/barangay/{curriculum}', [ChairmanController::class, 'filterbarangay']);
@@ -242,8 +266,62 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::get('grading/load/student/{section}/{subject}', [TeacherController::class, 'loadMyStudent']);
     Route::post('grade/student/now', [GradeController::class, 'gradeStudentNow']);
 
+    //assign subject
+    Route::get('assign', [TeacherController::class, 'assign'])->name('class.assign');
+    Route::post('assign/save', [TeacherController::class, 'assignStore']);
+    Route::delete('assign/delete/{assign}', [TeacherController::class, 'assignDelete']);
+    Route::get('assign/edit/{assign}', [TeacherController::class, 'assignEdit']);
+    Route::get('assign/list/{section}', [TeacherController::class, 'assignList']);
+
     // export file
     Route::get('export/excel/{format}/{status}/{curriculum}/{grade_level}', [ExportController::class, 'exportNewEnrollee']);
+
+    //senior high--------------
+    Route::get('senior/enrollee', [ChairmanSHSController::class, 'seniorEnrollee'])->name('senior.enrollee.page');
+    Route::get('senior/student/enrolle/{strand}/{term}', [ChairmanSHSController::class, 'enrolleeSort']);
+    Route::get('senior/enrollee/filter/section/senior/{strand}', [EnrollmentSHSController::class, 'filterSection']); //shs filter
+    Route::post('senior/enrollee/save', [EnrollmentSHSController::class, 'walkinEnrollee']); //shs walkin
+    Route::delete('senior/enrollee/delete/{enrollment}', [EnrollmentSHSController::class, 'destroy']); //shs delete
+    Route::get('senior/enrollee/edit/{enrollment}', [EnrollmentSHSController::class, 'editEnrollee']); //shs delete
+    Route::post('senior/enrollee/section/set', [EnrollmentSHSController::class, 'setSection']);
+    Route::get('senior/enrollee/monitor/section/{strand}/{term}', [ChairmanSHSController::class, 'monitorSection']);
+    Route::get('senior/enrollee/print/report/{section}/{term}', [ChairmanSHSController::class, 'printReport']);
+
+    //manage section shs------------
+    Route::get('senior/section', [ChairmanSHSController::class, 'manageSection'])->name('senior.section');
+    Route::post('senior/section/save', [ChairmanSHSController::class, 'saveSection']);
+    Route::get('senior/section/list', [ChairmanSHSController::class, 'sectionList']);
+    Route::get('senior/section/edit/{section}', [ChairmanSHSController::class, 'sectionEdit']);
+    Route::delete('senior/section/delete/{section}', [ChairmanSHSController::class, 'sectionDestroy']);
+
+    //assign subject senior high----------
+    Route::get('senior/assign', [TeacherSHSController::class, 'assign'])->name('class.senior.assign');
+    Route::get('senior/assign/list/{term}', [TeacherSHSController::class, 'assignListStudent']);
+    Route::get('senior/assign/student/{term}/{enrollment}', [TeacherSHSController::class, 'showSubjectList']);
+    Route::get('senior/assign/list/subject/section/{term}', [TeacherSHSController::class, 'listAssignSubject']);
+    Route::post('senior/assign/save', [TeacherSHSController::class, 'saveAssignSubject']);
+    Route::get('senior/assign/edit/{assign}', [TeacherSHSController::class, 'assignEdit']);
+    Route::delete('senior/assign/delete/{assign}', [TeacherSHSController::class, 'assignDelete']);
+    // Route::post('senior/assign/student', [TeacherSHSController::class, 'assignDelete']);
+    Route::get('senior/assign/load/student/subject/{student}/{term}', [TeacherSHSController::class, 'showStudentEnrolledSUbject']);
+    Route::post('senior/assign/load/student/subject/save', [TeacherSHSController::class, 'saveStudentEnrolledSUbject']);
+    Route::delete('senior/assign/load/student/subject/delete/{grade}', [TeacherSHSController::class, 'deleteStudentEnrolledSUbject']);
+
+    Route::get('senior/assign/backsubject/load/student/{student}', [BackSubjectController::class, 'monitorSeniorHighFailSubject']);
+
+    //monitor senior high
+    Route::get('senior/class/monitor', [TeacherSHSController::class, 'classMonitor'])->name('class.senior.monitor');
+    Route::get('senior/class/monitor/list/{term}', [TeacherSHSController::class, 'myClass']);
+
+    // grading senior high
+    Route::get('grading/shs', [TeacherSHSController::class, 'grading'])->name('grading.shs');
+    Route::get('grading/shs/load/subject', [TeacherSHSController::class, 'loadMySection']);
+    Route::get('grading/shs/load/student/{section}/{subject}', [TeacherSHSController::class, 'loadMyStudent']);
+    Route::post('grading/shs/student/now', [GradeController::class, 'gradeStudentNowSHS']);
+
+
+    // dashboard statistic for adviser
+    Route::get('senior/dash/monitor', [ChairmanSHSController::class, 'dashMonitor']);
 });
 
 Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->prefix('student/my/')->group(function () {
@@ -259,6 +337,13 @@ Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->pre
     Route::get('check/subject/balance/{student}', [StudentController::class, 'checkSubjectBalance']);
     Route::post('self/enroll', [StudentController::class, 'selfEnroll']);
     Route::get('report', [StudentController::class, 'reportBug'])->name('report');
+
+    //shs only-----------
+    Route::get('senior/grade', [StudentSHSController::class, 'grade'])->name('shs.grade');
+    Route::get('senior/grade/list/{level}/{section}', [StudentSHSController::class, 'gradeList']);
+    Route::get('senior/level/list', [StudentSHSController::class, 'levelList']);
+    Route::get('senior/enrollment', [StudentSHSController::class, 'enrollment'])->name('shs.enrollment');
+    Route::get('senior/check/subject/balance/{student}', [StudentSHSController::class, 'checkSubjectBalance']);
 });
 
 Route::get('/clear', function () { //-> tawagin mo to url sa browser -> 127.0.0.1:8000/clear

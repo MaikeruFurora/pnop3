@@ -38,4 +38,23 @@ class Student extends Authenticatable
     {
         return $this->hasMany(BackSubject::class);
     }
+
+    public function getGradeLevelAttribute()
+    {
+        return Enrollment::select('enrollments.grade_level')
+            ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+            ->where('school_years.status', 1)
+            ->where('enrollments.student_id', $this->id)
+            ->first();
+    }
+
+    public function getStudentInfoAttribute()
+    {
+        return Enrollment::select('enrollments.grade_level', 'strands.strand', 'strands.description')
+            ->leftjoin('strands', 'enrollments.strand_id', 'strands.id')
+            ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+            ->where('school_years.status', 1)
+            ->where('enrollments.student_id', $this->id)
+            ->first();
+    }
 }

@@ -128,6 +128,37 @@
                         </div>
                     </div>
                 </div>
+                {{--  --}}
+                <div class="card">
+                    <div class="card-body pb-0">
+                        <ul class="list-unstyled list-unstyled-border">
+                            <li class="media">
+                                <a href="#">
+                                    {{-- <img class=" width=" 50" src="{{ asset('image/avatar-1.png') }}" alt="product">
+                                    --}}
+                                    <i class="mr-3 rounded fas fa-users" style="font-size: 40px"></i>
+                                </a>
+                                <div class="media-body">
+                                    <div class="media-right my-2" style="font-size: 25px">{{ $njhs }}</div>
+                                    <div class="media-title">Number of Junior High</div>
+                                    <div class="text-muted text-small">Grade 7 to 10
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="media">
+                                <a href="#">
+                                    <i class="mr-3 rounded fas fa-user-shield" style="font-size: 40px"></i>
+                                </a>
+                                <div class="media-body">
+                                    <div class="media-right my-2" style="font-size: 25px">{{ $nshs }}</div>
+                                    <div class="media-title">Number of Senior High</div>
+                                    <div class="text-muted text-small">Grade 11 to 12
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

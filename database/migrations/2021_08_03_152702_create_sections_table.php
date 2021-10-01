@@ -23,8 +23,11 @@ class CreateSectionsTable extends Migration
             $table->unsignedBigInteger('school_year_id');
             $table->foreign('school_year_id')->references('id')->on('school_years');
 
+            $table->unsignedBigInteger('strand_id')->nullable();
+            $table->foreign('strand_id')->references('id')->on('strands');
+
             $table->tinyInteger('grade_level');
-            $table->string('class_type');
+            $table->string('class_type')->nullable();
             $table->boolean('lead_section')->default(false);
             $table->tinyInteger('min')->default(40);
             $table->tinyInteger('max')->default(45);

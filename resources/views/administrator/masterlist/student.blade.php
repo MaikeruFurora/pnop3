@@ -25,25 +25,23 @@
         </div>
         <div class="col-12">
             <div class="card">
-
                 <div class="card-body mt-2">
-                    {{-- <div class="table-responsive"> --}}
-                    {{-- dt-responsive nowrap --}}
-                    <table class="table table-striped" id="studentTable">
-                        <thead>
-                            <tr>
-                                <th>LRN</th>
-                                <th>Fullname</th>
-                                <th>Gender</th>
-                                <th>Contact No.</th>
-                                <th>Username</th>
-                                <th>Password</th>
-                                <th width="10%">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                    {{-- </div> --}}
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="studentTable">
+                            <thead>
+                                <tr>
+                                    <th>LRN</th>
+                                    <th>Fullname</th>
+                                    <th>Gender</th>
+                                    <th>Contact No.</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th width="10%">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

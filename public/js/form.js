@@ -24,7 +24,7 @@ $("input[name='roll_no']").on("blur", function () {
                 if (data.warning) {
                     $("#staticBackdrop").modal("show");
                     $(".modal-title").text("Warning");
-                    $(".txt").text("You are already registered");
+                    $(".txt").text(data.warning);
                     $(".btnEnroll").hide();
                     document.getElementById("enrollForm").reset();
                 } else {
@@ -42,16 +42,35 @@ $("input[name='roll_no']").on("blur", function () {
  *
  *
  */
-// $("#forStrand").hide();
-// $('select[name="grade_level"]').on("change", function () {
-//     if (parseInt($(this).val()) > 10) {
-//         $("#forStrand").show();
-//         $("#forcurriculum").hide();
-//     } else {
-//         $("#forStrand").hide();
-//         $("#forcurriculum").show();
-//     }
-// });
+$("#forStrand").hide();
+$('select[name="grade_level"]').on("change", function () {
+    if (parseInt($(this).val()) > 10) {
+        getStrandNow();
+        $("#forStrand").show();
+        $("#forcurriculum").hide();
+    } else {
+        $("#forStrand").hide();
+        $("#forcurriculum").show();
+    }
+});
+
+let getStrandNow = () => {
+    let hold = "";
+    $.ajax({
+        url: "form/strand",
+        type: "GET",
+        dataType: "json",
+    })
+        .done(function (data) {
+            data.forEach((val) => {
+                hold += `<option value="${val.id}">${val.description}</option>`;
+            });
+            $('select[name="strand"]').html(hold);
+        })
+        .fail(function (a, b, c) {
+            getToast("error", "Eror", errorThrown);
+        });
+};
 /**
  *
  *
@@ -64,10 +83,22 @@ $("#forBalik").hide();
 $('select[name="grade_level"]').attr("disabled", true);
 $('select[name="status"]').on("change", function () {
     if ($(this).val() == "new") {
+        $("#forStrand").hide();
+        $("#forcurriculum").show();
+        $('select[name="grade_level"]').val("").attr("disabled", true);
+    } else if ($(this).val() == "new_eleven") {
+        getStrandNow();
+        $("#forStrand").show();
+        $("#forcurriculum").hide();
         $('select[name="grade_level"]').val("").attr("disabled", true);
     } else {
-        $('select[name="grade_level"]').attr("disabled", false);
+        $("#forStrand").hide();
+        $("#forcurriculum").show();
+        $('select[name="grade_level"]').val("").attr("disabled", false);
     }
+    // {
+    //     $('select[name="grade_level"]').attr("disabled", false);
+    // }
     if ($(this).val() == "balikAral") {
         $("#forBalik").show();
     } else {

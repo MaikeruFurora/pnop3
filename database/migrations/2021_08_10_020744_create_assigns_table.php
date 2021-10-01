@@ -27,6 +27,7 @@ class CreateAssignsTable extends Migration
 
             $table->unsignedBigInteger('teacher_id');
             $table->foreign('teacher_id')->references('id')->on('teachers');
+            $table->string('term', 10)->nullable();
             $table->timestamps();
         });
     }

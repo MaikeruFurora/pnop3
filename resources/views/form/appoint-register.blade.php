@@ -55,7 +55,7 @@
                 <div class="row">
                     <div class="col-lg">
                         <p style="font-size: 20px" class="mt-5">Dear user,</p>
-                        <p style="font-size: 20px" class="mt-5">All of the information you provided will be secure and
+                        <p style="font-size: 20px" class="mt-5">All of the information you provided will be secured and
                             restricted
                             only to Pili National High
                             School Online Portal, school-related businesses and or purposes. We assure your information

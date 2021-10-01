@@ -12,7 +12,6 @@
                     <div class="float-right ">
 
                         <form class="form-inline ">
-                            <label class="my-1 mr-2" for="filterLabel">Grade Level</label>
                             <select name="filterGradeLevel" class="custom-select my-1 mr-sm-2" id="filterLabel">
                             </select>
                         </form>
@@ -22,7 +21,7 @@
             </div>
         </div>
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-primary">
                 <div class="card-body pb-1">
                     <div class="">
                         <div class="float-left">

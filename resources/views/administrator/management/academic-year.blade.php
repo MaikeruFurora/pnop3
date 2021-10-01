@@ -8,22 +8,20 @@
 <section class="section">
     <div class="section-body">
         <h2 class="section-title">Academic Year</h2>
-        <div class="col-lg-6 offset-lg-3 mt-5">
+        <div class="col-lg-8 offset-lg-2 mt-5">
             <div class="card">
                 <div class="card-body">
                     <form id="schoolYearForm">@csrf
-                        <input type="hidden" name="id">
-                        <div class="row">
-                            <div class="mt-1 col-lg-5 col-md-5 col-sm-12">
+                        <div class="form-group">
+                            <input type="hidden" name="id">
+                            <div class="input-group">
                                 <input type="text" class="form-control" required pattern="^[0-9]{4}$" maxlength="4"
                                     name="from" placeholder="Year from (eg. 2019)">
-                            </div>
-                            <div class="mt-1 col-lg-5 col-md-5 col-sm-12">
                                 <input type="text" readonly class="form-control" required pattern="^[0-9]{4}$"
                                     maxlength="4" name="to" placeholder="Year to (eg. 2020)">
-                            </div>
-                            <div class="mt-1 col-lg-2 col-md-2 col-sm-12">
-                                <button type="submit" class="btn my-1 btn-block btn-info" id="btnSaveAY">Save</button>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-info" id="btnSaveAY">Save</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -33,6 +31,8 @@
                             <tr>
                                 <th class="text-center" width="65%">Academic Year</th>
                                 <th class="text-center" width="5%">Active</th>
+                                <th class="text-center" width="5%">1st Sem</th>
+                                <th class="text-center" width="5%">2nd Sem</th>
                                 <th class="text-center" width="30%">Action</th>
                             </tr>
                         </thead>

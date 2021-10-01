@@ -69,6 +69,14 @@ $("#btnStudentModal").on("click", function () {
     $("select[name='province_text']").attr("required", true);
     $("select[name='city_text']").attr("required", true);
     $("select[name='barangay_text']").attr("required", true);
+    $("input[name='last_schoolyear_attended']").attr("disabled", true);
+});
+
+$("select[name='isbalik_aral']").on("change", function () {
+    $("input[name='last_schoolyear_attended']").attr(
+        "disabled",
+        $(this).val() == "Yes" ? false : true
+    );
 });
 
 $("#studentForm").submit(function (e) {
@@ -81,19 +89,24 @@ $("#studentForm").submit(function (e) {
         contentType: false,
         cache: false,
         beforeSend: function () {
-            $("#btnSaveStudent").html(`Saving 
+            $("#btnSaveStudent")
+                .html(
+                    `Saving 
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
-            </div>`);
+            </div>`
+                )
+                .attr("disabled", true);
         },
     })
         .done(function (response) {
-            $("#btnSaveStudent").html("Save");
-            getToast("success", "Success", "Successfully added new student");
+            $("#btnSaveStudent").html("Save").attr("disabled", false);
+            getToast("success", "Success", "Successfully save student");
             $("#studentForm")[0].reset();
             studentTable.ajax.reload();
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
+            $("#btnSaveStudent").html("Save").attr("disabled", false);
             console.log(jqxHR, textStatus, errorThrown);
             getToast("error", "Eror", errorThrown);
         });
@@ -178,20 +191,24 @@ $(document).on("click", ".sedit", function () {
             $("#staticBackdrop").modal("show");
             $('input[name="id"]').val(data.id);
             $('input[name="roll_no"]').val(data.roll_no);
-            $('select[name="curriculum"]').val(data.curriculum);
+            // $('select[name="curriculum"]').val(data.curriculum);
             $('input[name="student_firstname"]').val(data.student_firstname);
             $('input[name="student_middlename"]').val(data.student_middlename);
             $('input[name="student_lastname"]').val(data.student_lastname);
-            $('input[name="region"]').val(data.region);
-            $('input[name="province"]').val(data.province);
-            $('input[name="city"]').val(data.city);
-            $('input[name="barangay"]').val(data.barangay);
+            $('input[name="region_update"]').val(data.region);
+            $('input[name="province_update"]').val(data.province);
+            $('input[name="city_update"]').val(data.city);
+            $('input[name="barangay_update"]').val(data.barangay);
             $('input[name="date_of_birth"]').val(data.date_of_birth);
             $('select[name="gender"]').val(data.gender);
             $('input[name="student_contact"]').val(data.student_contact);
             $('input[name="last_school_attended"]').val(
                 data.last_school_attended
             );
+            $("input[name='last_schoolyear_attended']")
+                .attr("disabled", data.isbalik_aral == "Yes" ? false : true)
+                .val(data.last_schoolyear_attended);
+            $('select[name="isbalik_aral"]').val(data.isbalik_aral);
             $('input[name="father_name"]').val(data.father_name);
             $('input[name="father_contact_no"]').val(data.father_contact_no);
             $('input[name="mother_name"]').val(data.mother_name);

@@ -5,7 +5,7 @@
         <h2 class="section-title">My Profile</h2>
         <div class="row">
             <div class="col-lg-8">
-                <div class="card">
+                <div class="card card-primary">
                     <form id="studentForm">@csrf
                         <input type="hidden" name="id" value="{{ auth()->user()->id }}">
                         <div class="card-body">
@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="card">
+                <div class="card card-primary">
                     <div class="card-header">
                         Account
                     </div>

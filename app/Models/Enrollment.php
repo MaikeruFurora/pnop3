@@ -20,4 +20,8 @@ class Enrollment extends Model
     {
         return $this->belongsTo(Section::class);
     }
+
+    protected $casts = [
+        'grade_level' => 'integer',
+    ];
 }

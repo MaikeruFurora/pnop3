@@ -24,6 +24,10 @@ const chairmanTable = () => {
                 getToast("warning", "Warning", data.error);
             } else {
                 if (data.length > 0) {
+                    data.sort(function (a, b) {
+                        return a.grade_level - b.grade_level;
+                    });
+                    console.log(data);
                     data.forEach((val) => {
                         htmlHold += `
                             <tr>

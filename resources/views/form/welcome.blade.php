@@ -48,13 +48,14 @@
                                         <div class="col-lg-7"><br>
                                             <p>Dear Parent/Guardian,<br>
 
-                                                Welcome to our school's Admission Center. Please use this form to apply
+                                                Welcome to our school's pre-enrollment. Please use this form to apply
                                                 for
                                                 your
-                                                child's admission to our school. We need complete and accurate
+                                                child's enroll to our school. We need complete and accurate
                                                 information
                                                 about the
-                                                student, so make sure you fill out all fields. School Admission Forms
+                                                student, so make sure you fill out all fields. School Pre enrollment
+                                                Forms
                                                 are
                                                 processed
 

@@ -16,7 +16,7 @@
         <div class="col-12">
             <div class="row justify-content-between">
                 <div class="col-lg-5 col-md-8">
-                    <h2 class="section-title">Enroll Student | Grade {{ auth()->user()->chairman->grade_level }}
+                    <h2 class="section-title">Enroll Student | Grade {{ auth()->user()->chairman_info->grade_level }}
                         Chairman</h2>
                 </div>
                 <div class="col-lg-2 col-md-2">

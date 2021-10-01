@@ -18,6 +18,8 @@ class CreateSchoolYearsTable extends Migration
             $table->string("from")->unique();
             $table->string("to")->unique();
             $table->tinyInteger("status")->default(0);
+            $table->string("first_term", 5)->default("No");
+            $table->string("second_term", 5)->default("No");
             $table->timestamps();
         });
     }

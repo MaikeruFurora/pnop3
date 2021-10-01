@@ -12,7 +12,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>Track-Strand</th>
+                                        <th>Strand and Specialization</th>
                                         <th>Description</th>
                                         <th width="20%">Action</th>
                                     </tr>

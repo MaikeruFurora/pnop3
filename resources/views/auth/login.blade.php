@@ -86,11 +86,26 @@
                                         </button>
                                     </div>
                                 </form>
+                                <div class="text-center mt-4 mb-3">
+                                    <div class="text-job text-muted">-- OR --</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <a href="/appoint/register" class="btn btn-block text-muted">
+                                            <span class="fas fa-calendar-check"></span><br> Get Appointment
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="/welcome" class="btn btn-block text-muted ">
+                                            <span class="fab fa-wpforms"></span><br> Pre Enrollment
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="simple-footer mt-0">
+                        {{-- <div class="simple-footer mt-0">
                             Copyright &copy; Stisla 2018
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

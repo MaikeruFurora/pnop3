@@ -21,12 +21,24 @@ class StudentController extends Controller
 
     public function dashboard()
     {
-        $enrolledData = Enrollment::join('students', 'enrollments.student_id', 'students.id')
-            ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
-            ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
-            ->where('school_years.status', 1)
-            ->where('students.id', Auth::user()->id)
-            ->first();
+        if (Auth::user()->completer == "Yes") {
+            $enrolledData = Enrollment::join('students', 'enrollments.student_id', 'students.id', 'enrollments.grade_level')
+                ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+                ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                ->where('school_years.status', 1)
+                ->where('enrollments.term', $this->activeTerm())
+                ->where('students.id', Auth::user()->id)
+                ->first();
+        } else {
+            $enrolledData = Enrollment::join('students', 'enrollments.student_id', 'students.id', 'enrollments.grade_level')
+                ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+                ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                ->where('school_years.status', 1)
+                ->where('students.id', Auth::user()->id)
+                ->first();
+        }
+
+
         return view('student/dashboard', compact('enrolledData'));
     }
 
@@ -34,20 +46,52 @@ class StudentController extends Controller
     {
         if (isset($request->id)) {
             $dataret = Student::findOrFail($request->id);
+            return $this->update($request, $dataret);
+        } else {
+            return Student::Create([
+                'roll_no' => $request->roll_no,
+                // 'curriculum' => empty($dataret->curriculum) ? $request->curriculum : $dataret->curriculum,
+                'student_firstname' => $request->student_firstname,
+                'student_middlename' => $request->student_middlename,
+                'student_lastname' => $request->student_lastname,
+                'date_of_birth' => $request->date_of_birth,
+                'student_contact' => $request->student_contact,
+                'gender' => $request->gender,
+                'region' =>  $request->region,
+                'province' =>  $request->province,
+                'city' =>  $request->city,
+                'barangay' =>  $request->barangay,
+                'last_school_attended' => $request->last_school_attended,
+                'last_schoolyear_attended' => $request->last_schoolyear_attended,
+                'isbalik_aral' => !empty($request->last_schoolyear_attended) ? 'Yes' : 'No',
+                'mother_name' => $request->mother_name,
+                'mother_contact_no' => $request->mother_contact_no,
+                'father_name' => $request->father_name,
+                'father_contact_no' => $request->father_contact_no,
+                'guardian_name' => $request->guardian_name,
+                'guardian_contact_no' => $request->guardian_contact_no,
+                'username' => Helper::create_username($request->student_firstname, $request->student_lastname),
+                'orig_password' => Crypt::encrypt("pnhs"),
+                'password' => Hash::make("pnhs"),
+                'student_status' => null,
+            ]);
         }
-        return Student::updateOrCreate(['id' => $request->id], [
+    }
+
+    public function update($request, $dataret)
+    {
+        return Student::where('id', $request->id)->update([
             'roll_no' => $request->roll_no,
-            'curriculum' => empty($dataret->curriculum) ? $request->curriculum : $dataret->curriculum,
             'student_firstname' => $request->student_firstname,
             'student_middlename' => $request->student_middlename,
             'student_lastname' => $request->student_lastname,
             'date_of_birth' => $request->date_of_birth,
             'student_contact' => $request->student_contact,
             'gender' => $request->gender,
-            'region' => empty($request->region) ? $request->region : $dataret->region,
-            'province' => empty($request->province) ? $request->province : $dataret->province,
-            'city' => empty($request->city) ? $request->city : $dataret->city,
-            'barangay' => empty($request->barangay) ? $request->barangay : $dataret->barangay,
+            'region' =>  $request->region_update,
+            'province' =>  $request->province_update,
+            'city' =>  $request->city_update,
+            'barangay' =>  $request->barangay_update,
             'last_school_attended' => $request->last_school_attended,
             'last_schoolyear_attended' => $request->last_schoolyear_attended,
             'isbalik_aral' => !empty($request->last_schoolyear_attended) ? 'Yes' : 'No',
@@ -124,6 +168,7 @@ class StudentController extends Controller
                 ->leftjoin('teachers', 'assigns.teacher_id', 'teachers.id')
                 ->where('grades.student_id', Auth::user()->id)
                 ->where('grades.section_id', $section)
+                // ->where('assigns.grade_level', $level)
                 ->where('assigns.section_id', $section)
                 ->get()
         );
@@ -146,16 +191,18 @@ class StudentController extends Controller
     public function enrollment()
     {
         $dataArr = array();
-        $ifexist = Enrollment::join('students', 'enrollments.student_id', 'students.id')
+        $ifexist = Enrollment::select('enrollments.enroll_status', 'enrollments.action_taken', 'section_name', 'enrollments.grade_level')
+            ->join('students', 'enrollments.student_id', 'students.id')
             ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
             ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
             ->where('school_years.status', 1)
             ->where('students.id', Auth::user()->id)
             ->first();
-
         if ($ifexist) {
             $dataArr['status'] = $ifexist->enroll_status;
             $dataArr['action_taken'] = $ifexist->action_taken;
+            $dataArr['section'] = $ifexist->section_name;
+            $dataArr['grade_level'] = 'Grade ' . $ifexist->grade_level;
         } else {
             $dataArr['status'] = 'Ongoing';
             $dataArr['action_taken'] = 'None';
@@ -173,7 +220,7 @@ class StudentController extends Controller
     {
         $countFail =  BackSubject::where('back_subjects.student_id', $request->id)->where('remarks', 'none')->get();
         $action_taken = $countFail->count() == 0 ? 'Promoted' : ($countFail->count() < 3 ? 'Partialy Promoted' : 'Retained');
-        $grade_level = Enrollment::select('grade_level')->where('student_id', $request->id)->latest()->first();
+        $studInfo = Enrollment::select('grade_level', 'curriculum')->where('student_id', $request->id)->latest()->first();
 
         if ($action_taken == 'Retained') { //if student retained in year level means this is backsubject will reset in grade level
             BackSubject::where('student_id', $request->id)->where('grade_level', $countFail[0]->grade_level)->delete();
@@ -182,11 +229,13 @@ class StudentController extends Controller
         return Enrollment::create([
             'student_id' => $request->id,
             // 'section_id' => $request->section_id,
-            'grade_level' => $countFail->count() >= 3 ? $countFail[0]->grade_level : ($grade_level->grade_level + 1),
+            'grade_level' => $countFail->count() >= 3 ? $countFail[0]->grade_level : ($studInfo->grade_level + 1),
             'school_year_id' => Helper::activeAY()->id,
             'date_of_enroll' => date("d/m/Y"),
             'action_taken' => $action_taken,
             'enroll_status' => 'Pending',
+            'curriculum' => $studInfo->curriculum,
+            'student_type' => ($studInfo->grade_level + 1) <= 10 ? 'JHS' : null,
             'state' => 'Old',
         ]);
     }
@@ -200,8 +249,6 @@ class StudentController extends Controller
 
         return view('administrator/masterlist/student/record', compact('student', 'recordSeven', 'recordEight', 'recordNine', 'recordTen'));
     }
-
-
 
     public function gradeViewAll($id, $gl)
     {

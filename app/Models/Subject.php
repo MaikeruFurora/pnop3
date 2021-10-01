@@ -9,12 +9,7 @@ class Subject extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'grade_level',
-        'subject_code',
-        'descriptive_title',
-        'subject_for'
-    ];
+    protected $guarded = [];
 
     // public function subject()
     // {

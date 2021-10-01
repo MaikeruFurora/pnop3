@@ -5,7 +5,7 @@
         <div class="col-md-12 mt-5">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="card">
+                    <div class="card card-primary">
                         <div class="card-body">
 
                             <div class="row">
@@ -15,12 +15,40 @@
                                             <h4>INFORMATION</h4>
                                         </div>
                                         <div class="card-body">
-                                            <p>Enrollment Status:
-                                                <span class="badge badge-info">{{ $dataArr['status'] }}</span>
-                                            </p>
-                                            <p>Action taken:
-                                                <span class="badge badge-info">{{ $dataArr['action_taken'] }}</span>
-                                            </p>
+                                            <ul class="list-group">
+                                                <li
+                                                    class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Enrollment Status:
+                                                    <span class="badge @if ($dataArr['status']=='Enrolled')
+                                                    badge-primary
+                                                    @else
+                                                    badge-warning
+                                                    @endif  badge-pill">
+                                                        {{ $dataArr['status'] }}
+                                                    </span>
+                                                </li>
+                                                <li
+                                                    class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Section:
+                                                    <span class="badge badge-primary badge-pill">
+                                                        {{ $dataArr['section']??'None' }}
+                                                    </span>
+                                                </li>
+                                                <li
+                                                    class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Grade Level:
+                                                    <span class="badge badge-primary badge-pill">
+                                                        {{ $dataArr['grade_level']??'None' }}
+                                                    </span>
+                                                </li>
+                                                <li
+                                                    class="list-group-item d-flex justify-content-between align-items-center">
+                                                    Action taken:
+                                                    <span class="badge badge-primary badge-pill">
+                                                        {{ $dataArr['action_taken']??'None' }}
+                                                    </span>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>

@@ -35,6 +35,33 @@ let school_year_Table = $("#school_year_Table").DataTable({
         {
             data: null,
             render: function (data) {
+                return `<label class="custom-switch">
+                            <input type="radio" name="semester" class="custom-switch-input clickSemester"
+                             value="1st" ${
+                                 data.first_term == "Yes" ? "checked" : ""
+                             }
+                ${data.status != "1" ? "disabled" : ""}>
+                            <span class="custom-switch-indicator"></span>
+                        </label>
+                        `;
+            },
+        },
+        {
+            data: null,
+            render: function (data) {
+                return `<label class="custom-switch">
+                            <input type="radio" name="semester" class="custom-switch-input clickSemester"
+                             value="2nd" ${
+                                 data.second_term == "Yes" ? "checked" : ""
+                             }  ${data.status != "1" ? "disabled" : ""}>
+                            <span class="custom-switch-indicator"></span>
+                        </label>
+                        `;
+            },
+        },
+        {
+            data: null,
+            render: function (data) {
                 if (data.status == 1) {
                     return `
                     <button type="button" class="btn btn-sm btn-info editAY edit_${data.id}  pl-5 pr-5" id="${data.id}">Edit</button>`;
@@ -59,6 +86,31 @@ $(document).on("click", ".switchMe", function () {
     })
         .done(function (response) {
             getToast("success", "Success", "Activated Academic Year </b>");
+            school_year_Table.ajax.reload();
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            console.log(jqxHR, textStatus, errorThrown);
+            getToast("error", "Eror", errorThrown);
+        });
+});
+
+$(document).on("click", "input[name='semester']", function () {
+    let data = $(this).val();
+    $.ajax({
+        url: "academic-year/change/semester/" + data,
+        type: "POST",
+        data: {
+            _token: $('input[name="_token"]').val(),
+        },
+    })
+        .done(function (response) {
+            getToast(
+                "success",
+                "Success",
+                data == "1st"
+                    ? "First Semester is now open"
+                    : "Second Semester is now open"
+            );
             school_year_Table.ajax.reload();
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
@@ -116,7 +168,12 @@ $(document).on("click", ".deleteAY", function () {
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
             $(".delete_" + id).html("Delete");
-            getToast("error", "Eror", errorThrown);
+            // getToast("error", "Eror", errorThrown);
+            getToast(
+                "warning",
+                "Warning",
+                "Sorry this Academic Year can't be deleted"
+            );
         });
 });
 
@@ -151,6 +208,7 @@ $("#schoolYearForm").submit(function (e) {
             school_year_Table.ajax.reload();
             $("input[name='from']").val("");
             $("input[name='to']").val("");
+            $("input[name='id']").val("");
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             4;

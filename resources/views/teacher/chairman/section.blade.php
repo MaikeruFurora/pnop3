@@ -5,7 +5,7 @@
 @section('content')
 <section class="section">
     <div class="section-body">
-        <h2 class="section-title">Manage Section | Grade {{ auth()->user()->chairman->grade_level }} Chairman</h2>
+        <h2 class="section-title">Manage Section | Grade {{ auth()->user()->chairman_info->grade_level }} Chairman</h2>
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-12">
                 <div class="card">

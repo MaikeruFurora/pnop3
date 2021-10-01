@@ -28,6 +28,7 @@ let loadData = () => {
     })
         .done(function (data) {
             populationByGradeLevel(data);
+            console.table(data);
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
@@ -114,7 +115,7 @@ let loadDataCurriculum = () => {
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
-            getToast("error", "Eror", errorThrown);
+            // getToast("error", "Eror", errorThrown);
         });
 };
 loadDataCurriculum();

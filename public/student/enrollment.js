@@ -20,7 +20,7 @@ CheckandVerify();
 
 $(".btnCheckandVerify").on("click", function () {
     $.ajax({
-        url: "self/enroll/",
+        url: "self/enroll",
         type: "POST",
         data: {
             id: $("input[name='student_id']").val(),

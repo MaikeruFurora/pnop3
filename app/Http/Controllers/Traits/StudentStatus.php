@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Traits;
 use App\Models\Enrollment;
 use App\Models\SchoolYear;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Config;
 
 /**
  * 
@@ -48,6 +49,17 @@ trait StudentStatus
                 // 'enroll_status' => $data->enroll_status,
                 'status' => 100
             ];
+        }
+    }
+
+    public function activeTerm()
+    {
+        if (Config::get('activeAY')->first_term == 'Yes') {
+            return '1st';
+        }
+
+        if (Config::get('activeAY')->second_term == 'Yes') {
+            return '2nd';
         }
     }
 }
