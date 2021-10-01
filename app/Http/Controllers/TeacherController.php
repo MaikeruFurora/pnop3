@@ -26,7 +26,7 @@ class TeacherController extends Controller
             ->join('school_years', 'assigns.school_year_id', 'school_years.id')
             ->where('school_years.status', 1)
             ->where('teachers.id', Auth::user()->id)
-            ->groupBy()
+            ->groupBy('sections.section_name')
             ->get();
         return view('teacher/dashboard', compact('sectionAvail'));
     }

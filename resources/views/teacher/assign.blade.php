@@ -17,12 +17,9 @@
                             <form id="assignForm">@csrf
                                 <input type="hidden" name="id">
                                 <div class="form-row mb-3">
-                                    <div class="col-lg-2 col-md-2 col-sm-12 mb-1">
-                                        <label class="my-2">Subject:</label>
-                                    </div>
                                     <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
                                         <select name="subject_id" class="custom-select">
-                                            <option value=""></option>
+                                            <option value="">Choose subject</option>
                                             @foreach ($subjects as $item)
                                             <option value="{{ $item->id }}">[ {{ $item->subject_code }} ] -
                                                 {{ $item->descriptive_title }}</option>
@@ -31,7 +28,7 @@
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-12 mb-1">
                                         <select name="teacher_id" class="select2 custom-select">
-                                            <option value=""></option>
+                                            <option value="">Choose subject teacher</option>
                                             @foreach ($teachers as $item)
                                             <option value="{{ $item->id }}">{{ $item->teacher_name }}</option>
                                             @endforeach
@@ -49,18 +46,20 @@
                                     value="{{  Auth::user()->section_info->grade_level }}">
                             </form>
                         </div>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Subject Name</th>
-                                    <th>Subject Teacher</th>
-                                    <th width="13%">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableAssign">
-                            </tbody>
-                        </table>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Subject Name</th>
+                                        <th>Subject Teacher</th>
+                                        <th width="13%">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tableAssign">
+                                </tbody>
+                            </table>
+                        </div>
                         {{-- </div> --}}
                     </div>
                 </div>
