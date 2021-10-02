@@ -54,7 +54,7 @@
                             <div class="card card-hero shadow-lg">
                                 <div class="card-header">
                                   <div class="card-icon">
-                                    <i class="far fa-question-circle"></i>
+                                    <i class="fas fa-fingerprint"></i>
                                   </div>
                                   <h4><small style="font-size: 15px">No.</small> {{$appointment->appoint_no }}</h4>
                                   <div class="card-description">Appointment Slip</div>
@@ -112,6 +112,10 @@
                                         <li class="media">
                                            
                                             <div class="media-body">
+                                                <div class="media-right my-2 pl-3 pr-2">
+                                                    <img class="img-fluid m-0" src="{{ asset('image/logo/logo.png') }}"
+                                                    alt="PNHS LOGO" width="50px">
+                                                </div>
                                                 <div class="text-small">
                                                     <b>Note:</b> Lorem ipsum, dolor sit amet consectetur adipisicing elit.
                                                      Facere enim sapiente sint cupiditate quia obcaecati at.
@@ -167,6 +171,7 @@
         $(".card-hero").removeClass('shadow-lg')
         $(this).hide();
       setTimeout(() => {
+        $(".card-body").addClass("bg-white")
         html2canvas(document.getElementById("capture")).then(function (canvas) {
       //  console.log(canvas.toDataURL("image/jpeg", 0.9));
         var a=document.createElement('a');
@@ -174,8 +179,8 @@
                 a.download = "appointment-slip.png";
                 a.click();
      });
-     $(this).show();   
      $(".card-hero").addClass('shadow-lg')
+     $(this).show();   
       }, 1500);
     })
     </script>
