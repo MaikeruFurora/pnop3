@@ -1,7 +1,7 @@
-let gradeTable = (level, section) => {
+let gradeTable = (level, section,term) => {
     let htmlHold = "";
     $.ajax({
-        url: `grade/list/${level}/${section}`,
+        url: `grade/list/${level}/${section}/${term}`,
         type: "GET",
         dataType: "json",
         beforeSend: function () {
@@ -86,9 +86,10 @@ let gradeTable = (level, section) => {
                 }
                 $("#gradeTable").html(htmlHold);
                 $("#overallGrade").html(
-                    `<b>${Math.round(overallGrade / data.length)}</b>`
+                    `<b>${ (isNaN(Math.round(overallGrade / data.length)))?'':Math.round(overallGrade / data.length)}</b>`
                 );
                 $("#overallRemark").html(
+                    (isNaN(Math.round(overallGrade / data.length)))?'':
                     Math.round(overallGrade / data.length) > 75
                         ? `<span class="ml-3 badge badge-success ">Passed</span>`
                         : `<span class="ml-3 badge badge-danger ">Failed</span>`
@@ -100,7 +101,7 @@ let gradeTable = (level, section) => {
             getToast("error", "Eror", errorThrown);
         });
 };
-
+let active_term = $('input[name="active_term"]').val()
 let filterGradeLevel = () => {
     let filterGradeLevelHTML;
     $.ajax({
@@ -112,11 +113,8 @@ let filterGradeLevel = () => {
             $(".txtSectionName").text(data[0].section_name);
             data.forEach((val) => {
                 console.log(val.status);
-                filterGradeLevelHTML += `<option ${
-                    val.status == "1" ? "selected" : ""
-                } value="${val.grade_level}_${val.section_id}">Grade ${
-                    val.grade_level
-                } - ${val.term} Term</option>`;
+                filterGradeLevelHTML += `<option ${ val.status == "1" && val.term == active_term ? "selected" : "" }
+                     value="${val.grade_level}_${val.section_id}_${val.term}">Grade ${val.grade_level} - ${val.term} Term</option>`;
             });
             $("select[name='filterGradeLevel']").html(filterGradeLevelHTML);
         })
@@ -132,10 +130,10 @@ setTimeout(() => {
         .prop("selectedIndex", 0)
         .val()
         .split("_");
-    gradeTable(val[0], val[1]);
+    gradeTable(val[0], val[1],val[2]);
 }, 1000);
 
 $("select[name='filterGradeLevel']").on("change", function () {
     let data = $(this).val().split("_");
-    gradeTable(data[0], data[1]);
+    gradeTable(data[0], data[1],data[2]);
 });

@@ -340,10 +340,11 @@ Route::middleware(['auth:student', 'preventBackHistory'])->name('student.')->pre
 
     //shs only-----------
     Route::get('senior/grade', [StudentSHSController::class, 'grade'])->name('shs.grade');
-    Route::get('senior/grade/list/{level}/{section}', [StudentSHSController::class, 'gradeList']);
+    Route::get('senior/grade/list/{level}/{section}/{activeTerm}', [StudentSHSController::class, 'gradeList']);
     Route::get('senior/level/list', [StudentSHSController::class, 'levelList']);
     Route::get('senior/enrollment', [StudentSHSController::class, 'enrollment'])->name('shs.enrollment');
     Route::get('senior/check/subject/balance/{student}', [StudentSHSController::class, 'checkSubjectBalance']);
+    Route::post('senior/self/enroll', [StudentSHSController::class, 'selfEnroll']);
 });
 
 Route::get('/clear', function () { //-> tawagin mo to url sa browser -> 127.0.0.1:8000/clear

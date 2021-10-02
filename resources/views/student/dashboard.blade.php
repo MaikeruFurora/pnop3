@@ -5,7 +5,7 @@
         <div class="col-lg-12 mt-3 mb-0">
             <div class="row">
                 <div class="col-lg-2 col-md-12 col-sm-12 mb-2">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-info" disabled>
                         Enrollment:@if (empty($enrolledData->enroll_status))
                         <span class="badge badge-warning">Ongoing</span>
                         @else
@@ -20,7 +20,7 @@
 
                 </div>
                 <div class="col-lg-2 col-md-12 col-sm-12 mb-2">
-                    <button type="button" class="btn btn-primary">
+                    <button type="button" class="btn btn-info" disabled>
                         &nbsp;&nbsp;&nbsp; Section: @if (empty($enrolledData->enroll_status) ||
                         $enrolledData->enroll_status=='Pending')
                         <span class="badge badge-warning">N/A</span>

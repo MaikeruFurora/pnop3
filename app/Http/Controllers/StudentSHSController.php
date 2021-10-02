@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
+use App\Models\BackSubject;
 use App\Models\Enrollment;
 use App\Models\Grade;
 use App\Models\Student;
@@ -18,15 +20,13 @@ class StudentSHSController extends Controller
         return view('student/grade-shs');
     }
 
-    public function gradeList($level, $section)
+    public function gradeList($level, $section,$activeTerm)
     {
         return response()->json(
             Grade::select(
                 "grades.id as gid",
                 "grades.first",
                 "grades.second",
-                "grades.third",
-                "grades.fourth",
                 "grades.avg",
                 "subjects.descriptive_title",
                 DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as fullname")
@@ -37,6 +37,8 @@ class StudentSHSController extends Controller
                 ->where('grades.student_id', Auth::user()->id)
                 ->where('grades.section_id', $section)
                 ->where('assigns.section_id', $section)
+                ->where('assigns.term', $activeTerm)
+                // ->where('grades.term', $activeTerm)
                 ->get()
         );
     }
@@ -51,6 +53,7 @@ class StudentSHSController extends Controller
                 ->where('students.id', Auth::user()->id)
                 ->groupBy('enrollments.grade_level', 'school_years.status', 'sections.section_name', 'enrollments.section_id', 'enrollments.term')
                 ->orderBy('school_years.status', 'desc')
+                ->orderBy('enrollments.term', 'desc')
                 ->get()
         );
     }
@@ -85,5 +88,31 @@ class StudentSHSController extends Controller
     public function checkSubjectBalance(Student $student)
     {
         return Grade::where('student_id', $student->id)->WhereNull('avg')->orWhere('avg', '')->get()->count();
+    }
+
+    public function selfEnroll(Request $request)
+    {
+        $countFail =  BackSubject::where('back_subjects.student_id', $request->id)->where('remarks', 'none')->get();
+        $action_taken = $countFail->count() == 0 ? 'Promoted' : ($countFail->count() < 5 ? 'Partialy Promoted' : 'Retained');
+        $studInfo = Enrollment::select('grade_level', 'strand_id')->where('student_id', $request->id)->latest()->first();
+
+        if ($action_taken == 'Retained') { //if student retained in year level means this is backsubject will reset in grade level
+            BackSubject::where('student_id', $request->id)->where('grade_level', $countFail[0]->grade_level)->delete();
+        }
+        $activeTerm = $this->activeTerm();
+        
+        return Enrollment::create([
+            'student_id' => $request->id,
+            // 'section_id' => $request->section_id,
+            'grade_level' => $countFail->count() >= 5 ? $countFail[0]->grade_level : ($activeTerm=="1st"?($studInfo->grade_level + 1):$studInfo->grade_level),
+            'school_year_id' => Helper::activeAY()->id,
+            'date_of_enroll' => date("d/m/Y"),
+            'action_taken' => $action_taken,
+            'enroll_status' => 'Pending',
+            'term' => $activeTerm,
+            'strand_id' => $studInfo->strand_id,
+            'student_type' => 'SHS',
+            'state' => 'Old',
+        ]);
     }
 }

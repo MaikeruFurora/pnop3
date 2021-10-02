@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class TeacherSHSController extends Controller
 {
+    use Traits\StudentStatus;
     public function assign()
     {
         // return Auth::user()->section->strand_id;
@@ -216,22 +217,26 @@ class TeacherSHSController extends Controller
 
     public function showStudentEnrolledSUbject($student, $term)
     {
-        return Grade::select('grades.id', 'grades.subject_id', 'subjects.descriptive_title')->join('students', 'grades.student_id', 'students.id')
+        return Grade::select('grades.id', 'grades.subject_id', 'subjects.descriptive_title')
+            ->join('students', 'grades.student_id', 'students.id')
             ->join('subjects', 'grades.subject_id', 'subjects.id')
             ->join('enrollments', 'students.id', 'enrollments.student_id')
+            ->leftjoin('assigns', 'grades.subject_id', 'assigns.subject_id')
             ->where('enrollments.term', $term)
-            ->where('grades.student_id', $student)
+            ->where('assigns.term', $term)
+            ->where('students.id', $student)
             ->where('enrollments.school_year_id', Helper::activeAY()->id)
             ->get();
     }
 
     public function saveStudentEnrolledSUbject(Request $request)
     {
-        //return $request->all();
+        $activeTerm = $this->activeTerm();
         return Grade::create([
             'student_id' => $request->student_id,
             'subject_id' => $request->assign_subject_id,
-            'section_id' => Auth::user()->section->id
+            'section_id' => Auth::user()->section->id,
+            'term' => $activeTerm
         ]);
     }
 

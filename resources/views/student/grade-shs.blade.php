@@ -10,6 +10,14 @@
                 </div>
                 <div class="col-lg-3 col-md-3 my-4">
                     <div class="float-right ">
+                        @if (!empty($activeAY))
+                            @if ($activeAY->first_term=="Yes")
+                            <input type="hidden" name="active_term" value="1st">
+                            @endif
+                            @if ($activeAY->second_term=="Yes")
+                            <input type="hidden" name="active_term" value="2nd">
+                            @endif
+                        @endif
                         <form class="form-inline ">
                             <select name="filterGradeLevel" class="custom-select my-1 mr-sm-2" id="filterLabel">
                             </select>
