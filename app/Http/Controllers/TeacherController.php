@@ -18,6 +18,9 @@ use Illuminate\Support\Str;
 
 class TeacherController extends Controller
 {
+    
+    use Traits\StudentStatus;
+
     public function dashboard()
     {
         $sectionAvail = Assign::select('sections.section_name')
@@ -227,5 +230,49 @@ class TeacherController extends Controller
     public function profile()
     {
         return view('teacher/profile');
+    }
+
+    public function certificate(){
+        return view('teacher/chairman/certificate');
+    }
+
+    public function loadMyEnrolledStudent()
+    {
+        $activeTerm = $this->activeTerm();    
+      if (Auth::user()->chairman_info->grade_level>=11) {
+        return response()->json([
+            'data'=>Enrollment::select('students.roll_no','students.id',
+            'sections.section_name', DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname"))
+            ->join('students','enrollments.student_id','students.id')
+            ->join('sections','enrollments.section_id','sections.id')
+            ->where('enrollments.enroll_status', 'Enrolled')
+            ->where('enrollments.term', $activeTerm)
+            ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
+            ->where('enrollments.school_year_id', Helper::activeAY()->id)
+            ->get()
+        ]);
+      } else {
+        return response()->json([
+            'data'=>Enrollment::select('students.roll_no','students.id',
+            'sections.section_name', DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname"))
+            ->join('students','enrollments.student_id','students.id')
+            ->join('sections','enrollments.section_id','sections.id')
+            ->where('enrollments.enroll_status', 'Enrolled')
+            ->where('enrollments.grade_level', auth()->user()->chairman_info->grade_level)
+            ->where('enrollments.school_year_id', Helper::activeAY()->id)
+            ->get()
+        ]);
+      }
+    }
+
+    public function loadMyCertificate(Student $student){
+        return view('teacher/chairman/partial/certificateOfEnrollment',[
+            'roll_no'=>$student->roll_no,
+            'fullname'=>$student->fullname,
+            'student_type'=>auth()->user()->chairman_info->grade_level>=11?"Senior High School":"Junior High School",
+            'grade_level'=>auth()->user()->chairman_info->grade_level,
+            'school_year'=>Helper::activeAY()->from.'-'.Helper::activeAY()->to,
+            'teacher'=>auth()->user()->fullname
+        ]);
     }
 }

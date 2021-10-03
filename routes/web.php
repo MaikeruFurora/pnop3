@@ -269,13 +269,18 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::get('grading/load/subject', [TeacherController::class, 'loadMySection']);
     Route::get('grading/load/student/{section}/{subject}', [TeacherController::class, 'loadMyStudent']);
     Route::post('grade/student/now', [GradeController::class, 'gradeStudentNow']);
-
+    
     //assign subject
     Route::get('assign', [TeacherController::class, 'assign'])->name('class.assign');
     Route::post('assign/save', [TeacherController::class, 'assignStore']);
     Route::delete('assign/delete/{assign}', [TeacherController::class, 'assignDelete']);
     Route::get('assign/edit/{assign}', [TeacherController::class, 'assignEdit']);
     Route::get('assign/list/{section}', [TeacherController::class, 'assignList']);
+
+    // Certificate
+    Route::get('certificate', [TeacherController::class, 'certificate'])->name('certificate');
+    Route::get('certificate/load/student', [TeacherController::class, 'loadMyEnrolledStudent']);
+    Route::get('certificate/load/certificate/{student}', [TeacherController::class, 'loadMyCertificate']);
 
     // export file
     Route::get('export/excel/{format}/{status}/{curriculum}/{grade_level}', [ExportController::class, 'exportNewEnrollee']);
