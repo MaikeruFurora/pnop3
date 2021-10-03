@@ -35,7 +35,9 @@
                     <a href="#" class="nav-link sidebar-gone-show" data-toggle="sidebar"><i class="fas fa-bars"></i></a>
                    
                     <ul class="navbar-nav navbar-right">
-                     
+                        <li class="dropdown dropdown-list-toggle">
+                            <a  class="nav-link nav-link-lg text-white"><i class="fas fa-graduation-cap" style="font-size: 13px"></i>&nbsp;&nbsp;Curriculum</a>
+                        </li>
                       <li class="dropdown dropdown-list-toggle">
                           <a href="{{ route('auth.login') }}" class="nav-link nav-link-lg text-white"><i class="fas fa-sign-in-alt" style="font-size: 13px"></i>&nbsp;&nbsp;Login</a>
                       </li>
