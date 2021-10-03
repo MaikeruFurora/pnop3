@@ -106,7 +106,7 @@
                                           <h4>Pre Enrollment</h4>
                                       </div>
                                       <div class="card-body">
-                                          <p> nam quae nihil excepturi deserunt, nisi dolore deleniti! Totam veniam quae doloribus dolore dolorum sequi modi!</p>
+                                          <p> The school to remain in constant contact and communication with ALL families, and even track the communication along the way</p>
                                           <a href="{{ route('welcome') }}" class="btn btn-primary btn-icon">
                                               <i class="fas fa-eye"></i>
                                               Pre Enroll online now
