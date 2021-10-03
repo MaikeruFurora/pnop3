@@ -79,32 +79,55 @@
                             </div>
                           </div>
                           {{--  --}}
-                          <div class="col-lg-6">
-                              <div class="card card-info">
-                                  <div class="card-header">
-                                      <h4>Get Appointment</h4>
+                          <div class="row">
+                              <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+                               <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="card card-info">
+                                        <div class="card-header">
+                                            <h4>Get Appointment</h4>
+                                      </div>
+                                      <div class="card-body">
+                                          <p>
+                                              These online services of the school aim to avoid the crowd at the school premises observing the COVID-19 health protocols.
+                                          </p>
+                                          <a href="{{ route('appoint') }}" class="btn btn-primary btn-icon">
+                                              <i class="fas fa-eye"></i>
+                                              Get Appointment
+                                          </a>
+                                      </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <p>
-                                        These online services of the school aim to avoid the crowd at the school premises observing the COVID-19 health protocols.
-                                    </p>
-                                    <a href="{{ route('appoint') }}" class="btn btn-primary">
-                                        Get Appointment
-                                    </a>
-                                </div>
+                                <div class="col-lg-6">
+                                    <div class="card card-info">
+                                      <div class="card-header">
+                                          <h4>Pre Enrollment</h4>
+                                      </div>
+                                      <div class="card-body">
+                                          <p> nam quae nihil excepturi deserunt, nisi dolore deleniti! Totam veniam quae doloribus dolore dolorum sequi modi!</p>
+                                          <a href="{{ route('welcome') }}" class="btn btn-primary btn-icon">
+                                              <i class="fas fa-eye"></i>
+                                              Pre Enroll online now
+                                          </a>
+                                      </div>
+                                    </div>
+                                </div> 
+                               </div>
                               </div>
-                          </div>
-                          <div class="col-lg-6">
-                              <div class="card card-info">
-                                <div class="card-header">
-                                    <h4>Pre Enrollment</h4>
-                                </div>
-                                <div class="card-body">
-                                    <p> magnam? Expedita eveniet pariatur nam quae nihil excepturi deserunt, nisi dolore deleniti! Totam veniam quae doloribus dolore dolorum sequi modi!</p>
-                                    <a href="{{ route('welcome') }}" class="btn btn-primary">
-                                        Pre Enroll online now
-                                    </a>
-                                </div>
+                              <div class="col-12 col-lg-6 col-md-6 col-sm-12">
+                                  <div class="card card-primary">
+                                      <div class="card-header">
+                                         <h4>Blended Learning</h4>
+                                      </div>
+                                      <div class="card-body">
+                                          <p><i class="fas fa-chalkboard-teacher" style="font-size: 28px"></i> <span style="font-size: 20px">A</span>
+                                            <small>
+                                                manner of learning where online and modular learning are fused. When a student receives the module from the barangay kiosks, they will be able to reach out to their teachers online within a given time schedule.
+                                               A student and a teacher are able to interact with each other using technological innovations that can even boost the learner’s learning experience. They will also be able to meet with their classmates using open online classrooms. <span class="text-warning">see more...</span>
+                                            </small>
+                                        </p>
+                                      </div>
+                                  </div>
                               </div>
                           </div>
                       </div>
@@ -142,8 +165,12 @@
                               </div>
                             </div>
                           </div>
+
+                          {{--  --}}
                           
-                          {{--  --}} <div class="col-12 col-md-4 col-lg-4">
+                          {{--  --}} 
+
+                          <div class="col-12 col-md-4 col-lg-4">
                         <div class="pricing">
                             <div class="pricing-title" style="font-size: 20px">
                                 Mission
