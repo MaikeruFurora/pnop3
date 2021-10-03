@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>PNOP &mdash; Login</title>
+    <link rel="shortcut icon" href="{{ asset('image/logo/logo1.png') }}">
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">

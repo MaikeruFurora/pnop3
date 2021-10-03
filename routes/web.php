@@ -39,10 +39,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function(){
+    return view('welcome');
+});
 
 // Auth route
 Route::middleware(['guest:web', 'guest:teacher', 'guest:student', 'preventBackHistory'])->name('auth.')->group(function () {
-    Route::get('/', [AuthController::class, 'login'])->name('login');
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::post('login/post', [AuthController::class, 'login_post'])->name('login_post');
 });
 

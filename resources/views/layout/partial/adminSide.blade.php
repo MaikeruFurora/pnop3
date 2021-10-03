@@ -87,4 +87,12 @@
             </li>
         </ul>
     </li>
+    <li>
+        <a class="nav-link" href="{{ route('auth.logout') }}"
+        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
+                    class="fas fa-sign-out-alt text-danger"></i><span class="text-danger">Logout</span></a>
+    <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" class="d-none">
+            @csrf
+    </form>
+    </li>
 </ul>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>PNOP &middot; PNHS Online Portal</title>
-    <link rel="shortcut icon" href="{{ asset('image/logo/logo.png') }}">
+    <link rel="shortcut icon" href="{{ asset('image/logo/logo1.png') }}">
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('fontawesome/css/all.css') }}">
