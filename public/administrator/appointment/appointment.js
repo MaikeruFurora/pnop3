@@ -218,7 +218,10 @@ $(document).on("click", ".btnDelete", function () {
  */
 
 let showListOfAppointed = (selected) => {
+    $("#printAppointed").val(selected);
     $("#appointedTable").DataTable({
+        pageLength: 5,
+        lengthMenu: [ 5,10, 25, 50, 75, 100 ],
         destroy: true,
         ajax: "appointment/list/selected/" + selected,
         columns: [
@@ -305,3 +308,13 @@ let myEvent = () => {
         events: eventList,
     });
 };
+
+
+$("#printAppointed").on("click", function () {
+        popupCenter({
+            url: "appointment/print/report/" + $(this).val(),
+            title: "report",
+            w: 1400,
+            h: 800,
+        });
+});

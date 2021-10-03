@@ -23,9 +23,8 @@
 
                 </div>
                 <div class="col-lg-2 col-md-2">
-                    <button class="btn float-right btn-primary my-4" id="btnModalHoliday">
-                        <i class="fas fa-plus-circle"></i>&nbsp;Add Holiday
-                    </button>
+                    <button class="btn btn-icon icon-left btn-primary my-4 float-right" id="btnModalHoliday"><i class="fas fa-plus-circle"></i> Add Holiday</button>
+
                 </div>
             </div>
         </div>

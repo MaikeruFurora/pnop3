@@ -10,6 +10,12 @@
                 </button>
             </div>
             <div class="modal-body">
+               <div class="table-responsive">
+                <div class="float-left">
+                    <button type="button" class="btn btn-icon icon-left btn-primary mr-3" id="printAppointed">
+                        <i class="fas fa-print"></i> Print Now
+                    </button>
+                </div>
                 <table class="table table-striped" id="appointedTable" style="font-size: 12px">
                     <thead>
                         <tr>
@@ -23,6 +29,7 @@
                     </thead>
                     <tbody></tbody>
                 </table>
+               </div>
             </div>
         </div>
     </div>

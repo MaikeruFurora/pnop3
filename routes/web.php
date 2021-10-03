@@ -94,6 +94,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::delete('holiday/delete/{holiday}', [AppointmentController::class, 'holidayDelete']);
     Route::get('appointment/list/{month}', [AppointmentController::class, 'getAvailAppoint']);
     Route::get('appointment/list/selected/{selectedDate}', [AppointmentController::class, 'selectedDate']);
+    Route::get('appointment/print/report/{dateSelected}', [AppointmentController::class, 'printReport']);
 
     // teacher-route
     Route::get('teacher', [AdminController::class, 'teacher'])->name('teacher');

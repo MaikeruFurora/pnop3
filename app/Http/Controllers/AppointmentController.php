@@ -125,4 +125,12 @@ class AppointmentController extends Controller
             'data' => Appointment::where('set_date', strval($formatedDate))->get()
         ]);
     }
+
+    public function printReport($dateSelected){
+        $formatedDate = date("m/d/Y", strtotime(strtr($dateSelected, '-', '/')));
+        return view("administrator/appointment/partial/printReport",[
+            'dateNow'=>$dateSelected,
+            'data'=>Appointment::where('set_date', strval($formatedDate))->get()
+        ]);
+    }
 }
