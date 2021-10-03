@@ -106,7 +106,9 @@
                                           <h4>Pre Enrollment</h4>
                                       </div>
                                       <div class="card-body">
-                                          <p> The school to remain in constant contact and communication with ALL families, and even track the communication along the way</p>
+                                          <p>
+                                            They want the experience to be easy, accessible, and welcoming. Paper enrollment forms are becoming a thing of the past.
+                                          </p>
                                           <a href="{{ route('welcome') }}" class="btn btn-primary btn-icon">
                                               <i class="fas fa-eye"></i>
                                               Pre Enroll online now
