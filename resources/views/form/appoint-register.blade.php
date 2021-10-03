@@ -54,21 +54,22 @@
             <div class="container mt-2 center-screen">
                 <div class="row">
                     <div class="col-lg">
-                        <p style="font-size: 20px" class="mt-5">Dear user,</p>
-                        <p style="font-size: 20px" class="mt-5">All of the information you provided will be secured and
+                        <p style="font-size: 20px;line-height: 2.3;" class="mt-5">Dear user,</p>
+                        <p style="font-size: 20px;line-height: 2.3;" class="mt-5">All of the information you provided will be secured and
                             restricted
                             only to Pili National High
                             School Online Portal, school-related businesses and or purposes. We assure your information
                             provided is protected.</p>
-                        <p style="font-size: 20px" class="mt-4">These online services of the school aim to avoid the
+                        <p style="font-size: 20px;line-height: 2.3;" class="mt-4">These online services of the school aim to avoid the
                             crowd at the
                             school premises observing
                             the COVID-19 health protocols.</p>
-                        <p style="font-size: 20px" class="mt-4">Thank you</p>
+                        <p style="font-size: 20px;line-height: 2.3;" class="mt-4">Thank you</p>
+                        <br><br>
                     </div>
                     <div class="col-lg">
                         <form action="{{ route('appoint.save') }}" method="POST">@csrf
-                            <div class="card shadow">
+                            <div class="card shadow card-info">
                                 <div class="card-header">
                                     <h4>Appointment Form</h4>
                                 </div>

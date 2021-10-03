@@ -117,10 +117,8 @@
                                                     alt="PNHS LOGO" width="50px">
                                                 </div>
                                                 <div class="text-small">
-                                                    <b>Note:</b> Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                                     Facere enim sapiente sint cupiditate quia obcaecati at.
-                                                     Eveniet quas, esse beatae delectus enim quo officia, excepturi adipisci,
-                                                      eius repellendus tempore. Sapiente?
+                                                    <b>Note:</b> This will serve will serve as a proof of transaction and or appointment, 
+                                                    present this to the personnel in charge upon entering the school the day of your appointment. Thank you!
                                                 </div>
                                             </div>
                                         </li>
