@@ -278,7 +278,7 @@ let searchSecionByLevel = (curriculum) => {
             type: "GET",
         })
             .done(function (data) {
-                htmlHold += ` <option></option>`;
+                // htmlHold += ` <option></option>`;
                 data.forEach((element) => {
                     htmlHold += `<option value="${element.id}">${element.section_name}</option>`;
                 });
@@ -369,7 +369,7 @@ let filterSection = (curriculum) => {
             type: "GET",
         })
             .done(function (data) {
-                htmlHold += ` <option></option>`;
+                // htmlHold += ` <option></option>`;
                 data.forEach((element) => {
                     htmlHold += `<option value="${element.id}">${element.section_name}</option>`;
                 });
