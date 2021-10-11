@@ -192,7 +192,7 @@ class TeacherSHSController extends Controller
             }
         }
     }
-    public function loadMyStudent($section, $subject)
+    public function loadMyStudent($section, $subject,$term)
     {
         return response()->json([
             'data' => Grade::select(
@@ -208,6 +208,7 @@ class TeacherSHSController extends Controller
                 ->join('sections', 'enrollments.section_id', 'sections.id')
                 ->join('subjects', 'grades.subject_id', 'subjects.id')
                 ->where('enrollments.enroll_status', "Enrolled")
+                ->where('enrollments.term', $term)
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->where('subjects.id', $subject)
                 ->where('sections.id', $section)

@@ -21,17 +21,17 @@
                                 <div class="form-group col-lg-4">
                                     <label>First name</label>
                                     <input type="text" class="form-control" name="student_firstname"
-                                        value="{{ auth()->user()->student_firstname }}" required>
+                                        value="{{ auth()->user()->student_firstname }}" readonly >
                                 </div>
                                 <div class="form-group col-lg-4">
                                     <label>Middle name</label>
                                     <input type="text" class="form-control" name="student_middlename"
-                                        value="{{ auth()->user()->student_middlename }}">
+                                        value="{{ auth()->user()->student_middlename }}" readonly>
                                 </div>
                                 <div class=" form-group col-lg-4">
                                     <label>Last name</label>
                                     <input type="text" class="form-control" name="student_lastname"
-                                        value="{{ auth()->user()->student_lastname }}" required>
+                                        value="{{ auth()->user()->student_lastname }}" readonly >
                                 </div>
                             </div>
 
@@ -40,12 +40,12 @@
                                 <div class="form-group col-lg-4">
                                     <label>Date of Birth</label>
                                     <input type="date" class="form-control" placeholder="DD/MM/YYYY"
-                                        name="date_of_birth" value="{{ auth()->user()->date_of_birth }}">
+                                        name="date_of_birth" value="{{ auth()->user()->date_of_birth }}" readonly>
                                 </div>
                                 <div class="form-group col-lg-4">
                                     <label>Gender</label>
                                     <input type="text" class="form-control" name="gender"
-                                        value="{{ auth()->user()->gender }}">
+                                        value="{{ auth()->user()->gender }}" readonly>
                                 </div>
 
 
@@ -61,22 +61,22 @@
                                 <div class="form-group col-lg-3">
                                     <label>Region</label>
                                     <input type="text" class="form-control" name="region"
-                                        value="{{ auth()->user()->region }}" required>
+                                        value="{{ auth()->user()->region }}" readonly >
                                 </div>
                                 <div class="form-group col-lg-3">
                                     <label>Province</label>
                                     <input type="text" class="form-control" name="province"
-                                        value="{{ auth()->user()->province }}">
+                                        value="{{ auth()->user()->province }}" readonly>
                                 </div>
                                 <div class=" form-group col-lg-3">
                                     <label>City</label>
                                     <input type="text" class="form-control" name="city"
-                                        value="{{ auth()->user()->city }}" required>
+                                        value="{{ auth()->user()->city }}" readonly >
                                 </div>
                                 <div class=" form-group col-lg-3">
                                     <label>Barangay</label>
                                     <input type="text" class="form-control" name="barangay"
-                                        value="{{ auth()->user()->barangay }}" required>
+                                        value="{{ auth()->user()->barangay }}" readonly >
                                 </div>
                             </div>
 
@@ -84,7 +84,7 @@
                                 <div class="form-group col-lg-8">
                                     <label>Mother's name</label>
                                     <input type="text" class="form-control" name="mother_name"
-                                        value="{{ auth()->user()->mother_name }}">
+                                        value="{{ auth()->user()->mother_name }}" readonly>
                                 </div>
                                 <div class="form-group col-lg-4">
                                     <label>Contact No.</label>
@@ -97,7 +97,7 @@
                                 <div class="form-group col-lg-8">
                                     <label>Father's name</label>
                                     <input type="text" class="form-control" name="father_name"
-                                        value="{{ auth()->user()->father_name }}">
+                                        value="{{ auth()->user()->father_name }}" readonly>
                                 </div>
                                 <div class="form-group col-lg-4">
                                     <label>Contact No.</label>
@@ -110,7 +110,7 @@
                                 <div class="form-group col-lg-8">
                                     <label>Guardian's name</label>
                                     <input type="text" class="form-control" name="guardian_name"
-                                        value="{{ auth()->user()->guardian_name }}">
+                                        value="{{ auth()->user()->guardian_name }}" readonly>
                                 </div>
                                 <div class="form-group col-lg-4">
                                     <label>Contact No.</label>

@@ -9,7 +9,7 @@ let filterMyLoadSection = () => {
             data.forEach((val) => {
                 filterSectionHTML += `<option value="${val.id}_${
                     val.subject_id
-                }">${val.section_name + ` - ` + val.term + ` Term`}</option>`;
+                }_${val.term}">${val.section_name + ` - ` + val.term + ` Term`}</option>`;
             });
             $("select[name='filterMyLoadSection']").html(filterSectionHTML);
         })
@@ -20,7 +20,7 @@ let filterMyLoadSection = () => {
 };
 filterMyLoadSection();
 
-let myClassTable = (section_id, subject_id) => {
+let myClassTable = (section_id, subject_id,term) => {
     $("#myClassTable").dataTable().fnDestroy();
     $("#myClassTable").DataTable({
         pageLenth: 50,
@@ -32,7 +32,7 @@ let myClassTable = (section_id, subject_id) => {
                   </div>`,
         },
 
-        ajax: `shs/load/student/${section_id}/${subject_id}`,
+        ajax: `shs/load/student/${section_id}/${subject_id}/${term}`,
         columns: [
             { data: "fullname" },
             {
@@ -113,8 +113,9 @@ $("select[name='filterMyLoadSection']").on("change", function () {
     let containID = $(this).val().split("_");
     let section_id = containID[0];
     let subject_id = containID[1];
+    let term = containID[2];
     if ($(this).val() != "") {
-        myClassTable(section_id, subject_id);
+        myClassTable(section_id, subject_id,term);
     } else {
         $("#gradingTable").html(`
         <tr>
@@ -181,7 +182,10 @@ $(document).on("blur", "input[name='inGrade']", function () {
                                       .split("_")[0],
                                   $("select[name='filterMyLoadSection']")
                                       .val()
-                                      .split("_")[1]
+                                    .split("_")[1],
+                                    $("select[name='filterMyLoadSection']")
+                                    .val()
+                                    .split("_")[2]
                               )
                             : "";
                         console.log(data);

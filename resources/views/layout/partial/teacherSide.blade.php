@@ -124,12 +124,13 @@
             </ul>
         </li>
         @endif
-        @endif
         <li class="{{ request()->is('teacher/my/certificate')?'active':'' }}">
             <a class="nav-link" href="{{ route('teacher.certificate') }}">
                 <i class="fas fa-certificate"></i><span>Certificate</span>
             </a>
         </li>
+        @endif
+       
         <li><a class="nav-link" href="{{ route('auth.logout') }}"
                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i
                     class="fas fa-sign-out-alt text-danger"></i><span class="text-danger">Logout</span></a>

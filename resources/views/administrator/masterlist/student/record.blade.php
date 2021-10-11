@@ -2,7 +2,10 @@
 @section('content')
 <section class="section">
     @php
-    $sum=0;
+    $sum7=0;
+    $sum8=0;
+    $sum9=0;
+    $sum10=0;
     $seven=0;
     $eight=0;
     $nine=0;
@@ -73,7 +76,7 @@
                                             {{ computedGrade($item->first,$item->second,$item->third,$item->fourth,'remark') }}
                                             @php
                                             $seven++;
-                                            $sum+=computedGrade($item->first,$item->second,$item->third,$item->fourth,'final')
+                                            $sum7+=computedGrade($item->first,$item->second,$item->third,$item->fourth,'final')
                                             @endphp
                                         </th>
                                     </tr>
@@ -81,8 +84,10 @@
                                     <tr>
                                         <th></th>
                                         <th colspan="4" class="text-center">General Average</th>
-                                        <th>{{ round($sum/$seven) }}</th>
-                                        <th colspan="1"></th>
+                                        <th>{{ $seven!=0? round($sum7/$seven):'0' }}</th>
+                                        <th colspan="1">
+                                            {{ $seven!=0? round($sum7/$seven)<75?'Failed':'Passed':'0' }}
+                                        </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -140,7 +145,7 @@
                                             {{ computedGrade($item->first,$item->second,$item->third,$item->fourth,'remark') }}
                                             @php
                                             $eight++;
-                                            $sum+=computedGrade($item->first,$item->second,$item->third,$item->fourth,'final')
+                                            $sum8+=computedGrade($item->first,$item->second,$item->third,$item->fourth,'final')
                                             @endphp
                                         </th>
                                     </tr>
@@ -149,8 +154,10 @@
                                     <tr>
                                         <th></th>
                                         <th colspan="4" class="text-center">General Average</th>
-                                        <th>{{ $eight!=0? round($sum/$eight):'0' }}</th>
-                                        <th colspan="1"></th>
+                                        <th>{{ $eight!=0? round($sum8/$eight):'0' }}</th>
+                                        <th colspan="1">
+                                            {{ $eight!=0? round($sum8/$eight)<75?'Failed':'Passed':'0' }}
+                                        </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -208,7 +215,7 @@
                                             {{ computedGrade($item->first,$item->second,$item->third,$item->fourth,'remark') }}
                                             @php
                                             $nine++;
-                                            $sum+=computedGrade($item->first,$item->second,$item->third,$item->fourth,'final')
+                                            $sum9+=computedGrade($item->first,$item->second,$item->third,$item->fourth,'final')
                                             @endphp
                                         </th>
                                     </tr>
@@ -217,8 +224,10 @@
                                     <tr>
                                         <th></th>
                                         <th colspan="4" class="text-center">General Average</th>
-                                        <th>{{ $nine!=0? round($sum/$nine):'0' }}</th>
-                                        <th colspan="1"></th>
+                                        <th>{{ $nine!=0? round($sum9/$nine):'0' }}</th>
+                                        <th colspan="1">
+                                            {{ $nine!=0? round($sum9/$nine)<75?'Failed':'Passed':'0' }}
+                                        </th>
                                     </tr>
                                 </tbody>
                             </table>
@@ -275,7 +284,7 @@
                                             {{ computedGrade($item->first,$item->second,$item->third,$item->fourth,'remark') }}
                                             @php
                                             $ten++;
-                                            $sum+=computedGrade($item->first,$item->second,$item->third,$item->fourth,'final')
+                                            $sum10+=computedGrade($item->first,$item->second,$item->third,$item->fourth,'final')
                                             @endphp
                                         </th>
                                     </tr>
@@ -284,8 +293,10 @@
                                     <tr>
                                         <th></th>
                                         <th colspan="4" class="text-center">General Average</th>
-                                        <th>{{ $ten!=0? round($sum/$ten):'0' }}</th>
-                                        <th colspan="1"></th>
+                                        <th>{{ $ten!=0? round($sum10/$ten):'0' }}</th>
+                                        <th colspan="1">
+                                            {{ $ten!=0? round($sum10/$ten)<75?'Failed':'Passed':'0' }}
+                                        </th>
                                     </tr>
                                 </tbody>
                             </table>

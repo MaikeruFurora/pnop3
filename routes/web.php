@@ -325,7 +325,7 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     // grading senior high
     Route::get('grading/shs', [TeacherSHSController::class, 'grading'])->name('grading.shs');
     Route::get('grading/shs/load/subject', [TeacherSHSController::class, 'loadMySection']);
-    Route::get('grading/shs/load/student/{section}/{subject}', [TeacherSHSController::class, 'loadMyStudent']);
+    Route::get('grading/shs/load/student/{section}/{subject}/{term}', [TeacherSHSController::class, 'loadMyStudent']);
     Route::post('grading/shs/student/now', [GradeController::class, 'gradeStudentNowSHS']);
 
 
