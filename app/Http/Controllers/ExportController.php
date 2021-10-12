@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Exports\EnrollmentExport;
+use App\Exports\EnrollmentMasterList;
+use App\Exports\GradingExport;
+use App\Models\Section;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -15,5 +19,13 @@ class ExportController extends Controller
         } else {
             return Excel::download(new EnrollmentExport($status, $curriculum, $grade_level), strtoupper($curriculum) . '-' . date("F_d_Y") . $format);
         }
+    }
+
+    public function exportMasterList(){
+        return Excel::download(new EnrollmentMasterList, 'Enrollment-Masterlist-'.date("F_d_Y").'.xlsx');
+    }
+
+    public function exportMyTemplate(Section $section,Subject $subject,$type){
+        return Excel::download(new GradingExport($section->id,$subject->id,$type), strtoupper($section->section_name.'-'.$section->grade_level).'-'.strtoupper($subject->descriptive_title).'-'.date("F_d_Y").'.xlsx');
     }
 }

@@ -68,6 +68,7 @@ class EnrollmentController extends Controller
         return response()->json(['data' => $data]);
     }
 
+
     public function enrolledSubject($enrolled)
     {
         $enrolledSubject = Enrollment::select('enrollments.student_id', 'enrollments.section_id', 'enrollments.grade_level', 'enrollments.curriculum')

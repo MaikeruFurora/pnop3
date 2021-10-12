@@ -60,3 +60,7 @@ enrollmentTable("all");
 $("select[name='selectedGL']").on("change", function () {
     enrollmentTable($(this).val());
 });
+
+$("button[name='btnExport']").on('click', function () {
+    window.open("enrollment/export/by/level")
+});

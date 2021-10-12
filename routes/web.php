@@ -13,6 +13,7 @@ use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\StrandController;
@@ -88,6 +89,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('enrollment', [AdminController::class, 'enrollment'])->name('enrollment');
     Route::get('enrollment/list/{level}', [EnrollmentController::class, 'masterList']);
     Route::post('enrollment/status', [EnrollmentController::class, 'changeStatus']);
+    Route::get('enrollment/export/by/level', [ExportController::class, 'exportMasterList']);
 
     // appointment route
     Route::get('appointment', [AdminController::class, 'appointment'])->name('appointment');
@@ -269,6 +271,11 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::get('grading/load/subject', [TeacherController::class, 'loadMySection']);
     Route::get('grading/load/student/{section}/{subject}', [TeacherController::class, 'loadMyStudent']);
     Route::post('grade/student/now', [GradeController::class, 'gradeStudentNow']);
+
+    //export subject teacher template class
+    Route::get('export/grade/{section}/{subject}/{type}', [ExportController::class, 'exportMyTemplate']);
+    //import subject teacher template class
+    Route::post('import/grade/{section}/{subject}/{type}', [ImportController::class, 'importMyTemplate']);
     
     //assign subject
     Route::get('assign', [TeacherController::class, 'assign'])->name('class.assign');

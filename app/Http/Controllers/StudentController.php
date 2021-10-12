@@ -224,6 +224,12 @@ class StudentController extends Controller
 
         if ($action_taken == 'Retained') { //if student retained in year level means this is backsubject will reset in grade level
             BackSubject::where('student_id', $request->id)->where('grade_level', $countFail[0]->grade_level)->delete();
+            $subjects = Subject::where('grade_level', $countFail[0]->grade_level)->whereIn('subject_for', [$studInfo->curriculum, 'GENERAL'])->get();
+            foreach ($subjects as $subject) {
+                Grade::where('student_id',$request->id)
+                ->where('subject_id',$subject->id)
+                ->delete();
+            }
         }
 
         return Enrollment::create([

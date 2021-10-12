@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\SchoolYear;
+use Illuminate\Support\Facades\Config;
 
 class Helper
 {
@@ -25,5 +26,16 @@ class Helper
     public static function activeAY()
     {
         return SchoolYear::where('status', 1)->first();
+    }
+
+    public static function activeTerm()
+    {
+        if (Config::get('activeAY')->first_term == 'Yes') {
+            return '1st';
+        }
+
+        if (Config::get('activeAY')->second_term == 'Yes') {
+            return '2nd';
+        }
     }
 }

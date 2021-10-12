@@ -12,11 +12,12 @@
                     <h2 class="section-title">Enrollee's Today</h2>
 
                 </div>
-                <div class="col-lg-2 col-md-2">
-                    <div class="float-right mb-3">
-                        <div class="form-row align-items-center mt-3 ml-4 pb-0">
-
-                            <div class="col-auto my-1">
+                <div class="col-lg-3 col-md-4 col-sm-12">
+                    <div class="form-group my-3">
+                        <div class="input-group">
+                                <div class="input-group-prepend">
+                                <span class="input-group-text">Filter</span>
+                                </div>
                                 <select class="custom-select mr-sm-2" name="selectedGL">
                                     <option value="all">All</option>
                                     <option value="7">Grade 7</option>
@@ -26,10 +27,11 @@
                                     <option value="11">Grade 11</option>
                                     <option value="12">Grade 12</option>
                                 </select>
-                            </div>
-
+                          <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" name="btnExport">Export Enrollee</button>
+                          </div>
                         </div>
-                    </div>
+                      </div>
                 </div>
             </div>
         </div>

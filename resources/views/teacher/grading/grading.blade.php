@@ -16,6 +16,7 @@
     }
 </style>
 @endsection
+@include('teacher/grading/partial/importModal')
 @section('content')
 <div class="modal fade" id="fillGradeInPrevious" data-backdrop="static" data-keyboard="false" tabindex="-1"
     aria-labelledby="fillGradeInPreviousLabel" aria-hidden="true">
@@ -35,26 +36,32 @@
                 <div class="col-lg-5 col-md-8">
                     <h2 class="section-title">Grading</h2>
                 </div>
-                <div class="col-lg-2 col-md-2 my-4">
-                    <div class="float-right ">
-
-                        <form class="form-inline ">
-                            <select name="filterMyLoadSection" class="custom-select my-1 mr-sm-2" id="filterLabel">
+                <div class="col-lg-3 col-md-3 my-4">
+                        <div class="input-group">
+                            <select name="filterMyLoadSection" class="custom-select" id="filterLabel">
                             </select>
-                        </form>
-
-                    </div>
+                            <div class="input-group-append">
+                                
+                            </div>
+                        </div>
                 </div>
             </div>
         </div>
 
         <div class="card card-info">
             <div class="card-body pb-1">
-
-                <div class="">
-                    <div class="float-left">
-                        <span style="font-size: 15px" class="txtSubjectName badge badge-warning pt-1 pb-1 mt-2"></span>
-                    </div>
+                <div class="float-left">
+                    <span style="font-size: 15px" class="txtSubjectName badge badge-warning pt-1 pb-1 mt-2"></span>
+                </div>
+                <div class="col-lg-1 float-left">
+                    <button type="button" class="btn btn-outline-primary btn-block" id="btnImport"><i
+                            class="fas fa-cloud-upload-alt"></i>&nbsp;Import
+                    </button>
+                </div>
+                <div class="col-lg-1 float-left">
+                    <button class="btn btn-outline-secondary btnDownload" type="button"><i
+                        class="fas fa-cloud-download-alt"></i>Template</button>
+                </div>
                     {{-- table-responsive--}}
                     <div class="table responsive">
                         <table class="table  table-bordered table-hover" id="myClassTable" style="font-size: 14px">
@@ -77,7 +84,6 @@
                             </tbody> --}}
                         </table>
                     </div>
-                </div>
             </div>
         </div>
     </div>
