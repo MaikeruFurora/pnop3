@@ -99,6 +99,9 @@ class StudentSHSController extends Controller
         if ($action_taken == 'Retained') { //if student retained in year level means this is backsubject will reset in grade level
             BackSubject::where('student_id', $request->id)->where('grade_level', $countFail[0]->grade_level)->delete();
         }
+
+        Student::where('id',$request->id)->update(['last_school_attended'=>'PILI NATIONAL HIGH SCHOOL']);
+
         $activeTerm = $this->activeTerm();
         
         return Enrollment::create([

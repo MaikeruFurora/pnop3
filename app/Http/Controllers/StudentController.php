@@ -232,6 +232,8 @@ class StudentController extends Controller
             }
         }
 
+        Student::where('id',$request->id)->update(['last_school_attended'=>'PILI NATIONAL HIGH SCHOOL']);
+
         return Enrollment::create([
             'student_id' => $request->id,
             // 'section_id' => $request->section_id,
