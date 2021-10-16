@@ -87,7 +87,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
 
     // enrollment route
     Route::get('enrollment', [AdminController::class, 'enrollment'])->name('enrollment');
-    Route::get('enrollment/list/{level}', [EnrollmentController::class, 'masterList']);
+    Route::get('enrollment/list/{level}/{year}', [EnrollmentController::class, 'masterList']);
     Route::post('enrollment/status', [EnrollmentController::class, 'changeStatus']);
     Route::get('enrollment/export/by/level', [ExportController::class, 'exportMasterList']);
 

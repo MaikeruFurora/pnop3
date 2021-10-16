@@ -43,6 +43,7 @@ let myClassTable = $("#myClassTable").DataTable({
 });
 
 $(document).on("click", ".dropped", function () {
+   if (confirm("Are you sure you want drop this student?")) {
     let id = $(this).attr("id");
     $.ajax({
         url: "monitor/dropped/" + id,
@@ -65,4 +66,7 @@ $(document).on("click", ".dropped", function () {
             console.log(jqxHR, textStatus, errorThrown);
             getToast("error", "Eror", errorThrown);
         });
+   } else {
+       return false;
+   }
 });

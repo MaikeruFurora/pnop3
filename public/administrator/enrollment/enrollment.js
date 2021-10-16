@@ -1,4 +1,4 @@
-let enrollmentTable = (level) => {
+let enrollmentTable = (level,year) => {
     $("#enrollmentTable").dataTable().fnDestroy();
     $("#enrollmentTable").dataTable({
         processing: true,
@@ -10,7 +10,7 @@ let enrollmentTable = (level) => {
                   </div>`,
         },
 
-        ajax: "enrollment/list/" + level,
+        ajax: "enrollment/list/" + level + "/" + year,
         columns: [
             { data: "roll_no" },
             { data: "fullname" },
@@ -56,10 +56,15 @@ let enrollmentTable = (level) => {
         ],
     });
 };
-enrollmentTable("all");
+enrollmentTable("all",$("select[name='school_year_id']").val());
 $("select[name='selectedGL']").on("change", function () {
-    enrollmentTable($(this).val());
+    enrollmentTable($(this).val(),$("select[name='school_year_id']").val());
 });
+
+$("select[name='school_year_id']").on("change", function () {
+    enrollmentTable($("select[name='selectedGL']").val(),$(this).val());
+});
+
 
 $("button[name='btnExport']").on('click', function () {
     window.open("enrollment/export/by/level")

@@ -10,6 +10,7 @@
 @include('teacher/chairman/partial/setSectionForm')
 @include('teacher/chairman/partial/exportExcel')
 @include('teacher/chairman/partial/listEnrolled')
+@include('teacher/chairman/partial/viewRequirement')
 {{-- Modal end --}}
 <section class="section">
     <input type="hidden" name="current_curriculum" value="SPA">
@@ -61,6 +62,7 @@
                                         <th width="10%">Balik Aral</th>
                                         <th width="10%">Action Taken</th>
                                         <th width="8%">State</th>
+                                        <th width="10%">Requirements</th>
                                         <th width="13%">Action</th>
                                     </tr>
                                 </thead>

@@ -40,6 +40,9 @@ class CreateStudentsTable extends Migration
             $table->string('orig_password')->nullable();
             $table->string('password')->nullable();
             $table->string('student_status', 5)->nullable();
+            $table->string('req_grade')->nullable();
+            $table->string('req_psa')->nullable();
+            $table->string('req_goodmoral')->nullable();
             $table->string('completer', 5)->default('No');
             $table->timestamps();
         });

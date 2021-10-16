@@ -32,6 +32,21 @@ class FormController extends Controller
         return $this->authority('form/done', $tracking);
     }
 
+
+    public function nameReq($classfy,$request){
+        if (!empty($request)) {
+            $name = time().rand(1000,10000).rand(1000,10000).'_'.$classfy.'.'.$request->getClientOriginalExtension();
+            // $filePath = $request->storeAs('public/requirements', $name);
+            // $file->name = time().'_'.$request->file->getClientOriginalName();
+            $destinationPath = public_path('image/requirements');
+            $request->move($destinationPath,$name);
+            return 'image/requirements/' . $name;
+        } else {
+            return null;
+        }
+        
+    }
+
     public function store(Request $request)
     {
         if (empty(Helper::activeAY())) {
@@ -64,6 +79,9 @@ class FormController extends Controller
                     'father_contact_no' => $request->father_contact_no,
                     'guardian_name' => Str::title($request->guardian_name),
                     'guardian_contact_no' => $request->guardian_contact_no,
+                    'req_grade' => $this->nameReq('grade',$request->req_grade),
+                    'req_psa' => $this->nameReq('psa',$request->req_psa),
+                    'req_goodmoral' => $this->nameReq('goodmoral',$request->req_goodmoral),
                     'username' => Helper::create_username($request->student_firstname, $request->student_lastname),
                 ]);
                 return $this->preEnroll($newId->id, $request);
