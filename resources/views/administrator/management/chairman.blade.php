@@ -33,11 +33,11 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-lg-2 col-md-12 col-sm-12">
+                                <div class="col-lg-1 col-md-12 col-sm-12">
                                     <button type="submit"
-                                        class="btn btn-primary my-1 pl-4 pr-4 btnSavechairman">Save</button>
+                                        class="btn btn-block btn-primary my-1 pl-4 pr-4 btnSavechairman">Save</button>
                                     <button type="submit"
-                                        class="btn btn-warning my-1 pl-4 pr-4 cancelchairman">Cancel</button>
+                                        class="btn btn-block btn-warning my-1 pl-4 pr-4 cancelchairman">Cancel</button>
                                 </div>
                             </div>
                         </form>

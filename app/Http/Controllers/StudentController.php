@@ -283,6 +283,36 @@ class StudentController extends Controller
         return view('student/backsubject');
     }
 
+    public function storeProfileImage(Request $request){
+        // $destinationPath = public_path('image/profile');
+        // $request->file->move($destinationPath,$name);
+        
+        
+        
+        $this->deleteOldImage();
+        $image = $request->file('file');
+        // $input['imagename'] = time().'.'.$image->extension();
+        $name = time().rand(1000,10000).rand(1000,10000).'.'.$request->file->getClientOriginalExtension();
+        
+        // $filePath = public_path('image/profile');
+        
+        // $img = Image::make($image->path());
+        // $img->resize(110, 110, function ($const) {
+        //     $const->aspectRatio();
+        // })->save($filePath.'/'.$name);
+        $filePath = public_path('image/profile');
+        $image->move($filePath, $name);
+       return Student::where('id',Auth::user()->id)->update(['profile_image'=>$name]);
+    }
+
+
+    protected function deleteOldImage()
+    {
+      if (auth()->user()->profile_image){
+        return unlink(public_path('image/profile/'.auth()->user()->profile_image));
+      }
+     }
+
     public function reportBug()
     {
         return view("student/reportBug");

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\EnrollmentExport;
 use App\Exports\EnrollmentMasterList;
 use App\Exports\GradingExport;
+use App\Exports\FormExport;
 use App\Models\Section;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -27,5 +28,9 @@ class ExportController extends Controller
 
     public function exportMyTemplate(Section $section,Subject $subject,$type){
         return Excel::download(new GradingExport($section->id,$subject->id,$type), strtoupper($section->section_name.'-'.$section->grade_level).'-'.strtoupper($subject->descriptive_title).'-'.date("F_d_Y").'.xlsx');
+    }
+
+    public function exportEnrollmentForm($tracking_no){
+        return Excel::download(new FormExport($tracking_no), 'Enrollment-Form-'.date("F_d_Y").'.pdf');
     }
 }

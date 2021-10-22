@@ -45,7 +45,7 @@
                             <tbody></tbody>
                             <tbody id="gradeTable">
                                 <tr>
-                                    <td colspan="8" class="text-center text-white">No data available</td>
+                                    <td colspan="8" class="text-center text-black">No subjects available</td>
                                 </tr>
                             </tbody>
                             <tfoot>

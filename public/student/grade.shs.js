@@ -110,6 +110,7 @@ let filterGradeLevel = () => {
         dataType: "json",
     })
         .done(function (data) {
+            filterGradeLevelHTML += `<option value="">Select Grade Level</option>`;
             $(".txtSectionName").text(data[0].section_name);
             data.forEach((val) => {
                 console.log(val.status);
@@ -130,10 +131,14 @@ setTimeout(() => {
         .prop("selectedIndex", 0)
         .val()
         .split("_");
-    gradeTable(val[0], val[1],val[2]);
-}, 1000);
+    if (val!="") {
+        gradeTable(val[0], val[1],val[2]);
+    }
+}, 5000);
 
 $("select[name='filterGradeLevel']").on("change", function () {
     let data = $(this).val().split("_");
-    gradeTable(data[0], data[1],data[2]);
+    if (data!="") {
+        gradeTable(data[0], data[1],data[2]);
+    }
 });

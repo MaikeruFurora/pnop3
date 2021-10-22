@@ -28,31 +28,66 @@
 </head>
 
 <body>
+   
     <div id="app">
         <section class="section">
-            <div class="container mt-5">
-                <div class="page-error">
-                    <div class="page-inner">
-                        <img src="{{ asset('image/logo/logo.png') }}" alt="">
-
-                        <div class="page-description mt-5">
-                            <h3>Online Pre-Enrollment was successful</h3>
-                            <br><br>
-                            <p>Enrollment No: <b>{{ $data }}</b></p>
-                            <br>
-                            <small>* Please save the <b>enrollment no.</b> for your inquries </small><br><br>
-                            <p><i class="fa fa-address-book"></i> 09918742564 | <i class="fa fa-at"></i>
-                                302016@deped.gov.ph
-                                <br><i class="fa fa-map-marker-alt"></i> Zone 2, Lapaz Pawili, Pili Camarines Sur</p>
-                        </div>
+          <div class="container mt-5">
+            <div class="row">
+              <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2 mt-5">
+                {{-- <div class="login-brand">
+                  <img src="{{ asset('image/logo/logo.png') }}" alt="logo" width="100" class="shadow-light rounded-circle">
+                  <h3 class="mt-3">Online Pre-Enrollment was successful</h3>
+                </div> --}}
+    
+                <div class="card card-hero">
+                  <div class="card-header pb-3">
+                    <div class="card-icon">
+                        <i class="far fa-question-circle"></i>
+                      </div>
+                      <h4>{{ $data }}</h4>
+                      <div class="card-description">ENROLLMENT NO.</div>
+                      <small class="mb-0" style="font-size:12px">* Please save the enrollment no. for your inquries</small>
+                  </div>
+    
+                  <div class="card-body">
+                    
+                    <div class="tickets-list">
+                        <a href="#" class="ticket-item">
+                          <div class="ticket-title">
+                            <div class="login-brand">
+                                <img src="{{ asset('image/logo/logo.png') }}" alt="logo" width="100" class="shadow-light rounded-circle">
+                                <h4 class="mt-3">Online Pre-Enrollment was successful</h4>
+                                <small>{{ date("Y-m-d") }}</small>
+                              </div>
+                          </div>
+                        </a>
+                        <a href="#" class="ticket-item">
+                          <div class="ticket-title">
+                            <h4>School Contact & Information</h4>
+                          </div>
+                          <div class="ticket-info">
+                            <div><i class="fa fa-address-book"></i> 09918742564</div>
+                            <div class="bullet"></div>
+                            <div><i class="fa fa-at"></i> 302016@deped.gov.ph</div>
+                            <div class="bullet"></div>
+                            <div><i class="fa fa-map-marker-alt"></i> Zone 2, Lapaz Pawili, Pili Camarines Sur</div>
+                          </div>
+                        </a>
+                      
                     </div>
                 </div>
-                <div class="simple-footer mt-5">
-                    Copyright &copy; Stisla 2018
+                <a href="{{ route('done.download',$data) }}" class="ticket-item ticket-more btn btn-icon icon-left btn-primary btn-block p-3">
+                    <i class="fas fa-download"></i> Download Form
+                </a>
                 </div>
+                <div class="simple-footer">
+                  Copyright &copy; Stisla 2018
+                </div>
+              </div>
             </div>
+          </div>
         </section>
-    </div>
+      </div>
 
     <!-- General JS Scripts -->
     <script src="{{ asset('js/jquery-3.3.1.min.js') }}"></script>

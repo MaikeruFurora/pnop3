@@ -41,17 +41,23 @@
                   <p style="font-size: 12px" class="mb-4">* Please put N/A if not Applicable</p>
                   <form id="enrollForm" autocomplete="off">@csrf
                   <div class="row">
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                       <label for="frist_name">First Name</label>
                       <input id="frist_name" type="text" class="form-control" name="student_firstname" autofocus required>
                     </div>
-                    <div class="form-group col-4">
+                    <div class="form-group col-6">
                       <label for="last_name">Middle Name</label>
                       <input id="last_name" type="text" class="form-control" name="student_middlename">
                     </div>
-                    <div class="form-group col-4">
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-6">
                         <label for="last_name">Last Name</label>
                         <input id="last_name" type="text" class="form-control" name="student_lastname" required>
+                      </div>
+                      <div class="form-group col-6">
+                        <label>Extension Name</label>
+                        <input type="text" class="form-control">
                       </div>
                   </div>
 
