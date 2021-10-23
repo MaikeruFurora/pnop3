@@ -4,10 +4,94 @@
 <link rel="stylesheet" href="{{ asset('css/datatable/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}">
 @endsection
+
+<!-- Modal -->
+<form id="shsForm">@csrf
+<div class="modal fade" id="shsModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">SHS SUBJECT</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+         
+                <input type="hidden" name="shs_id">
+               <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>Indidate type</label>
+                        <select class="custom-select" name="shs_indicate_type" required>
+                            <option value="">Choose...</option>
+                            <option value="Core">Core</option>
+                            <option value="Specialized">Specialized</option>
+                            <option value="Applied">Applied</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Grade level</label>
+                        <select class="custom-select" name="shs_grade_level">
+                            <option value="">Grade Level</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Strand</label>
+                        <select class="custom-select" name="shs_strand_id">
+                            <option value="">Strand</option>
+                            @foreach ($strands as $item)
+                            <option value="{{ $item->id }}">{{ $item->strand }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject Code</label>
+                        <input type="text" class="form-control" placeholder="Subject Code" name="shs_subject_code" required>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="form-group">
+                        <label>Descriptive title</label>
+                        <input type="text" class="form-control" placeholder="Decriptive Title"  name="shs_descriptive_title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Term</label>
+                        <select class="custom-select" id="" name="shs_term">
+                            <option value="1st">First Term</option>
+                            <option value="2nd">Second Term</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Prerequisite</label>
+                        <select name="teacher_id" class="form-control select2" id="mySelect2" required>
+                            <option value=""></option>
+                            @foreach ($subjects as $item)
+                            <option value="{{ $item->id }}">{{ $item->descriptive_title }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+               </div>
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">Close</button>
+          <button class="btn btn-warning cancelSHS" type="button">Cancel</button>
+          <button type="button" class="btn btn-primary btnSHSsave">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+  {{--  --}}
+
 @section('content')
 <section class="section">
     <div class="section-body">
-        <h2 class="section-title">Manage Subject</h2>
+        <h2 class="section-title">Manage Subject for Junior High</h2>
         <div class="row">
             <div class="col-lg-8 col-md-8 col-sm-12">
                 <div class="card">
@@ -91,62 +175,55 @@
             for senior high
 
         -->
+        
+        <h2 class="section-title">Manage Subject for Senior High</h2>
         <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        Configure
+                        <h4>Configure</h4>
+                        <div class="card-header-action">
+                            <button class="btn btn-primary add_subject">
+                              ADD SUBJECT
+                            </button>
+                          </div>
                     </div>
                     <div class="card-body">
-                        <form id="shsForm">@csrf
-                            <input type="hidden" name="shs_id">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <select class="custom-select" name="shs_indicate_type" required>
-                                        <option value="">Choose...</option>
-                                        <option value="Core">Core</option>
-                                        <option value="Specialized">Specialized</option>
-                                        <option value="Applied">Applied</option>
-                                    </select>
-                                    <select class="custom-select" name="shs_grade_level">
-                                        <option value="">Grade Level</option>
-                                        <option value="11">11</option>
-                                        <option value="12">12</option>
-                                    </select>
-                                    <select class="custom-select" name="shs_strand_id">
-                                        <option value="">Strand</option>
-                                        @forelse ($strands as $item)
-                                        <option value="{{ $item->id }}">{{ $item->strand }}</option>
-                                        @empty
+                        <div class="table-responsive">
+                               <div class="input-group mb-5 mt-4">
+                                   <div class="input-group-prepend">
+                                       <label class="input-group-text" for="inputGroupSelect01">Filter</label>
+                                     </div>
+                                   <select class="custom-select" id="" name="filter_strand">
+                                    @foreach ($strands as $item)
+                                    <option value="{{ $item->id }}">{{ $item->strand }}</option>
+                                    @endforeach
+                                   </select>
+                                   
+                                   <select class="custom-select" name="filter_grade_level">
+                                    <option value="11">Grade 11</option>
+                                    <option value="12">Grade 12</option>
+                                  </select>
 
-                                        @endforelse
-                                    </select>
-                                    <input type="text" class="form-control" placeholder="Subject Code"
-                                        name="shs_subject_code" required>
-                                    <input type="text" class="form-control" placeholder="Decriptive Title"
-                                        name="shs_descriptive_title" required>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary btnSHSsave pl-4 pr-4" type="submit">Save</button>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-warning cancelSHS" type="button">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                                   <select class="custom-select" id="" name="filter_term">
+                                       <option value="1st">First Term</option>
+                                       <option value="2nd">Second Term</option>
+                                     </select>
+                                 </div>
                         <table class="table table-striped" id="shsTable">
                             <thead>
                                 <tr>
                                     <th>Type</th>
-                                    <th>Grade level</th>
                                     <th>Strand</th>
                                     <th>Subject Code</th>
                                     <th>Descriptive Title</th>
+                                    <th>Prerequisite</th>
                                     <th>Action Taken</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
                         </table>
+                       </div>
                     </div>
                 </div>
             </div>

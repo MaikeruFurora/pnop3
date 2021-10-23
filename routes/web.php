@@ -158,7 +158,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
 
     //subject shs route
     Route::post('subject/shs/save', [SubjectSHSController::class, 'store']);
-    Route::get('subject/shs/list', [SubjectSHSController::class, 'list']);
+    Route::get('subject/shs/list/{strand}/{grade}/{term}', [SubjectSHSController::class, 'list']);
     Route::delete('subject/shs/delete/{subject}', [SubjectSHSController::class, 'destroy']);
     Route::get('subject/shs/edit/{subject}', [SubjectSHSController::class, 'edit']);
 

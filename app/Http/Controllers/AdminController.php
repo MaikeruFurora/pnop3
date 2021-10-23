@@ -10,6 +10,7 @@ use App\Models\SchoolYear;
 use App\Models\Section;
 use App\Models\Strand;
 use App\Models\Student;
+use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -114,7 +115,8 @@ class AdminController extends Controller
     public function subject()
     {
         $strands = Strand::select('id', 'strand', 'description')->get();
-        return view('administrator/management/subject', compact('strands'));
+        $subjects = Subject::select('id', 'subject_code', 'descriptive_title')->whereNull('subject_for')->get();
+        return view('administrator/management/subject', compact('strands','subjects'));
     }
 
 

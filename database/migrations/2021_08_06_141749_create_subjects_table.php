@@ -22,6 +22,8 @@ class CreateSubjectsTable extends Migration
             $table->string('descriptive_title')->nullable();
             $table->string('subject_for', 45)->nullable();
             $table->string('indicate_type', 45)->nullable();
+            $table->string('prerequisite', 50)->nullable();
+            $table->string('term', 45)->nullable();
             $table->timestamps();
         });
     }

@@ -38,16 +38,17 @@ const subjectTable = (level) => {
                             </td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-info pl-3 pr-3 editSubject editSub_${
-                                        val.id
-                                    }" id="${
-                        val.id
-                    }"><i class="fas fa-edit"></i></button>
-                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-danger pl-3 pr-3 deleteSubject deleteSub_${
+                                </button>
+                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-warning pb-2 pt-2 pl-3 pr-3 deleteSubject deleteSub_${
                                         val.id
                                     }" id="${
                         val.id
                     }"><i class="fas fa-times"></i></button>
+                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-info pb-2 pt-2 pl-3 pr-3 editSubject editSub_${
+                                        val.id
+                                    }" id="${
+                        val.id
+                    }"><i class="fas fa-edit"></i>
                                 </div>
                             </td>
                         </tr>
