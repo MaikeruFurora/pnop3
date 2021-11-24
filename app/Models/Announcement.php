@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Announcement extends Model
 {
     use HasFactory;
+    protected $guarded = [];
+
+    protected $casts=[
+        'visible_by'=>'array'
+    ];
 }

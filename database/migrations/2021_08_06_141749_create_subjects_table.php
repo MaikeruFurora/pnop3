@@ -18,11 +18,12 @@ class CreateSubjectsTable extends Migration
             $table->unsignedBigInteger('strand_id')->nullable();
             $table->foreign('strand_id')->references('id')->on('strands');
             $table->tinyInteger('grade_level')->nullable();
-            $table->string('subject_code', 45)->unique();
+            $table->string('subject_code', 45)->nullable();
             $table->string('descriptive_title')->nullable();
             $table->string('subject_for', 45)->nullable();
             $table->string('indicate_type', 45)->nullable();
-            $table->string('prerequisite', 50)->nullable();
+            $table->unsignedBigInteger('prerequisite')->nullable();
+            $table->foreign('prerequisite')->references('id')->on('subjects');
             $table->string('term', 45)->nullable();
             $table->timestamps();
         });

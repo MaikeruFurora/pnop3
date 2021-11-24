@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Helpers\Helper;
+use App\Models\Announcement;
 use App\Models\BackSubject;
 use App\Models\Enrollment;
 use App\Models\Grade;
+use App\Models\SchoolProfile;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +23,7 @@ class StudentController extends Controller
 
     public function dashboard()
     {
+        $post = Announcement::latest()->get();
         if (Auth::user()->completer == "Yes") {
             $enrolledData = Enrollment::join('students', 'enrollments.student_id', 'students.id', 'enrollments.grade_level')
                 ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
@@ -39,7 +42,7 @@ class StudentController extends Controller
         }
 
 
-        return view('student/dashboard', compact('enrolledData'));
+        return view('student/dashboard', compact('enrolledData','post'));
     }
 
     public function store(Request $request)
@@ -62,7 +65,7 @@ class StudentController extends Controller
                 'city' =>  $request->city,
                 'barangay' =>  $request->barangay,
                 'last_school_attended' => $request->last_school_attended,
-                'last_schoolyear_attended' => $request->last_schoolyear_attended,
+                // 'last_schoolyear_attended' => $request->last_schoolyear_attended,
                 'isbalik_aral' => !empty($request->last_schoolyear_attended) ? 'Yes' : 'No',
                 'mother_name' => $request->mother_name,
                 'mother_contact_no' => $request->mother_contact_no,
@@ -93,7 +96,7 @@ class StudentController extends Controller
             'city' =>  $request->city_update,
             'barangay' =>  $request->barangay_update,
             'last_school_attended' => $request->last_school_attended,
-            'last_schoolyear_attended' => $request->last_schoolyear_attended,
+            // 'last_schoolyear_attended' => $request->last_schoolyear_attended,
             'isbalik_aral' => !empty($request->last_schoolyear_attended) ? 'Yes' : 'No',
             'mother_name' => $request->mother_name,
             'mother_contact_no' => $request->mother_contact_no,
@@ -191,7 +194,7 @@ class StudentController extends Controller
     public function enrollment()
     {
         $dataArr = array();
-        $ifexist = Enrollment::select('enrollments.enroll_status', 'enrollments.action_taken', 'section_name', 'enrollments.grade_level')
+        $ifexist = Enrollment::select('enrollments.enroll_status', 'enrollments.action_taken', 'section_name', 'enrollments.grade_level','enrollments.curriculum','enrollments.tracking_no')
             ->join('students', 'enrollments.student_id', 'students.id')
             ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
             ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
@@ -202,8 +205,19 @@ class StudentController extends Controller
             $dataArr['status'] = $ifexist->enroll_status;
             $dataArr['action_taken'] = $ifexist->action_taken;
             $dataArr['section'] = $ifexist->section_name;
+            $dataArr['curriculum'] = $ifexist->curriculum;
+            $dataArr['tracking_no'] = $ifexist->tracking_no;
             $dataArr['grade_level'] = 'Grade ' . $ifexist->grade_level;
         } else {
+           $putDataForPreviuosLevel=Enrollment::select('enrollments.created_at','enrollments.enroll_status', 'enrollments.action_taken', 'section_name', 'enrollments.grade_level','enrollments.curriculum')
+            ->join('students', 'enrollments.student_id', 'students.id')
+            ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+            ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+            // ->where('school_years.status', 1)
+            ->where('students.id', Auth::user()->id)
+            ->latest()->first();
+            $dataArr['curriculum'] = $putDataForPreviuosLevel->curriculum;
+            $dataArr['grade_level'] = 'Grade ' . $putDataForPreviuosLevel->grade_level;
             $dataArr['status'] = 'Ongoing';
             $dataArr['action_taken'] = 'None';
         }
@@ -218,21 +232,25 @@ class StudentController extends Controller
 
     public function selfEnroll(Request $request)
     {
-        $countFail =  BackSubject::where('back_subjects.student_id', $request->id)->where('remarks', 'none')->get();
+        // $countFail =  BackSubject::where('back_subjects.student_id', $request->id)->where('remarks', 'none')->get();
+         $countFail =  Grade::where('student_id', $request->id)->where('avg','<',75)->whereNull('remarks')->get();
         $action_taken = $countFail->count() == 0 ? 'Promoted' : ($countFail->count() < 3 ? 'Partialy Promoted' : 'Retained');
         $studInfo = Enrollment::select('grade_level', 'curriculum')->where('student_id', $request->id)->latest()->first();
 
         if ($action_taken == 'Retained') { //if student retained in year level means this is backsubject will reset in grade level
-            BackSubject::where('student_id', $request->id)->where('grade_level', $countFail[0]->grade_level)->delete();
+            // BackSubject::where('student_id', $request->id)->where('grade_level', $countFail[0]->grade_level)->delete();
             $subjects = Subject::where('grade_level', $countFail[0]->grade_level)->whereIn('subject_for', [$studInfo->curriculum, 'GENERAL'])->get();
             foreach ($subjects as $subject) {
                 Grade::where('student_id',$request->id)
                 ->where('subject_id',$subject->id)
+                ->where('section_id',$studInfo->section_id)
                 ->delete();
             }
         }
 
-        Student::where('id',$request->id)->update(['last_school_attended'=>'PILI NATIONAL HIGH SCHOOL']);
+        $tracking_no = rand(99, 1000) . '-' . rand(99, 1000);
+
+        $sp = SchoolProfile::find(1);
 
         return Enrollment::create([
             'student_id' => $request->id,
@@ -242,20 +260,38 @@ class StudentController extends Controller
             'date_of_enroll' => date("d/m/Y"),
             'action_taken' => $action_taken,
             'enroll_status' => 'Pending',
+            'tracking_no' => $tracking_no,
             'curriculum' => $studInfo->curriculum,
+            'last_school_attended'=>$sp->school_name,
             'student_type' => ($studInfo->grade_level + 1) <= 10 ? 'JHS' : null,
             'state' => 'Old',
         ]);
     }
 
+    /**
+     * 
+     * 
+     * 
+     * 
+     * 
+     *  ADMIN SIDE TO
+     * 
+     * 
+     * 
+     * 
+     */
     public function viewRecord(Student $student)
     {
         $recordSeven = $this->gradeViewAll($student->id, 7);
         $recordEight = $this->gradeViewAll($student->id, 8);
         $recordNine = $this->gradeViewAll($student->id, 9);
         $recordTen = $this->gradeViewAll($student->id, 10);
+        $recordElevenFirst = $this->gradeViewAllShs($student->id, 11,'1st');
+        $recordElevenSecond = $this->gradeViewAllShs($student->id, 11,'2nd');
+        $recordTwelveFirst = $this->gradeViewAllShs($student->id, 12,'1st');
+        $recordTwelveSecond = $this->gradeViewAllShs($student->id, 12,'2nd');
 
-        return view('administrator/masterlist/student/record', compact('student', 'recordSeven', 'recordEight', 'recordNine', 'recordTen'));
+        return view('administrator/masterlist/student/record', compact('student', 'recordSeven', 'recordEight', 'recordNine', 'recordTen','recordElevenFirst','recordElevenSecond','recordTwelveFirst','recordTwelveSecond'));
     }
 
     public function gradeViewAll($id, $gl)
@@ -276,6 +312,28 @@ class StudentController extends Controller
             ->join('teachers', 'sections.teacher_id', 'teachers.id')
             ->where('students.id', $id)
             ->where('subjects.grade_level', $gl)
+            ->get();
+    }
+
+    public function gradeViewAllShs($id, $gl,$term)
+    {
+        return Grade::select(
+            "first",
+            'second',
+            'third',
+            'fourth',
+            'sections.section_name',
+            'subjects.descriptive_title',
+            'subjects.grade_level',
+            DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as fullname")
+        )
+            ->join("students", "grades.student_id", "students.id")
+            ->join('subjects', 'grades.subject_id', 'subjects.id')
+            ->join('sections', 'grades.section_id', 'sections.id')
+            ->join('teachers', 'sections.teacher_id', 'teachers.id')
+            ->where('students.id', $id)
+            ->where('subjects.grade_level', $gl)
+            ->where('grades.term', $term)
             ->get();
     }
     public function backsubject()

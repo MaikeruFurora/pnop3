@@ -2,7 +2,9 @@
 @section('moreCss')
 <link rel="stylesheet" href="{{ asset('css/datatable/dataTables.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/datatable/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/datatable/dataTables.checkboxes.css') }}">
 <link rel="stylesheet" href="{{ asset('css/fullcalendar/fullcalendar.min.css') }}">
+<link rel="stylesheet" href="{{ asset('css/summernote-bs4.css') }}">
 @endsection
 @section('content')
 @include('administrator/appointment/partial/holidayForm')
@@ -23,7 +25,7 @@
 
                 </div>
                 <div class="col-lg-2 col-md-2">
-                    <button class="btn btn-icon icon-left btn-primary my-4 float-right" id="btnModalHoliday"><i class="fas fa-plus-circle"></i> Add Holiday</button>
+                    <button class="btn btn-icon icon-left btn-primary my-4 float-right" id="btnModalHoliday"><i class="fas fa-plus-circle"></i> Event &amp; Holiday</button>
 
                 </div>
             </div>
@@ -70,6 +72,8 @@
 <script src="{{ asset('js/datatable/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('js/datatable/dataTables.checkboxes.min.js') }}"></script>
 <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+<script src="{{ asset('js/summernote-bs4.js') }}"></script>
 <script src="{{ asset('administrator/appointment/appointment.js') }}"></script>
 @endsection

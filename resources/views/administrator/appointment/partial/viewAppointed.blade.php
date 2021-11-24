@@ -15,10 +15,14 @@
                     <button type="button" class="btn btn-icon icon-left btn-primary mr-3" id="printAppointed">
                         <i class="fas fa-print"></i> Print Now
                     </button>
+                    <button type="button" class="btn btn-icon icon-left btn-primary mr-3" id="btnSendEmail">
+                        <i class="fa fa-paper-plane"></i> Send Email for All
+                    </button>
                 </div>
-                <table class="table table-striped" id="appointedTable" style="font-size: 12px">
+                <table class="table table-striped" id="appointedTable" style="font-size: 12px;width:100%">
                     <thead>
                         <tr>
+                            <th></th>
                             <th width="13%">Transaction No.</th>
                             <th width="15%">Name</th>
                             <th width="15%">Contact</th>
@@ -30,6 +34,16 @@
                     <tbody></tbody>
                 </table>
                </div>
+               
+               <form class="was-validated mt-5" id="sendEmailForm">
+                <div class="mb-3">
+                  <h6>Compose email message</h6>
+                  <input type="hidden" name="selectedDateNow">
+                  <textarea name="bodyEmail" class="summernote"  data-height="50" placeholder="Compose message here" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btnSendEmail">Send</button>
+                <button type="button" class="btn btn-warning sendCancel">Close</button>
+               </form>
             </div>
         </div>
     </div>

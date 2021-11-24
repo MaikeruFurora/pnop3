@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}">
 @endsection
 @section('content')
+@include('teacher/chairman/partial/deleteModal')
 <section class="section">
     <div class="section-body">
         <h2 class="section-title">Manage Section | Grade {{ auth()->user()->chairman_info->grade_level }} Chairman</h2>

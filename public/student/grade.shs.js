@@ -18,6 +18,11 @@ let gradeTable = (level, section,term) => {
         },
     })
         .done(function (data) {
+            /**
+             * <td class="">
+                ${val.fullname == null ? "---" : val.fullname}
+                </td>
+             */
             setTimeout(() => {
                 let overallGrade = 0;
                 if (data.length > 0) {
@@ -28,9 +33,9 @@ let gradeTable = (level, section,term) => {
                         <tr style="background-color:${
                             val.avg < 75 && val.avg != null ? "#ffe6e6" : ""
                         }">
-                            <td class="">
-                            ${val.fullname == null ? "---" : val.fullname}
-                            </td>
+                            
+
+
                             <td class="">
                             ${val.descriptive_title}
                             </td>
@@ -103,19 +108,19 @@ let gradeTable = (level, section,term) => {
 };
 let active_term = $('input[name="active_term"]').val()
 let filterGradeLevel = () => {
-    let filterGradeLevelHTML;
+    let filterGradeLevelHTML = `<option value="">Select Grade Level</option>`;
     $.ajax({
         url: "level/list",
         type: "GET",
         dataType: "json",
     })
         .done(function (data) {
-            filterGradeLevelHTML += `<option value="">Select Grade Level</option>`;
             $(".txtSectionName").text(data[0].section_name);
             data.forEach((val) => {
                 console.log(val.status);
-                filterGradeLevelHTML += `<option ${ val.status == "1" && val.term == active_term ? "selected" : "" }
-                     value="${val.grade_level}_${val.section_id}_${val.term}">Grade ${val.grade_level} - ${val.term} Term</option>`;
+                filterGradeLevelHTML += `<option value="${val.grade_level}_${val.section_id}_${val.term}">Grade ${val.grade_level} - ${val.term} Term</option>`;
+                // filterGradeLevelHTML += `<option ${ val.status == "1" && val.term == active_term ? "selected" : "" }
+                // value="${val.grade_level}_${val.section_id}_${val.term}">Grade ${val.grade_level} - ${val.term} Term</option>`;
             });
             $("select[name='filterGradeLevel']").html(filterGradeLevelHTML);
         })

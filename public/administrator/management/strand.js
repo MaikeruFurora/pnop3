@@ -135,24 +135,36 @@ $(document).on("click", ".editStrand", function () {
 
 $(document).on("click", ".deleteStrand", function () {
     let id = $(this).attr("id");
+    $('.deleteYes').val(id)
+    $("#teacherDeleteModal").modal("show");
+});
+
+
+
+
+
+$(".deleteYes").on('click', function () {
     $.ajax({
-        url: "strand/delete/" + id,
+        url: "strand/delete/" + $(this).val(),
         type: "DELETE",
         data: { _token: $('input[name="_token"]').val() },
         beforeSend: function () {
-            $(".deleteStrand_" + id).html(`
+            $(".deleteYes").html(`
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
             </div>`);
         },
     })
         .done(function (response) {
-            $(".deleteStrand_" + id).html("Delete");
+            $(".deleteYes").html("Yes");
             getToast("success", "Success", "deleted one record");
             strandTable();
+            $(this).val('')
+            $("#teacherDeleteModal").modal("hide");
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
             getToast("error", "Eror", errorThrown);
+            $(".deleteYes").html("Yes");
         });
-});
+})

@@ -455,34 +455,65 @@ $(".btnCancelSectionNow").on("click", function () {
 
 $(document).on("click", ".cDelete", function () {
     let id = $(this).attr("id");
-    if (confirm("Are you sure you want delete this student pernamently?")) {
-        $.ajax({
-            url: "delete/" + id,
-            type: "DELETE",
-            data: { _token: $('input[name="_token"]').val() },
-            beforeSend: function () {
-                $(".btnDelete_" + id).html(`
-                <div class="spinner-border spinner-border-sm" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>`);
-            },
-        })
-            .done(function (response) {
-                $(".btnDelete_" + id).html("Delete");
+    $('.deleteYes').val(id)
+    $("#teacherDeleteModal").modal("show");
+    
+    // if (confirm("Are you sure you want delete this student pernamently?")) {
+    //     $.ajax({
+    //         url: "delete/" + id,
+    //         type: "DELETE",
+    //         data: { _token: $('input[name="_token"]').val() },
+    //         beforeSend: function () {
+    //             $(".btnDelete_" + id).html(`
+    //             <div class="spinner-border spinner-border-sm" role="status">
+    //                 <span class="sr-only">Loading...</span>
+    //             </div>`);
+    //         },
+    //     })
+    //         .done(function (response) {
+    //             $(".btnDelete_" + id).html("Delete");
 
-                getToast("success", "Success", "deleted one record");
-                monitorSection(current_curriculum);
-                findTableToRefresh(current_curriculum);
-                filterBarangay();
-            })
-            .fail(function (jqxHR, textStatus, errorThrown) {
-                console.log(jqxHR, textStatus, errorThrown);
-                getToast("error", "Eror", errorThrown);
-            });
-    } else {
-        return false;
-    }
+    //             getToast("success", "Success", "deleted one record");
+    //             monitorSection(current_curriculum);
+    //             findTableToRefresh(current_curriculum);
+    //             filterBarangay();
+    //         })
+    //         .fail(function (jqxHR, textStatus, errorThrown) {
+    //             console.log(jqxHR, textStatus, errorThrown);
+    //             getToast("error", "Eror", errorThrown);
+    //         });
+    // } else {
+    //     return false;
+    // }
 });
+
+
+$(".deleteYes").on('click', function () {
+    $.ajax({
+        url: "delete/" + $(this).val(),
+        type: "DELETE",
+        data: { _token: $('input[name="_token"]').val() },
+        beforeSend: function () {
+            $(".deleteYes").html(`
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>`);
+        },
+    })
+        .done(function (response) {
+            $(".deleteYes").html("Delete");
+            getToast("success", "Success", "deleted one record");
+            monitorSection(current_curriculum);
+            findTableToRefresh(current_curriculum);
+            filterBarangay();
+            $(this).val('')
+            $("#teacherDeleteModal").modal("hide");
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            console.log(jqxHR, textStatus, errorThrown);
+            getToast("error", "Eror", errorThrown);
+        });
+})
 
 /**
  *

@@ -74,6 +74,11 @@ class Teacher extends Authenticatable
         return $this->hasMany(Assign::class);
     }
 
+    public function newassign()
+    {
+        return $this->hasMany(Newassign::class);
+    }
+
     public function getChairmanInfoAttribute()
     {
         return Chairman::select('grade_level')->join('teachers', 'chairmen.teacher_id', 'teachers.id')
@@ -101,4 +106,16 @@ class Teacher extends Authenticatable
             ->where('school_years.status', 1)
             ->where('assigns.teacher_id', $this->id)->get();
     }
+
+
+    // public function getNewassignInfoAttribute()
+    // {
+    //     return Assign::select('newassigns.grade_level', 'sections.class_type', 'sections.section_name')
+    //         ->join('teachers', 'newassigns.teacher_id', 'teachers.id')
+    //         ->leftjoin('subjects', 'newassigns.subject_id', 'subjects.id')
+    //         ->leftjoin('sections', 'newassigns.section_id', 'sections.id')
+    //         ->join('school_years', 'newassigns.school_year_id', 'school_years.id')
+    //         ->where('school_years.status', 1)
+    //         ->where('assigns.teacher_id', $this->id)->get();
+    // }
 }

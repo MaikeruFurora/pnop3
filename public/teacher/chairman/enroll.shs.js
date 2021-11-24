@@ -1,5 +1,5 @@
 let filterSection = (strand) => {
-    let htmlHold = "";
+    let htmlHold = "<option value=''>Choose Section...</option>";
     $.ajax({
         url: `enrollee/filter/section/senior/${strand}`,
         type: "GET",
@@ -125,15 +125,19 @@ let gradeElevenTable = $("#gradeElevenTable").DataTable({
                     return `
                    ${
                        data.enroll_status == "Enrolled"
-                           ? `<button type="button" class="btn btn-sm btn-primary  cEdit btnEdit_${data.id} pt-0 pb-0 pl-5 pr-5 " id="${data.id}">
+                           ? `<button type="button" class="btn btn-sm btn-primary  cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
                            <i class="fas fa-edit"></i>
-               </button>`
-                           : `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-4 pr-4" id="${data.id}">
+                            </button>&nbsp;
+                            <button type="button" class="btn btn-sm btn-info btnMain btnMain_${data.id} pt-0 pb-0 pl-3 pr-3 " value="${data.id}">
+                                Subjects
+                            </button>`
+                        :
+                        `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-4 pr-4" id="${data.id}">
                            <i class="fas fa-times"></i>
                         </button>&nbsp;
                         <button type="button" class="btn btn-sm btn-info cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
-                Enroll
-               </button>`
+                            Enroll
+                        </button>`
                    }
                     `;
                 }
@@ -238,8 +242,9 @@ $(document).on("click", ".cEdit", function () {
         .done(function (response) {
             $(".alert-warning").hide();
             filterSection(response.strand_id);
+           setTimeout(() => {
             $(".nameOfStudent").val(response.fullname);
-            $('select[name="section"]').val(response.section_id);
+            $('#sectionFilter').val(response.section_id);
             $("input[name='enroll_id']").val(response.id);
             $(".btnEdit_" + id).html(
                 response.section_id != ""
@@ -247,6 +252,7 @@ $(document).on("click", ".cEdit", function () {
                     : "Section"
             );
             $("#setSectionModal").modal("show");
+           }, 3000);
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
@@ -319,7 +325,7 @@ let monitorSection = (strand, term) => {
                         <span class="badge badge-transparent ">${val.total}</span>
                         </span>
                     </button>
-                    <button type="button" class="btn btn-info border-left p-2 pl-3 pr-3 printBtn" value='${val.section_name}_${term}'><i class="fa fa-print" style="font-size:15px"></i></button>
+                    <button type="button" class="btn btn-info border-left p-2 pl-3 pr-3 printBtn" value='${val.section_id}_${term}'><i class="fa fa-print" style="font-size:15px"></i></button>
                 </div>
                `;
             });

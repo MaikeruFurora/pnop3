@@ -117,6 +117,46 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                 <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            BACK-UP HISTORY
+                        </div>
+                        <div class="card-body">
+                         <table class="table">
+                             <thead>
+                                 <tr>
+                                     <td>#</td>
+                                     <td>File name</td>
+                                     <td>Action</td>
+                                 </tr>
+                             </thead>
+                             <tbody>
+                                 @php
+                                     $key=1;
+                                 @endphp
+                                @forelse ($fileRetrive as $item)
+                                    <tr>
+                                        <td>{{ $key++ }}</td>
+                                        <td>{{ $item }}</td>
+                                        <td>
+                                            <a href="{{ url('admin/my/backup/donwload/'.$item) }}" class="btn btn-primary btn-sm"><i class="fa fa-download"></i> Download</a>
+                                            <button type="submit" class="btn btn-warning btn-sm" onclick="event.preventDefault(); document.getElementById('remove-form').submit();"><i class="fa fa-times"></i> Remove</button>
+                                           <form id="remove-form" action="{{ url('admin/my/backup/remove/'.$item) }}" method="POST" >@csrf</form>
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3"></td>
+                                    </tr>
+                                @endforelse
+                             </tbody>
+                         </table>
+                        </div>
+                    </div>
+                 </div>
+                </div>
             </div>
 
         </div>

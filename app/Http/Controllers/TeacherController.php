@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Models\Announcement;
 use App\Models\Student;
 use App\Models\Assign;
 use App\Models\Enrollment;
@@ -23,6 +24,7 @@ class TeacherController extends Controller
 
     public function dashboard()
     {
+        $post = Announcement::latest()->get();
         $sectionAvail = Assign::select('sections.section_name')
             ->join('teachers', 'assigns.teacher_id', 'teachers.id')
             ->join('sections', 'assigns.section_id', 'sections.id')
@@ -31,7 +33,7 @@ class TeacherController extends Controller
             ->where('teachers.id', Auth::user()->id)
             ->groupBy('sections.section_name')
             ->get();
-        return view('teacher/dashboard', compact('sectionAvail'));
+        return view('teacher/dashboard', compact('sectionAvail','post'));
     }
 
     public function classMonitor()

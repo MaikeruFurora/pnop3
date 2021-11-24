@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailNotify;
 use App\Models\Appointment;
 use App\Models\Holiday;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -132,5 +134,25 @@ class AppointmentController extends Controller
             'dateNow'=>$dateSelected,
             'data'=>Appointment::where('set_date', strval($formatedDate))->get()
         ]);
+    }
+
+    public function sendEmailNotify(Request $request){
+        $formatedDate = date("m/d/Y", strtotime(strtr($request->dateSelected, '-', '/')));
+        $emails = Appointment::select('email')->where('set_date', strval($formatedDate))->pluck('email');
+        $data = [
+            'title'=>'PNHS APPOINTMENT STATUS',
+            'body'=>$request->body
+        ];
+        if (is_array($request->array_selected)) {
+            $email_array=$request->array_selected;
+            Mail::to($email_array)->send(new MailNotify($data));
+        } else {
+            Mail::to($emails)->send(new MailNotify($data));
+            // Mail::send('emails.welcome', [], function($message) use ($emails)
+            // {    
+            //     $message->to($emails)->subject('This is test e-mail');    
+            // });
+        }
+        
     }
 }

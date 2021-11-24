@@ -1,4 +1,4 @@
-let enrollmentTable = (level,year) => {
+let enrollmentTable = (level, year) => {
     $("#enrollmentTable").dataTable().fnDestroy();
     $("#enrollmentTable").dataTable({
         processing: true,
@@ -20,6 +20,22 @@ let enrollmentTable = (level,year) => {
                     return data.curriculum != null
                         ? data.curriculum
                         : data.strand;
+                },
+            },
+            {
+                data: null,
+                render: function (data) {
+                    switch (data.term) {
+                        case "1st":
+                            return `<span class="badge badge-primary">Fist Sem</span>`;
+                            break;
+                        case "2nd":
+                            return `<span class="badge badge-info">Second Sem</span>`;
+                            break;
+                        default:
+                            return '-----------';
+                            break;
+                    }
                 },
             },
             { data: "section_name" },

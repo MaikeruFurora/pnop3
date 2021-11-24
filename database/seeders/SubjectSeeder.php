@@ -237,124 +237,240 @@ class SubjectSeeder extends Seeder
                 'descriptive_title' => 'Electronics and Robotics',
                 'subject_for' => 'STEM'
             ],
+
+            // ------------- SENIOR HIGH SUBJECT
             [
-                'indicate_type' => 'Core',
-                'subject_code' => 'CEA-01',
-                'descriptive_title' => 'Earth and Science',
-            ],
-            [
-                'indicate_type' => 'Core',
-                'subject_code' => 'GM-02',
-                'descriptive_title' => 'General Mathematics',
-            ],
-            [
+               
+                'term'=>'1st',
+                'grade_level' => 11,
                 'indicate_type' => 'Core',
                 'subject_code' => 'OA-03',
                 'descriptive_title' => 'Oral Communication',
             ],
+          
+
+            ////////////////////////////////////////////
+            // Reading and Writing
+            ///////////////////////////////////////////
+
             [
-                'indicate_type' => 'Core',
-                'subject_code' => 'CPAR-04',
-                'descriptive_title' => 'Contemporary Philippine Arts from the Regions',
-            ],
-            [
-                'indicate_type' => 'Core',
-                'subject_code' => 'CLPW-05',
-                'descriptive_title' => '21st Century Literature from the Philippines and the World',
-            ],
-            [
+               
+                'term'=>'2nd',
+                'grade_level' => 11,
                 'indicate_type' => 'Core',
                 'subject_code' => 'RW-06',
                 'descriptive_title' => 'Reading and Writing',
             ],
+            
+            ////////////////////////////////////////////
+            // Komunikasyon at Pananaliksik sa Wika at Kulturang Pilipino
+            ///////////////////////////////////////////
+
+            
             [
+               
+                'term'=>'1st',
+                'grade_level' => 11,
                 'indicate_type' => 'Core',
                 'subject_code' => 'FILSHS-07',
                 'descriptive_title' => 'Komunikasyon at Pananaliksik sa Wika at Kulturang Pilipino',
             ],
+            
+            
+             ////////////////////////////////////////////
+            // Pagbasa at Pagsusuri ng Iba’t-Ibang Teksto Tungo sa Pananaliksik
+            ////////////////////////////////////////////
+
+
             [
+               
+                'term'=>'2nd',
+                'grade_level' => 11,
                 'indicate_type' => 'Core',
                 'subject_code' => 'PPTP-08',
                 'descriptive_title' => 'Pagbasa at Pagsusuri ng Iba’t-Ibang Teksto Tungo sa Pananaliksik',
             ],
+
+
+            ////////////////////////////////////////////
+            // 21st Century Literature from the Philippines and the World
+            ///////////////////////////////////////////
+
             [
+               
+                'term'=>'2nd',
+                'grade_level' => 11,
+                'indicate_type' => 'Core',
+                'subject_code' => 'CLPW-05',
+                'descriptive_title' => '21st Century Literature from the Philippines and the World',
+            ],
+
+            ////////////////////////////////////////////
+            // Contemporary Philippine Arts from the Regions
+            ///////////////////////////////////////////
+
+            [
+               
+                'term'=>'1st',
+                'grade_level' => 12,
+                'indicate_type' => 'Core',
+                'subject_code' => 'CPAR-04',
+                'descriptive_title' => 'Contemporary Philippine Arts from the Regions',
+            ],
+            ////////////////////////////////////////////
+            // Media and Information Literacy
+            ///////////////////////////////////////////
+
+            [
+               
+                'term'=>'2nd',
+                'grade_level' => 12,
+                'indicate_type' => 'Core',
+                'subject_code' => 'MIL-12',
+                'descriptive_title' => 'Media and Information Literacy',
+            ],
+
+            ////////////////////////////////////////////
+            // General Mathematics
+            ///////////////////////////////////////////
+
+            [
+               
+                'term'=>'1st',
+                'grade_level' => 11,
+                'indicate_type' => 'Core',
+                'subject_code' => 'GM-02',
+                'descriptive_title' => 'General Mathematics',
+            ],
+
+
+             ////////////////////////////////////////////
+            // Statistics and Probability
+            ///////////////////////////////////////////
+
+            [
+               
+                'term'=>'2nd',
+                'grade_level' => 11,
                 'indicate_type' => 'Core',
                 'subject_code' => 'SP-09',
                 'descriptive_title' => 'Statistics and Probability',
             ],
+             ////////////////////////////////////////////
+            // Earth and Life Science
+            ///////////////////////////////////////////
+
             [
+               
+                'term'=>'1t',
+                'grade_level' => 12,
                 'indicate_type' => 'Core',
-                'subject_code' => 'ELS-10',
+                'subject_code' => 'CEA-01',
                 'descriptive_title' => 'Earth and Life Science',
             ],
-            [
+
+             ////////////////////////////////////////////
+            // Physical Education and Health PE-1
+            ///////////////////////////////////////////
+
+             [
+               
+                'term'=>'1st',
                 'grade_level' => '11',
                 'indicate_type' => 'Core',
                 'subject_code' => 'PE-1',
                 'descriptive_title' => 'Physical Education and Health',
             ],
+
+
+             ////////////////////////////////////////////
+            // Physical Education and Health PE-2
+            ///////////////////////////////////////////
+
             [
+               
+                'term'=>'2nd',
                 'grade_level' => '11',
                 'indicate_type' => 'Core',
                 'subject_code' => 'PE-2',
                 'descriptive_title' => 'Physical Education and Health',
             ],
+         
+
+             ////////////////////////////////////////////
+            // Physical Education and Health PE-3
+            ///////////////////////////////////////////
+
             [
+               
+                'term'=>'1st',
                 'grade_level' => '12',
                 'indicate_type' => 'Core',
                 'subject_code' => 'PE-3',
                 'descriptive_title' => 'Physical Education and Health',
             ],
+            
+
+             ////////////////////////////////////////////
+            // Physical Education and Health PE-2
+            ///////////////////////////////////////////
+
             [
+               
+                'term'=>'2nd',
                 'grade_level' => '12',
                 'indicate_type' => 'Core',
                 'subject_code' => 'PE-4',
                 'descriptive_title' => 'Physical Education and Health',
             ],
-            [
-                'indicate_type' => 'Core',
-                'subject_code' => 'IPHP-11',
-                'descriptive_title' => 'Introduction to the Philosophy of the Human Person',
-            ],
-            [
-                'indicate_type' => 'Core',
-                'subject_code' => 'MIL-12',
-                'descriptive_title' => 'Media and Information Literacy',
-            ],
-            [
-                'indicate_type' => 'Core',
-                'subject_code' => 'UCSP-13',
-                'descriptive_title' => 'Understanding Culture, Society and Politics',
-            ],
-            [
-                'indicate_type' => 'Core',
-                'subject_code' => 'EAS-14',
-                'descriptive_title' => 'Earth and Science',
-            ],
-            [
-                'indicate_type' => 'Core',
-                'subject_code' => 'DRRR-15',
-                'descriptive_title' => 'Disaster Readiness and Risk Reduction',
-            ],
-            [
-                'indicate_type' => 'Core',
-                'subject_code' => 'PD-16',
-                'descriptive_title' => 'Personal Development',
-            ],
-            [
-                'grade_level' => '11',
-                'strand_id' => '3',
-                'indicate_type' => 'Specialized',
-                'subject_code' => 'PRECAL-01',
-                'descriptive_title' => 'Pre-Calculus',
-            ],
-            [
-                'grade_level' => '11',
-                'strand_id' => '3',
-                'indicate_type' => 'Specialized',
-                'subject_code' => 'BCAL-02',
-                'descriptive_title' => 'Basic Calculus',
-            ],
+            ////////////////////////////////////////////
+
+            
+          
+         
+    
+           
+       
+            // [
+            //     'indicate_type' => 'Core',
+            //     'subject_code' => 'IPHP-11',
+            //     'descriptive_title' => 'Introduction to the Philosophy of the Human Person',
+            // ],
+         
+            // [
+            //     'indicate_type' => 'Core',
+            //     'subject_code' => 'UCSP-13',
+            //     'descriptive_title' => 'Understanding Culture, Society and Politics',
+            // ],
+            // [
+            //     'indicate_type' => 'Core',
+            //     'subject_code' => 'EAS-14',
+            //     'descriptive_title' => 'Earth and Science',
+            // ],
+            // [
+            //     'indicate_type' => 'Core',
+            //     'subject_code' => 'DRRR-15',
+            //     'descriptive_title' => 'Disaster Readiness and Risk Reduction',
+            // ],
+            // [
+            //     'indicate_type' => 'Core',
+            //     'subject_code' => 'PD-16',
+            //     'descriptive_title' => 'Personal Development',
+            // ],
+            // [
+            //     'grade_level' => '11',
+            //     'strand_id' => '3',
+            //     'indicate_type' => 'Specialized',
+            //     'subject_code' => 'PRECAL-01',
+            //     'descriptive_title' => 'Pre-Calculus',
+            // ],
+            // [
+            //     'grade_level' => '11',
+            //     'strand_id' => '3',
+            //     'indicate_type' => 'Specialized',
+            //     'subject_code' => 'BCAL-02',
+            //     'descriptive_title' => 'Basic Calculus',
+            // ],
 
         ];
 

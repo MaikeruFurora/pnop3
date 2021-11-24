@@ -24,7 +24,7 @@
                     <div class="form-group">
                         <label>Indidate type</label>
                         <select class="custom-select" name="shs_indicate_type" required>
-                            <option value="">Choose...</option>
+                            <option value="">Choose type</option>
                             <option value="Core">Core</option>
                             <option value="Specialized">Specialized</option>
                             <option value="Applied">Applied</option>
@@ -41,7 +41,8 @@
                     <div class="form-group">
                         <label>Strand</label>
                         <select class="custom-select" name="shs_strand_id">
-                            <option value="">Strand</option>
+                            <option value="">Choose strand</option>
+                            <option value="all">All strand</option>
                             @foreach ($strands as $item)
                             <option value="{{ $item->id }}">{{ $item->strand }}</option>
                             @endforeach
@@ -66,10 +67,10 @@
                     </div>
                     <div class="form-group">
                         <label>Prerequisite</label>
-                        <select name="teacher_id" class="form-control select2" id="mySelect2" required>
+                        <select name="shs_prerequisite" class="form-control select2" id="mySelect2">
                             <option value=""></option>
                             @foreach ($subjects as $item)
-                            <option value="{{ $item->id }}">{{ $item->descriptive_title }}</option>
+                            <option value="{{ $item->id }}"><b>{{ $item->subject_code }}</b>{{ ' - '.$item->descriptive_title }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -80,14 +81,14 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btnClose" data-dismiss="modal">Close</button>
           <button class="btn btn-warning cancelSHS" type="button">Cancel</button>
-          <button type="button" class="btn btn-primary btnSHSsave">Save</button>
+          <button type="submit" class="btn btn-primary btnSHSsave">Save</button>
         </div>
       </div>
     </div>
   </div>
 </form>
   {{--  --}}
-
+  @include('administrator/management/partial/deleteModal')
 @section('content')
 <section class="section">
     <div class="section-body">
@@ -214,7 +215,7 @@
                             <thead>
                                 <tr>
                                     <th>Type</th>
-                                    <th>Strand</th>
+                                    {{-- <th>Strand</th> --}}
                                     <th>Subject Code</th>
                                     <th>Descriptive Title</th>
                                     <th>Prerequisite</th>

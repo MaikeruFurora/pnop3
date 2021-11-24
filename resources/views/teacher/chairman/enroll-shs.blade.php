@@ -11,6 +11,7 @@
 @include('teacher/chairman/partial/exportExcel')
 @include('teacher/chairman/partial/listEnrolled')
 @include('teacher/chairman/partial/viewRequirement')
+@include('teacher/chairman/partial/enrollMainForm')
 {{-- Modal end --}}
 <section class="section">
     <div class="section-body">
@@ -41,7 +42,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
+         <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="row sectionListAvailable mb-3"></div>
                 <div class="card">
                     <div class="card-body">
@@ -57,8 +58,8 @@
                                 </div>
                                 <div class="col-lg-2 float-left">
                                     <select class="custom-select mr-sm-2" name="term">
-                                        <option value="1st">1st Term</option>
-                                        <option value="2nd">2nd Term</option>
+                                        <option value="1st" {{ $activeAY->first_term=='Yes'?'selected':'' }}>First Semester</option>
+                                        <option value="2nd" {{ $activeAY->second_term=='Yes'?'selected':'' }}>Second Semester</option>
                                     </select>
                                 </div>
                                 <table class="table table-striped" style="font-size: 11px;" id="gradeElevenTable">
@@ -100,4 +101,5 @@
 {{-- <script src="{{ asset('teacher/chairman/enroll.js') }}"></script> --}}
 <script src="{{ asset('teacher/chairman/enroll.shs.js') }}"></script>
 <script src="{{ asset('teacher/chairman/enroll.student.shs.js') }}"></script>
+<script src="{{ asset('teacher/chairman/enrollMain.js') }}"></script>
 @endsection

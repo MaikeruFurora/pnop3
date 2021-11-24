@@ -29,6 +29,10 @@
                                     <option value="8">Grade 8</option>
                                     <option value="9">Grade 9</option>
                                     <option value="10">Grade 10</option>
+                                    <option value="11_1st">Grade 11 First Sem</option>
+                                    <option value="11_2nd">Grade 11 Second Sem</option>
+                                    <option value="12_1st">Grade 12 First Sem</option>
+                                    <option value="12_2nd">Grade 12 Second Sem</option>
                                 </select>
                           <div class="input-group-append">
                             <button class="btn btn-primary" type="button" name="btnExport">Export Enrollee</button>
@@ -50,6 +54,7 @@
                                 <th>LRN</th>
                                 <th>Student name</th>
                                 <th>Curriculum | Strand</th>
+                                <th>Semester</th>
                                 <th>Section</th>
                                 <th>Status</th>
                                 <th>Balik Aral</th>

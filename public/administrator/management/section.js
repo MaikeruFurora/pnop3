@@ -147,27 +147,37 @@ $(".cancelSection").on("click", function (e) {
 
 $(document).on("click", ".deleteSection", function () {
     let id = $(this).attr("id");
+    $('.deleteYes').val(id)
+    $("#teacherDeleteModal").modal("show");
+   
+});
+
+$(".deleteYes").on('click', function () {
     $.ajax({
-        url: "section/delete/" + id,
+        url: "section/delete/" + $(this).val(),
         type: "DELETE",
         data: { _token: $('input[name="_token"]').val() },
         beforeSend: function () {
-            $(".deleteSec_" + id).html(`
+            $(".deleteYes").html(`
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
             </div>`);
         },
     })
         .done(function (response) {
-            $(".deleteSec" + id).html("Delete");
+            $(".deleteYes").html("Yes");
             getToast("success", "Success", "deleted one record");
             sectioTable($("#selectedGL").val());
+            $(this).val('')
+            $("#teacherDeleteModal").modal("hide");
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
             getToast("error", "Eror", errorThrown);
+            $(".deleteYes").html("Yes");
         });
-});
+})
+
 
 $("input[name='section_name']").on("blur", function () {
     $.ajax({

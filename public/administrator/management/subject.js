@@ -38,17 +38,18 @@ const subjectTable = (level) => {
                             </td>
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                </button>
-                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-warning pb-2 pt-2 pl-3 pr-3 deleteSubject deleteSub_${
-                                        val.id
-                                    }" id="${
-                        val.id
-                    }"><i class="fas fa-times"></i></button>
+                                
+                                   
                                     <button type="button" style="font-size:9px" class="btn btn-sm btn-info pb-2 pt-2 pl-3 pr-3 editSubject editSub_${
                                         val.id
-                                    }" id="${
-                        val.id
-                    }"><i class="fas fa-edit"></i>
+                                                    }" id="${
+                                        val.id
+                                    }"><i class="fas fa-edit"></i></button>
+                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-danger pb-2 pt-2 pl-3 pr-3 deleteSubject deleteSub_${
+                                                    val.id
+                                                }" id="${
+                                    val.id
+                                    }"><i class="fas fa-times"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -171,29 +172,35 @@ $(document).on("click", ".editSubject", function () {
 });
 
 $(document).on("click", ".deleteSubject", function () {
-    if (confirm("Are you sure,Do you want delete this?")) {
-        let id = $(this).attr("id");
-        $.ajax({
-            url: "subject/delete/" + id,
-            type: "DELETE",
-            data: { _token: $('input[name="_token"]').val() },
-            beforeSend: function () {
-                $(".deleteSub_" + id).html(`
+    let id = $(this).attr("id");
+    $('.deleteYes').val(id)
+    $("#teacherDeleteModal").modal("show");
+   
+});
+
+$(".deleteYes").on('click', function () {
+    $.ajax({
+        url: "subject/delete/" + $(this).val(),
+        type: "DELETE",
+        data: { _token: $('input[name="_token"]').val() },
+        beforeSend: function () {
+            $(".deleteYes").html(`
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
             </div>`);
-            },
+        },
+    })
+        .done(function (response) {
+            $(".deleteYes").html("Yes");
+            getToast("success", "Success", "deleted one record");
+            subjectTable($("#selectedGL").val());
+            $(this).val('')
+            $("#teacherDeleteModal").modal("hide");
         })
-            .done(function (response) {
-                $(".deleteSub" + id).html(`<i class="fas fa-times"></i>`);
-                getToast("success", "Success", "deleted one record");
-                subjectTable($("#selectedGL").val());
-            })
-            .fail(function (jqxHR, textStatus, errorThrown) {
-                console.log(jqxHR, textStatus, errorThrown);
-                getToast("error", "Eror", errorThrown);
-            });
-    } else {
-        return false;
-    }
-});
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            console.log(jqxHR, textStatus, errorThrown);
+            getToast("error", "Eror", errorThrown);
+            $(".deleteYes").html("Yes");
+        });
+})
+

@@ -10,10 +10,18 @@ let shsTable = $("#shsTable").DataTable({
     ajax: `subject/shs/list/`+$('select[name="filter_strand"]').val()+`/`+$('select[name="filter_grade_level"]').val()+`/`+$('select[name="filter_term"]').val(),
     columns: [
         { data: "indicate_type" },
-        { data: "strand" },
+        // { data: "strand" },
         { data: "subject_code" },
         { data: "descriptive_title" },
-        { data: "prerequisite" },
+        {
+            data: null,
+            render: function (data) {
+                if ( data.presubject_code!=null || data.prerequisite!=null) {
+                    return  data.presubject_code+" - "+data.prerequisite
+                }
+                return ''
+            }
+        },
         {
             data: null,
             render: function (data) {

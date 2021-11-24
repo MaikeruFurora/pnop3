@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AssignController;
 use App\Http\Controllers\Auth\AuthController;
@@ -76,6 +77,10 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
 
     // announcement route
     Route::get('announcement', [AdminController::class, 'announcement'])->name('announcement');
+    Route::post('announcement/create', [AnnouncementController::class, 'create']);
+    Route::get('announcement/list', [AnnouncementController::class, 'list']);
+    Route::get('announcement/edit/{announcement}', [AnnouncementController::class, 'edit']);
+    Route::delete('announcement/delete/{announcement}', [AnnouncementController::class, 'destroy']);
 
     // chart
     Route::get('chart/population/by/level', [ChartController::class, 'populationByGradeLevel']);
@@ -101,6 +106,7 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('appointment/list/{month}', [AppointmentController::class, 'getAvailAppoint']);
     Route::get('appointment/list/selected/{selectedDate}', [AppointmentController::class, 'selectedDate']);
     Route::get('appointment/print/report/{dateSelected}', [AppointmentController::class, 'printReport']);
+    Route::post('appointment/send/email', [AppointmentController::class, 'sendEmailNotify']);
 
     // teacher-route
     Route::get('teacher', [AdminController::class, 'teacher'])->name('teacher');
@@ -205,11 +211,26 @@ Route::middleware(['auth:web', 'preventBackHistory'])->name('admin.')->prefix('a
     Route::get('user/list', [UserController::class, 'list']);
     Route::delete('user/delete/{user}', [UserController::class, 'destroy']);
     Route::get('user/edit/{user}', [UserController::class, 'edit']);
+   
 
     Route::get('backup/run', function () {
+        
+        // $files = Storage::files("Laravel");
+        // $images=array();
+        //     foreach ($files as $key => $value) {
+        //         // $value= str_replace("Laravel/","",$value);
+        //         array_push($images,$value);
+        //     }
+        //     foreach ($images as $value) {
+        //         // $file=Storage::disk('public')->get($value);
+        //          response()->download(storage_path($value));
+        //     }
         Artisan::call('backup:run');
         return redirect()->back();
     })->name('backup.run');
+    Route::get('backup/donwload/{file_name}', [AdminController::class, 'backUpDonwload']);
+    Route::post('backup/remove/{file_name}', [AdminController::class, 'backUpRemove']);
+        
 });
 
 Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->prefix('teacher/my/')->group(function () {
@@ -304,6 +325,14 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::get('senior/enrollee/monitor/section/{strand}/{term}', [ChairmanSHSController::class, 'monitorSection']);
     Route::get('senior/enrollee/print/report/{section}/{term}', [ChairmanSHSController::class, 'printReport']);
 
+    // NEW ENROLLMENT METHOD SENIOR HIGH METHOD
+    Route::get('senior/enrollee/student/info/{id}',[ChairmanSHSController::class,'enrolleeStudentInfo']);
+    Route::get('senior/subject/list/{strand}/{grade_level}/{student}/{term}',[ChairmanSHSController::class,'enrolledSubject']);
+    Route::post('senior/subject/save',[ChairmanSHSController::class,'enrolledSubjectSave']);
+    Route::get('senior/subject/list/student/{student}/{section}',[ChairmanSHSController::class,'mysubjectNow']);
+    Route::delete('senior/subject/delete',[ChairmanSHSController::class,'removeEnrolledSubject']);
+    Route::get('senior/retrive/grade/{grade_level}/{term}/{student}',[ChairmanSHSController::class,'retriveGrade']);
+
     //manage section shs------------
     Route::get('senior/section', [ChairmanSHSController::class, 'manageSection'])->name('senior.section');
     Route::post('senior/section/save', [ChairmanSHSController::class, 'saveSection']);
@@ -317,12 +346,13 @@ Route::middleware(['auth:teacher', 'preventBackHistory'])->name('teacher.')->pre
     Route::get('senior/assign/student/{term}/{enrollment}', [TeacherSHSController::class, 'showSubjectList']);
     Route::get('senior/assign/list/subject/section/{term}', [TeacherSHSController::class, 'listAssignSubject']);
     Route::post('senior/assign/save', [TeacherSHSController::class, 'saveAssignSubject']);
-    Route::get('senior/assign/edit/{assign}', [TeacherSHSController::class, 'assignEdit']);
+    Route::get('senior/assign/edit/{subject}/{term}', [TeacherSHSController::class, 'assignEdit']);
     Route::delete('senior/assign/delete/{assign}', [TeacherSHSController::class, 'assignDelete']);
     // Route::post('senior/assign/student', [TeacherSHSController::class, 'assignDelete']);
     Route::get('senior/assign/load/student/subject/{student}/{term}', [TeacherSHSController::class, 'showStudentEnrolledSUbject']);
     Route::post('senior/assign/load/student/subject/save', [TeacherSHSController::class, 'saveStudentEnrolledSUbject']);
     Route::delete('senior/assign/load/student/subject/delete/{grade}', [TeacherSHSController::class, 'deleteStudentEnrolledSUbject']);
+    Route::get('senior/assign/filter/list/{term}', [TeacherSHSController::class, 'subjectListInNewAssign']);
 
     Route::get('senior/assign/backsubject/load/student/{student}', [BackSubjectController::class, 'monitorSeniorHighFailSubject']);
 

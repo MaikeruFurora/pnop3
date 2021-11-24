@@ -124,6 +124,15 @@ class GradingImport implements ToCollection,WithStartRow
     //         ]);
        
     // }
+    // Grade::select('grades.id as gid','midterm','final','final_grade','students.roll_id','subjects.description','students.id as sid', DB::raw("CONCAT(students.lname,', ',students.fname,' ', students.mname) AS fullname"))
+    //    ->join('students','grades.student_id','students.id')
+    //    ->join('schedules','grades.student_id','schedules.student_id')
+    //    ->join('subjects','grades.subject_id','subjects.id')
+    //    ->where('schedules.subject_id', $this->subject_id)
+    //    ->where('schedules.section_id',$this->section_id)
+    //    ->where('user_id',auth()->user()->id)
+    //    ->whereNotNull('schedules.student_id')
+    //    ->where('grades.subject_id', $this->subject_id)
     
     public function startRow(): int
     {

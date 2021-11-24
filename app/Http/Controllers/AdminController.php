@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Models\Appointment;
 use App\Models\Enrollment;
+use App\Models\Grade;
 use App\Models\SchoolProfile;
 use App\Models\SchoolYear;
 use App\Models\Section;
@@ -16,6 +17,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str as SupportStr;
 
 class AdminController extends Controller
@@ -81,7 +84,8 @@ class AdminController extends Controller
     }
     public function student()
     {
-        return view('administrator/masterlist/student');
+        $studentId=Grade::select('student_id')->groupBy('student_id')->pluck('student_id');
+        return view('administrator/masterlist/student',compact('studentId'));
     }
 
     public function archive()
@@ -96,8 +100,34 @@ class AdminController extends Controller
 
     public function profile()
     {
+        
+        $files = Storage::files("Laravel");
+        $fileRetrive=array();
+            foreach ($files as $key => $value) {
+                $value= str_replace("Laravel/","",$value);
+                array_push($fileRetrive,$value);
+            }
         $data = SchoolProfile::find(1);
-        return view('administrator/management/profile', compact('data'));
+        return view('administrator/management/profile', compact('data','fileRetrive'));
+    }
+    
+    public function backUpDonwload($file_name){
+        $file = Storage::disk('public')->get($file_name);
+  
+         (new Response($file, 200))
+              ->header('Content-Type', 'image/jpeg');
+        
+        return redirect()->back();
+    }
+
+    public function backUpRemove($file_name){
+        // return ;
+        //  $file = Storage::disk('Laravel')->get($file_name);
+        $directory=storage_path()."\app\Laravel\'".$file_name;
+        $value= str_replace("'","",$directory);
+        unlink($value);
+    //    return   Storage::deleteDirectory(storage_path('laravel/'.$file_name));
+         return redirect()->back();
     }
 
     public function strandAndTrack()
@@ -115,7 +145,7 @@ class AdminController extends Controller
     public function subject()
     {
         $strands = Strand::select('id', 'strand', 'description')->get();
-        $subjects = Subject::select('id', 'subject_code', 'descriptive_title')->whereNull('subject_for')->get();
+        $subjects = Subject::select('id','subject_code','descriptive_title')->whereNull('subject_for')->groupBy('id','subject_code','descriptive_title')->get();
         return view('administrator/management/subject', compact('strands','subjects'));
     }
 

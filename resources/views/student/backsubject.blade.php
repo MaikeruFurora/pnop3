@@ -5,7 +5,7 @@
         <h2 class="section-title">Back Subject&nbsp;&nbsp;&nbsp;<span style="font-size: 15px"
                 class="txtSectionName badge badge-warning pt-1 pb-1"></span></h2>
         <div class="col-lg-12">
-            <div class="card">
+            <div class="card card-info">
                 <div class="card-body pb-1">
                     <div class="">
                         <div class="float-left">
@@ -17,9 +17,10 @@
                             <thead class="bg-info ">
                                 <tr>
                                     <th class="text-white">Subjects</th>
-                                    <th class="text-center text-white">Grade Level</th>
-                                    <th class="text-center text-white">Fail Grade</th>
-                                    <th class="text-center text-white">Grade</th>
+                                    <th class="text-center text-white">Final Rating</th>
+                                    <th class="text-center text-white">Recomputed Final Grade</th>
+                                    <th class="text-center text-white">Conducted From</th>
+                                    <th class="text-center text-white">Conducted To</th>
                                     <th class="text-center text-white">Remarks</th>
                                 </tr>
                             </thead>

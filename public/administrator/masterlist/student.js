@@ -36,10 +36,13 @@ const studentTable = $("#studentTable").DataTable({
                 </button>&nbsp;
                 <button type="button" class="btn btn-sm btn-info sedit btnEdit_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
                 <i class="fas fa-edit"></i>
-                </button>&nbsp;
-                    <a href="student/view/record/${data.id}" class="btn btn-sm btn-secondary vstudent btnView_${data.id} pt-0 pb-0 " id="${data.id}">
-                         <i class="fas fa-eye"></i>
-                    </a>
+                </button> &nbsp;
+                ${active.filter(val => (val == data.id)) != '' ? `
+                <a href="student/view/record/${data.id}" class="btn btn-sm btn-secondary vstudent btnView_${data.id} pt-0 pb-0 " id="${data.id}">
+                        <i class="fas fa-eye"></i>
+                </a>
+                ` :""} 
+               
                 `;
             },
             /**
@@ -202,9 +205,9 @@ $(document).on("click", ".sedit", function () {
             $('input[name="date_of_birth"]').val(data.date_of_birth);
             $('select[name="gender"]').val(data.gender);
             $('input[name="student_contact"]').val(data.student_contact);
-            $('input[name="last_school_attended"]').val(
-                data.last_school_attended
-            );
+            // $('input[name="last_school_attended"]').val(
+            //     data.last_school_attended
+            // );
             $("input[name='last_schoolyear_attended']")
                 .attr("disabled", data.isbalik_aral == "Yes" ? false : true)
                 .val(data.last_schoolyear_attended);

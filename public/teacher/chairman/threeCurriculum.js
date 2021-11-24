@@ -1,4 +1,4 @@
-setTimeout(() => {
+// setTimeout(() => {
     let tableCurriculum = $("#tableCurriculum").DataTable({
         columnDefs: [
             {
@@ -124,24 +124,13 @@ setTimeout(() => {
                 data: null,
                 render: function (data) {
                     if (data.enroll_status == "Dropped") {
-                        return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
-                        Delete
-                        </button>
-                        `;
+                        return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">Delete</button>`;
                     } else {
-                        return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${
-                            data.id
-                        }  pt-0 pb-0 pl-2 pr-2" id="${data.id}">
-                        Delete
-                        </button>&nbsp;
+                        return `<button type="button" class="btn btn-sm btn-danger cDelete btnDelete_${data.id}  pt-0 pb-0 pl-2 pr-2" id="${data.id}">Delete</button>&nbsp;
                        ${
                            data.enroll_status == "Enrolled"
-                               ? ` <button type="button" class="btn btn-sm btn-primary cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
-                        Change
-                   </button>`
-                               : ` <button type="button" class="btn btn-sm btn-info cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">
-                    Section
-                   </button>`
+                               ? ` <button type="button" class="btn btn-sm btn-primary cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">Change</button>`
+                               : ` <button type="button" class="btn btn-sm btn-info cEdit btnEdit_${data.id} pt-0 pb-0 pl-3 pr-3 " id="${data.id}">Section</button>`
                        }
                         `;
                     }
@@ -151,32 +140,16 @@ setTimeout(() => {
     });
     
     tableCurriculum.ajax.url("table/list/" + current_curriculum).load();
-}, 5000);
+// }, 5000);
 $('select[name="selectBarangay"]').on("change", function () {
     $(this).val() != ""
-        ? tableCurriculum.ajax
-              .url(
-                  "table/list/filtered/" +
-                      current_curriculum +
-                      "/" +
-                      $(this).val()
-              )
-              .load()
+        ? tableCurriculum.ajax.url("table/list/filtered/"+current_curriculum+"/"+$(this).val()).load()
         : "";
 });
 
-setTimeout(() => {
-    tableCurriculum.ajax
-        .url(
-            "table/list/filtered/" +
-                current_curriculum +
-                "/" +
-                $('select[name="selectBarangay"]')
-                    .prop("selectedIndex", 0)
-                    .val()
-        )
-        .load();
-}, 1000);
+// setTimeout(() => {
+//     tableCurriculum.ajax.url("table/list/filtered/"+current_curriculum+"/" +$('select[name="selectBarangay"]').prop("selectedIndex", 0).val()).load();
+// }, 1000);
 
 
 $(document).on('click', ".btnRequirement", function () {

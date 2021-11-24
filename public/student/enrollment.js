@@ -7,6 +7,7 @@ let CheckandVerify = () => {
             console.log(data);
             if (parseInt(data) != 0) {
                 $(".noteTxt").text("Your grade is not yet complete");
+                $(".btnCheckandVerify").hide();
                 $(".btnCheckandVerify").attr("disabled", true);
             }
         })
@@ -18,7 +19,12 @@ let CheckandVerify = () => {
 
 CheckandVerify();
 
+$(".promptModal").on('click', function () {
+    $("#staticBackdrop").modal("show");
+})
+
 $(".btnCheckandVerify").on("click", function () {
+
     $.ajax({
         url: "self/enroll",
         type: "POST",
@@ -38,8 +44,8 @@ $(".btnCheckandVerify").on("click", function () {
         },
     })
         .done(function (data) {
-            console.log(data);
-            window.location.reload(false);
+            // console.log(data);
+            window.location.reload();
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);

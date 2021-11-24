@@ -5,7 +5,6 @@
 <link rel="stylesheet" href="{{ asset('css/datatable/responsive.bootstrap4.min.css') }}">
 <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}">
 @endsection
-@include('teacher/partial/assign-subject-shs')
 @section('content')
 <section class="section">
     <div class="section-body">
@@ -20,12 +19,8 @@
                     @else
                     <div class="float-right ">
                         <select class="custom-select my-1 mr-sm-2" name="term">
-                            @if ($activeAY->first_term=="Yes")
-                            <option value="1st">1st Term</option>
-                            @endif
-                            @if ($activeAY->second_term=="Yes")
-                            <option value="2nd">2nd Term</option>
-                            @endif
+                            <option value="1st" @if ($activeAY->first_term=='Yes') selected @endif>First Semester</option>
+                            <option value="2nd"  @if ($activeAY->second_term=='Yes') selected @endif>Second Semester</option>
                         </select>
                     </div>
                     @endif
@@ -35,22 +30,55 @@
 
         <div class="card card-info">
             <div class="card-body">
-                <nav class="mt-3">
-                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home"
-                            role="tab" aria-controls="nav-home" aria-selected="true">My Class Subject</a>
-                        <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile"
-                            role="tab" aria-controls="nav-profile" aria-selected="false">Enroll Subject</a>
+                <form id="assignForm">@csrf
+                    <div class="form-group">
+                        <div class="select-group">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <select class="my-2 custom-select select2" name="subject_id" required>
+                                        
+                                        {{-- @foreach ($subjects as $item)
+                                        <option value="{{ $item->id }}">
+                                            {{ $item->subject_code.' > '.$item->descriptive_title }}</option>
+                                        @endforeach --}}
+                                    </select>
+                                </div>
+                                <div class="col-lg-4">
+                                    <select class="my-2 custom-select select2" name="teacher_id" required>
+                                        <option value="">Choose subject teacher...</option>
+                                        @foreach ($teachers as $item)
+                                        <option value="{{ $item->id }}">{{ $item->teacher_name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                               <input type="hidden" name="term_assign">
+                                <div class="col-lg-2">
+                                    <button class="my-2 btn btn-block btn-primary assignBtn " type="submit">Save</button>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button class="my-2 btn btn-block btn-warning cancelNow" type="button">Cancel</button>
+                                </div>
+                            </div>
+        
+                        </div>
                     </div>
-                </nav>
-                <div class="tab-content" id="nav-tabContent">
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        @include('teacher/partial/assignSubjectTable')
+                </form>
+
+                {{--  --}}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-table-bordered">
+                           <thead>
+                                <tr>
+                                    <th>Subject Code</th>
+                                    <th>Descriptive Title</th>
+                                    <th>Teacher</th>
+                                    <th>Action</th>
+                                </tr>
+                           </thead>
+                            <tbody id="tableAssign"></tbody>
+                        </table>
                     </div>
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        @include('teacher/partial/assignStudentSubject')
-                    </div>
-                </div>
+                {{--  --}}
             </div>
         </div>
 

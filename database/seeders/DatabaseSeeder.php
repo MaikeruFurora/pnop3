@@ -13,10 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(7)->create();
         \App\Models\Appointment::factory(100)->create();
         \App\Models\User::factory()->create();
-        \App\Models\Teacher::factory()->count(150)->create();
+        \App\Models\Teacher::factory()->count(200)->create();
         $this->call(StrandSeeder::class);
         $this->call(SchoolYearSeeder::class);
         $this->call(SchoolProfileSeeder::class);

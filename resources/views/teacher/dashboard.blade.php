@@ -18,6 +18,54 @@
                 </div>
             </div>
         </div>
+        <h2 class="section-title">Annoucement </h2>
+        <div class="row">
+            @foreach ($post as $item)
+                @foreach ($item->visible_by as $value)
+                   @if ($value==1)
+                   <div class="col-lg-12">
+                    <div class="card card-warning">
+                        <div class="card-header">
+                           <h4> {{$item->headline}}</h4>
+                        </div>
+                        <div class="card-body">
+                             <p><i class="fa fa-clock"></i> {{ $item->created_at->diffForHumans() }}</p>
+                            @php echo html_entity_decode($item->content_body) @endphp
+                        </div>
+                    </div>
+                   </div>
+                   @endif
+                   @if ($value==2)
+                   <div class="col-lg-12">
+                    <div class="card card-warning">
+                        <div class="card-header">
+                           <h4> {{$item->headline}}</h4>
+                        </div>
+                        <div class="card-body">
+                             <p><i class="fa fa-clock"></i> {{ $item->created_at->diffForHumans() }}</p>
+                            @php echo html_entity_decode($item->content_body) @endphp
+                        </div>
+                    </div>
+                   </div>
+                   @endif
+                   @if (Auth::user()->chairman()->where('school_year_id', $activeAY->id)->exists())
+                  @if ($value==3)
+                  <div class="col-lg-12">
+                   <div class="card card-warning">
+                       <div class="card-header">
+                          <h4> {{$item->headline}}</h4>
+                       </div>
+                       <div class="card-body">
+                            <p><i class="fa fa-clock"></i> {{ $item->created_at->diffForHumans() }}</p>
+                           @php echo html_entity_decode($item->content_body) @endphp
+                       </div>
+                   </div>
+                  </div>
+                  @endif
+                  @endif
+                @endforeach
+            @endforeach
+        </div>
         <div class="row">
             <div class="col-lg-6">
                 @if ($sectionAvail->count()!=0)

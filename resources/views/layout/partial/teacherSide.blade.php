@@ -7,7 +7,9 @@
             href="{{ route('teacher.profile') }}"><i class="fas fa-user"></i><span>My Profile</span></a>
     </li>
     @if (Auth::user()->section()->where('school_year_id', $activeAY->id)->exists())
-    @if (Auth::user()->section->grade_level<=10) <li class="{{ request()->is('teacher/my/assign')?'active':'' }}">
+    @if (Auth::user()->section()->where('school_year_id', $activeAY->id)->first()->grade_level<=10) 
+    <li class="{{ request()->is('teacher/my/assign')?'active':'' }}">
+        <li class="menu-header">Adviser Setting</li>
         <li class="{{ request()->is('teacher/my/class/monitor')?'active':'' }}">
             <a class="nav-link" href="{{ route('teacher.class.monitor') }}">
                 <i class="fas fa-puzzle-piece"></i><span>
@@ -22,6 +24,7 @@
             </a>
         </li>
         @else
+        <li class="menu-header">Adviser Setting</li>
         <li class="{{ request()->is('teacher/my/senior/class/monitor')?'active':'' }}">
             <a class="nav-link" href="{{ route('teacher.class.senior.monitor') }}">
                 <i class="fas fa-puzzle-piece"></i><span>
@@ -35,10 +38,9 @@
                 </span>
             </a>
         </li>
-        @endif
-        @endif
-
-        @if (Auth::user()->assign->count()>0)
+    @endif
+    @endif
+        @if (Auth::user()->assign->count()>0 || Auth::user()->newassign->count()>0)
 
         <?php
          $countjhs=0;
@@ -47,14 +49,13 @@
         @foreach (Auth::user()->assign_info as $item)
         <?php ($item->grade_level<11)? $countjhs+=1: $countshs+=1; ?>
         @endforeach
-        @if (Auth::user()->assign()->where('school_year_id',$activeAY->id)->exists())
         <li class="menu-header">Data Entry</li>
         <li
-            class="nav-item dropdown {{ request()->is('teacher/my/grading') || request()->is('teacher/my/grading/shs') ?'active':'' }}">
-            <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
-                <i class="fas fa-users"></i><span>Grading</span>
-            </a>
-
+        class="nav-item dropdown {{ request()->is('teacher/my/grading') || request()->is('teacher/my/grading/shs') ?'active':'' }}">
+        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown">
+            <i class="fas fa-users"></i><span>Grading</span>
+        </a>
+        @if (Auth::user()->assign()->where('school_year_id',$activeAY->id)->exists())
             <ul class="dropdown-menu">
                 @if ($countjhs!=0)
                 <li class="{{ request()->is('teacher/my/grading')?'active':'' }}">
@@ -63,16 +64,27 @@
                     </a>
                 </li>
                 @endif
-                @if ($countshs!=0)
+            </ul>
+            @endif
+
+            @php
+               $countss= DB::table('newassigns')
+               ->join('sections','newassigns.section_id','sections.id')
+                ->where('newassigns.teacher_id',auth()->user()->id)
+                ->where('sections.school_year_id',$activeAY->id)
+                ->count();
+            @endphp
+
+            @if ($countss>0)
+            <ul class="dropdown-menu">
                 <li class="{{ request()->is('teacher/my/grading/shs')?'active':'' }}">
                     <a class="nav-link" href="{{ route('teacher.grading.shs') }}">
                         <i class="fas fa-user-clock"></i><span>Senior High</span>
                     </a>
                 </li>
-                @endif
             </ul>
+            @endif
         </li>
-        @endif
         {{-- <li class="{{ request()->is('teacher/my/grading')?'active':'' }}"><a class="nav-link"
             href="{{ route('teacher.grading') }}"><i class="fas fa-cube"></i><span>Grading</span></a>
         </li> --}}

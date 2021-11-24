@@ -7,7 +7,7 @@ use App\Helpers\Helper;
 use App\Models\Grade;
 use App\Models\Section;
 use App\Models\Strand;
-use App\Models\Student;
+use App\Models\{Student,Newassign, SchoolProfile};
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -63,7 +63,7 @@ class EnrollmentSHSController extends Controller
             'province' =>  $request->province_update,
             'city' =>  $request->city_update,
             'barangay' =>  $request->barangay_update,
-            'last_school_attended' => $request->last_school_attended,
+            // 'last_school_attended' => $request->last_school_attended,
             'last_schoolyear_attended' => $request->last_schoolyear_attended,
             'isbalik_aral' => !empty($request->last_schoolyear_attended) ? 'Yes' : 'No',
             'mother_name' => $request->mother_name,
@@ -96,6 +96,8 @@ class EnrollmentSHSController extends Controller
 
     public function enrollNow($student_id, $section_id, $strand_id, $tracking_no, $term, $grade_level)
     {
+        $sp = SchoolProfile::find(1);
+
         Enrollment::create([
             'student_id' => $student_id,
             'section_id' => $section_id,
@@ -109,6 +111,7 @@ class EnrollmentSHSController extends Controller
             'term' => $term,
             'tracking_no' => $tracking_no,
             'state' => 'New',
+            'last_school_attended' => $sp->last_school_attended,
         ]);
     }
 
@@ -148,10 +151,11 @@ class EnrollmentSHSController extends Controller
                     'enroll_status' => 'Enrolled',
                 ]);
         } else {
-            Grade::where([['student_id', $stud_data->student_id], ['section_id', $stud_data->section_id]])
-                ->update([
-                    'section_id' => $request->section
-                ]);
+            Newassign::where('section_id',$stud_data->section_id)
+            ->where('student_id',$stud_data->student_id)
+            ->update([
+                'section_id'=>$request->section
+            ]);
             return  Enrollment::whereId($request->enroll_id)
                 ->where('school_year_id', Helper::activeAY()->id)
                 ->update([

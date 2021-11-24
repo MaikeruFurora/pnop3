@@ -7,6 +7,7 @@ use App\Helpers\Helper;
 use App\Models\BackSubject;
 use App\Models\Enrollment;
 use App\Models\Grade;
+use App\Models\Newassign;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
@@ -19,13 +20,22 @@ class TeacherSHSController extends Controller
     public function assign()
     {
         // return Auth::user()->section->strand_id;
-
-        $subjects = Subject::whereNull('subject_for')
-            ->orWhere('strand_id', Auth::user()->section->strand_id)
-            ->orWhere('grade_level', Auth::user()->section->grade_level)
-            ->get();
+        $activeTerm = $this->activeTerm();
+       
         $teachers = Teacher::select('id', DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as teacher_name"))->get();
-        return view('teacher/assign-shs', compact('subjects', 'teachers'));
+        return view('teacher/assign-shs', compact('teachers'));
+    }
+
+    public function subjectListInNewAssign($term){
+        return response()->json(
+            Newassign::select('subjects.subject_code','subjects.descriptive_title','subjects.id')
+            ->join('sections','newassigns.section_id','sections.id')
+            ->join('subjects','newassigns.subject_id','subjects.id')
+            ->where('newassigns.term',$term)
+            ->where('sections.id',Auth::user()->section->id)
+            ->groupBy('subjects.subject_code','subjects.descriptive_title','subjects.id')
+            ->get()
+        );
     }
 
     public function classMonitor()
@@ -91,20 +101,58 @@ class TeacherSHSController extends Controller
 
     public function listAssignSubject($term)
     {
-        return response()->json(
-            Assign::select('assigns.id', 'subjects.id as subj_id', 'subjects.descriptive_title', DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as teacher_name"))
-                ->join('subjects', 'assigns.subject_id', 'subjects.id')
-                ->join('teachers', 'assigns.teacher_id', 'teachers.id')
-                ->where('section_id', Auth::user()->section->id)
-                ->where('term', $term)
-                ->where('school_year_id', Helper::activeAY()->id)
-                ->get()
-        );
+        // return response()->json(
+        //     Assign::select('assigns.id', 'subjects.id as subj_id', 'subjects.descriptive_title', DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as teacher_name"))
+        //         ->join('subjects', 'assigns.subject_id', 'subjects.id')
+        //         ->join('teachers', 'assigns.teacher_id', 'teachers.id')
+        //         ->where('section_id', Auth::user()->section->id)
+        //         ->where('assigns.term', $term)
+        //         ->where('school_year_id', Helper::activeAY()->id)
+        //         ->get()
+        // );
+
+        $section= Newassign::select('sections.id')
+        ->join('sections','section_id','sections.id')
+        ->join('school_years','sections.school_year_id','school_years.id')
+        ->where('school_years.status',1)
+        ->where('sections.id',Auth::user()->section->id)
+        ->groupBy('sections.id')
+        ->get();
+
+        return Newassign::select('newassigns.term','subjects.id','subjects.descriptive_title', DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as teacher_name"))
+        ->join('subjects', 'newassigns.subject_id', 'subjects.id')
+        ->leftJoin('teachers', 'newassigns.teacher_id', 'teachers.id')
+        ->where('newassigns.section_id', Auth::user()->section->id)
+        ->where('newassigns.term', $term)
+        ->groupBy('newassigns.term','subjects.id','subjects.descriptive_title','teacher_lastname','teacher_firstname','teacher_middlename')
+        ->get();
+
+        // return response()->json(
+        //     Newassign::select('subjects.descriptive_title', DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as teacher_name"))
+        //     ->join('subjects', 'newassigns.subject_id', 'subjects.id')
+        //     ->join('sections', 'newassigns.section_id', 'sections.id')
+        //     ->leftJoin('teachers', 'newassigns.teacher_id', 'teachers.id')
+        //     ->where('newassigns.section_id', Auth::user()->section->id)
+        //     ->where('newassigns.term', $term)
+        //     ->where('sections.school_year_id', Helper::activeAY()->id)
+        //     // ->groupBy('subjects.descriptive_title', DB::raw("CONCAT(teachers.teacher_lastname,', ',teachers.teacher_firstname,' ',teachers.teacher_middlename) as teacher_name"))
+        //     ->get()
+        // );
     }
 
     public function saveAssignSubject(Request $request)
     {
-        if (isset($request->id)) {
+       return  Newassign::join('sections','newassigns.section_id','sections.id')
+       ->where('newassigns.section_id', Auth::user()->section->id)
+        ->where('newassigns.term', $request->term_assign)
+        ->where('newassigns.subject_id', $request->subject_id)
+        ->where('sections.school_year_id',Helper::activeAY()->id)
+        ->update([
+            'newassigns.teacher_id'=>$request->teacher_id
+        ]);
+        
+
+       /* if (isset($request->id)) {
             $isSubjectisExist =  Assign::whereNotIn('id', [$request->id])->where([['section_id', Auth::user()->section->id], ['subject_id', $request->subject_id], ['school_year_id', Helper::activeAY()->id]])->exists();
             if (!$isSubjectisExist) {
                 return Assign::where('id', $request->id)->update([
@@ -132,13 +180,25 @@ class TeacherSHSController extends Controller
             } else {
                 return response()->json(['warning' => "Subject is already exist!"]);
             }
-        }
+        } */
     }
-    public function assignEdit(Assign $assign)
-    {
-        return response()->json($assign);
-    }
+    // public function assignEdit(Assign $assign)
+    // {
+    //     return response()->json($assign);
+    // }
 
+    public function assignEdit($subject,$term){
+        return response()->json(
+            Newassign::select('newassigns.teacher_id','newassigns.subject_id','newassigns.term')
+        ->join('subjects', 'newassigns.subject_id', 'subjects.id')
+        ->leftJoin('teachers', 'newassigns.teacher_id', 'teachers.id')
+        ->where('newassigns.section_id', Auth::user()->section->id)
+        ->where('newassigns.term', $term)
+        ->where('newassigns.subject_id', $subject)
+        ->groupBy('newassigns.teacher_id','newassigns.subject_id','newassigns.term')
+        ->first()
+        );
+    }
     public function assignDelete(Assign $assign)
     {
         return $assign->delete();
@@ -153,17 +213,30 @@ class TeacherSHSController extends Controller
 
     public function loadMySection()
     {
+        $activeTerm = $this->activeTerm();
         return response()->json(
-            Assign::select('sections.section_name', 'sections.id', 'subjects.descriptive_title', 'assigns.subject_id', 'assigns.term')
-                ->join('teachers', 'assigns.teacher_id', 'teachers.id')
-                ->join('sections', 'assigns.section_id', 'sections.id')
-                ->join('subjects', 'assigns.subject_id', 'subjects.id')
-                ->join('school_years', 'assigns.school_year_id', 'school_years.id')
-                ->where('school_years.status', 1)
-                ->whereBetween('assigns.grade_level', [11, 12])
-                ->where('teachers.id', Auth::user()->id)
-                ->get()
+            Newassign::select('sections.section_name', 'sections.id', 'subjects.descriptive_title', 'newassigns.subject_id', 'newassigns.term')
+            ->join('subjects', 'newassigns.subject_id', 'subjects.id')
+            ->join('sections', 'newassigns.section_id', 'sections.id')
+            ->leftJoin('teachers', 'newassigns.teacher_id', 'teachers.id')
+            ->where('newassigns.teacher_id', Auth::user()->id)
+            ->where('newassigns.term', $activeTerm)
+            ->where('sections.school_year_id', Helper::activeAY()->id)
+            ->groupBy('sections.section_name', 'sections.id', 'subjects.descriptive_title', 'newassigns.subject_id', 'newassigns.term')
+            ->get()
         );
+       
+        // return response()->json(
+        //     Assign::select('sections.section_name', 'sections.id', 'subjects.descriptive_title', 'assigns.subject_id', 'assigns.term')
+        //         ->join('teachers', 'assigns.teacher_id', 'teachers.id')
+        //         ->join('sections', 'assigns.section_id', 'sections.id')
+        //         ->join('subjects', 'assigns.subject_id', 'subjects.id')
+        //         ->join('school_years', 'assigns.school_year_id', 'school_years.id')
+        //         ->where('school_years.status', 1)
+        //         ->whereBetween('assigns.grade_level', [11, 12])
+        //         ->where('teachers.id', Auth::user()->id)
+        //         ->get()
+        // );
     }
 
     public function insertStudentInToGradeTable($section, $subject)
@@ -212,6 +285,7 @@ class TeacherSHSController extends Controller
                 ->where('enrollments.school_year_id', Helper::activeAY()->id)
                 ->where('subjects.id', $subject)
                 ->where('sections.id', $section)
+                ->whereNull('grades.remarks')
                 ->get()
         ]);
     }

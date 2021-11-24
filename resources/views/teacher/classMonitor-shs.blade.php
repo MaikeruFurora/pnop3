@@ -16,8 +16,8 @@
                 <div class="col-lg-2 col-md-2 my-4">
                     <div class="float-right ">
                         <select class="custom-select my-1 mr-sm-2" name="term">
-                            <option value="1st">1st Term</option>
-                            <option value="2nd">2nd Term</option>
+                            <option value="1st" @if ($activeAY->first_term=='Yes') selected @endif>First Semester</option>
+                            <option value="2nd"  @if ($activeAY->second_term=='Yes') selected @endif>Second Semester</option>
                         </select>
                     </div>
                 </div>

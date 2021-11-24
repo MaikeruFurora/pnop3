@@ -54,5 +54,8 @@
 <script src="{{ asset('js/datatable/dataTables.bootstrap4.min.js') }}"></script>
 <script src="{{ asset('js/datatable/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('js/datatable/responsive.bootstrap4.min.js') }}"></script>
+<script>
+    const active={{ json_encode($studentId) }}
+</script>
 <script src="{{ asset('administrator/masterlist/student.js') }}"></script>
 @endsection

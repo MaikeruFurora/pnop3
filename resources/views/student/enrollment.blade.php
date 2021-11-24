@@ -1,5 +1,23 @@
 @extends('../layout/app')
 @section('content')
+{{-- Modal --}}
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <div class="modal-body pt-5 text-center">
+            <p>
+                Make sure the information you provide throughout the enrolling process is accurate so that your information can be processed quickly and correctly.
+            </p>
+            <div class="">
+                <button type="button" class="btn btn-primary btn-sm btnCheckandVerify">Enroll Now</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{{-- Modal end --}}
 <section class="section">
     <div class="section-body">
         <div class="col-md-12 mt-5">
@@ -53,7 +71,7 @@
                                     </div>
                                 </div>
                                 {{--  --}}
-                                @if(Auth::user()->backsubject()->where('back_subjects.remarks','none')->get()->count()!=0)
+                                @if(Auth::user()->grade()->where('avg','<','75')->whereNull('remarks')->get()->count()!=0)
                                 <div class="col-md-6 col-lg-6">
                                     <div class="card card-primary">
                                         <div class="card-header">
@@ -64,7 +82,7 @@
                                             <p>
                                                 Back Subject:
                                                 <span class="badge badge-danger">
-                                                    {{ Auth::user()->backsubject()->where('back_subjects.remarks','none')->get()->count() }}
+                                                    {{ Auth::user()->grade()->where('avg','<','75')->where('remarks')->get()->count() }}
                                                 </span><br>
                                                 <small>* Note
                                                     <em> Must enroll in remedial classes for learning areas with
@@ -90,13 +108,44 @@
                                             <button class="btn btn-primary" disabled>
                                                 Waiting for Sectioning
                                             </button>
+                                            <p class="mt-3">Enrollment No. <span class="badge badge-warning badge-pill">{{ $dataArr['tracking_no'] }}</span></p>
+                                            <p class="mt-3"><b>Note: </b>If your enrollment is taking too long and the enrollment date has passed, you can contact the grade level chairman for your grade level to process your enrollment.</p>
                                             @elseif($dataArr['status']=='Enrolled')
-                                            <button class="btn btn-primary" disabled>FINALIZED</button>
+                                            <div class="form-row">
+                                                <div class="form-group col-6">
+                                                    <input id="my-input" readonly class="form-control" type="text" name="" value="{{ $dataArr['curriculum']??'None' }}">
+                                                </div>
+                                                <div class="form-group col-6">
+                                                 <input type="text" readonly class="form-control" value="{{ $dataArr['grade_level']??'None' }}">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="my-input" readonly class="form-control" type="text" name="" value="@if($dataArr['curriculum']=='STEM')Science, Technology, Engineering and Mathematics @elseif($dataArr['curriculum']=='BEC')Basic Education for Art @elseif($dataArr['curriculum']=='SPJ')Special Program for Journalis @else None @endif
+                                                ">
+                                            </div>
+                                            <button class="btn btn-primary" disabled>FINALIZED <small>(Enrolled)</small></button>
                                             @else
-                                            <p class="noteTxt"></p>
+                                            <span class="badge badge-warning badge-pill noteTxt mb-3"></span>
                                             @csrf
-                                            <button type="submit"
-                                                class="btn btn-primary btnCheckandVerify">Enroll</button>
+                                            <div class="form-row">
+                                                <div class="form-group col-6">
+                                                    <input id="my-input" readonly class="form-control" type="text" name="" value="{{ $dataArr['curriculum']??'None' }}">
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <select name="" class="form-control" required>
+                                                        <option value="">Grade Level to Enroll</option>
+                                                        <option value="7">Grade 7</option>
+                                                        <option value="8">Grade 8</option>
+                                                        <option value="9">Grade 9</option>
+                                                        <option value="10">Grade 10</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <input id="my-input" readonly class="form-control" type="text" name="" value="@if($dataArr['curriculum']=='STEM')Science, Technology, Engineering and Mathematics @elseif($dataArr['curriculum']=='BEC')Basic Education for Art @elseif($dataArr['curriculum']=='SPJ')Special Program for Journalis @else None @endif
+                                                ">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary promptModal">Proceed</button>
                                             @endif
                                         </div>
                                     </div>

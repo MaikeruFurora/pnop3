@@ -1,48 +1,10 @@
 $("#tableStudent").css("width", "100%");
-let tableStudent = $("#tableStudent").DataTable({
-    // lengthChange: false,
-    responsive: true,
-    pageLenth: 6,
-    processing: true,
-    language: {
-        processing: `
-                <div class="spinner-border spinner-border-sm" role="status">
-                <span class="sr-only">Loading...</span>
-              </div>`,
-    },
 
-    ajax: "assign/list/" + $("select[name='term']").val(),
-    columns: [
-        { data: "roll_no" },
-        { data: "fullname" },
-        {
-            data: null,
-            render: function (data) {
-                return data.enroll_status == "Dropped"
-                    ? `<span class="badge badge-danger">${data.enroll_status}</span>`
-                    : `<span class="badge badge-success">${data.enroll_status}</span>`;
-            },
-        },
-        {
-            data: null,
-            render: function (data) {
-                return `<button type="button" class="btn btn-info enrolledSubjectBtn btn_${
-                    data.stud_id
-                } pt-1 pb-1 pl-2 pr-2" id="${data.stud_id}" value="${
-                    data.fullname + `_` + data.roll_no + `_` + data.stud_id
-                }">
-                    Subject
-                    </button>
-                    `;
-            },
-        },
-    ],
-});
 
 $("select[name='term']").on("change", function () {
-    tableStudent.ajax.url("assign/list/" + $(this).val()).load();
     tableAssign($(this).val());
     $("select[name='term_assign']").val($(this).val());
+    filterSubjectsAssign($(this).val())
 });
 
 // $(document).on("click", ".dropped", function () {
@@ -80,7 +42,7 @@ let tableAssign = (term) => {
         beforeSend: function () {
             $("#tableAssign").html(
                 `<tr>
-                        <td colspan="5" class="text-center">
+                        <td colspan="4" class="text-center">
                             <div class="spinner-border spinner-border-sm" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -94,7 +56,7 @@ let tableAssign = (term) => {
             let i = 1;
             if (data.length == 0) {
                 hold = `<tr>
-                <td colspan="5" class="text-center">
+                <td colspan="4" class="text-center">
                    No Data Available
                 </td>
             </tr>`;
@@ -104,17 +66,11 @@ let tableAssign = (term) => {
                     <tr>
                     <td>${i++}</td>
                     <td>${val.descriptive_title}</td>
-                        <td>${val.teacher_name}</td>
+                        <td>${val.teacher_name==null?'':val.teacher_name}</td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-warning sdelete deleteAssign btnDelete_${
-                                val.id
-                            }  pt-2 pb-2 pl-2 pr-2" id="${val.id}">
-                            <i class="fas fa-user-times"></i>
-                            </button>
-                            &nbsp;&nbsp;
                             <button type="button" class="btn btn-sm btn-info editAssign  editA_${
                                 val.id
-                            } pt-2 pb-2 pl-2 pr-2" id="${val.id}">
+                            } pt-1 pb-1 pl-2 pr-2" id="${val.id}" value="${val.term}">
                             <i class="fas fa-edit"></i>
                             </button>
                         </td>
@@ -172,8 +128,9 @@ $("#assignForm").submit(function (e) {
 
 $(document).on("click", ".editAssign", function () {
     let id = $(this).attr("id");
+    let term = $(this).val();
     $.ajax({
-        url: "assign/edit/" + id,
+        url: "assign/edit/" + id + "/"+ term,
         type: "GET",
         data: { _token: $('input[name="_token"]').val() },
         beforeSend: function () {
@@ -191,10 +148,11 @@ $(document).on("click", ".editAssign", function () {
             $(".editA_" + id)
                 .html(` <i class="fas fa-edit"></i>`)
                 .attr("disabled", false);
+            
             $(".btnSaveAssign").html("Update");
             $("input[name='id']").val(data.id);
             $("input[name='grade_level']").val(data.grade_level);
-            $("select[name='term_assign']").val(data.term);
+            $("input[name='term_assign']").val(data.term);
             $("select[name='subject_id']").val(data.subject_id);
             $("select[name='subject_id']").trigger("change");
             $("select[name='teacher_id']").val(data.teacher_id);
@@ -243,3 +201,24 @@ $(document).on("click", ".deleteAssign", function () {
         return false;
     }
 });
+
+let filterSubjectsAssign = (term) => {
+    let subjectFilter = '<option value="">Choose subjects...</option>';
+    $.ajax({
+        url: "assign/filter/list/"+ term,
+        type: "GET",
+    })
+        .done(function (data) {
+            data.forEach((element) => {
+                subjectFilter += `<option value="${element.id}">${element.subject_code} > ${element.descriptive_title}</option>`;
+            });
+            $("select[name='subject_id']").html(subjectFilter);
+        })
+        .fail(function (jqxHR, textStatus, errorThrown) {
+            $(".editA_" + id)
+                .html(` <i class="fas fa-edit"></i>`)
+                .attr("disabled", false);
+            getToast("error", "Eror", errorThrown);
+        });
+}
+filterSubjectsAssign($('select[name="term"]').val())

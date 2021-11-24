@@ -50,11 +50,12 @@ class Student extends Authenticatable
 
     public function getStudentInfoAttribute()
     {
-        return Enrollment::select('enrollments.grade_level', 'strands.strand', 'strands.description')
+        return Enrollment::select('enrollments.grade_level', 'strands.strand', 'strands.description','enrollments.created_at')
             ->leftjoin('strands', 'enrollments.strand_id', 'strands.id')
             ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
-            ->where('school_years.status', 1)
+            // ->where('school_years.status', 1)
             ->where('enrollments.student_id', $this->id)
+            ->latest()
             ->first();
     }
 }

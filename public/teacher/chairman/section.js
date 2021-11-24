@@ -43,10 +43,14 @@ const sectionTable = () => {
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" style="font-size:9px" class="btn btn-sm btn-info pl-3 pr-3 editSection editSec_${
                                         val.id
-                                    }" id="${val.id}">Edit</button>
-                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-danger deleteSection deleteSec_${
+                                    }" id="${val.id}">
+                                    <i class="fas fa-edit"></i>
+                                     </button>
+                                    <button type="button" style="font-size:9px" class="btn btn-sm btn-danger pl-3 pr-3 deleteSection deleteSec_${
                                         val.id
-                                    }" id="${val.id}">Delete</button>
+                                    }" value="${val.id}">
+                                    <i class="fas fa-user-times"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -146,30 +150,36 @@ $("input[name='section_name']").on("blur", function () {
  *
  */
 $(document).on("click", ".deleteSection", function () {
-    let id = $(this).attr("id");
-    $.ajax({
-        url: "section/delete/" + id,
+    $('.deleteYes').val($(this).val())
+    $("#teacherDeleteModal").modal("show");
+});
+
+
+$(".deleteYes").on('click', function () {
+     $.ajax({
+        url: "section/delete/" + $(this).val(),
         type: "DELETE",
         data: { _token: $('input[name="_token"]').val() },
         beforeSend: function () {
-            $(".deleteSec_" + id).html(`
+            $(".deleteYes").html(`
             <div class="spinner-border spinner-border-sm" role="status">
                 <span class="sr-only">Loading...</span>
             </div>`);
         },
     })
         .done(function (response) {
-            $(".deleteSec_" + id).text("Delete");
+            $(".deleteYes").text("Yes");
             getToast("success", "Success", "deleted one record");
             sectionTable($("#selectedGL").val());
+            $(this).val('')
+            $("#teacherDeleteModal").modal("hide");
         })
         .fail(function (jqxHR, textStatus, errorThrown) {
             console.log(jqxHR, textStatus, errorThrown);
-            getToast("error", "Eror", errorThrown);
-            $(".deleteSec_" + id).text("Delete");
+            getToast("error", "Eror", 'Forbidden');
+            $(".deleteYes").text("Yes");
         });
-});
-
+})
 /**
  *
  * EDIT

@@ -8,7 +8,7 @@
 <section class="section">
     <div class="section-body">
         <h2 class="section-title">Academic Year</h2>
-        <div class="col-lg-8 offset-lg-2 mt-5">
+        <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <form id="schoolYearForm">@csrf
@@ -25,7 +25,7 @@
                             </div>
                         </div>
                     </form>
-                    {{-- <div class="table-responsive mt-1"> --}}
+                    <div class="table-responsive mt-1">
                     <table class="table table-bordered text-center" id="school_year_Table">
                         <thead>
                             <tr>
@@ -37,7 +37,7 @@
                             </tr>
                         </thead>
                     </table>
-                    {{-- </div> --}}
+                    </div>
                 </div>
             </div>
         </div>

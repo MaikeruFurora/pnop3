@@ -12,6 +12,7 @@
 @include('teacher/chairman/partial/exportExcel')
 @include('teacher/chairman/partial/listEnrolled')
 @include('teacher/chairman/partial/viewRequirement')
+@include('teacher/chairman/partial/deleteModal')
 {{-- Modal end --}}
 <section class="section">
 

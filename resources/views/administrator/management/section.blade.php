@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{{ asset('css/select2/select2.min.css') }}">
 @endsection
 @section('content')
+@include('administrator/management/partial/deleteModal')
 <section class="section">
     <div class="section-body">
         <h2 class="section-title">Manage Section</h2>

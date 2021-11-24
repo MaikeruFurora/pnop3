@@ -47,7 +47,9 @@ class EnrollmentController extends Controller
                 ->where('school_years.id', $year)
                 ->get();
         } else {
-            $data = Enrollment::select(
+            $explodeMe = explode("_",$level);
+           if (count($explodeMe)<2) {
+               $data = Enrollment::select(
                 "enrollments.*",
                 "roll_no",
                 "enrollments.curriculum",
@@ -63,8 +65,30 @@ class EnrollmentController extends Controller
                 ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
                 // ->where('school_years.status', 1)
                 ->where('school_years.id', $year)
-                ->where('enrollments.grade_level', $level)
+                ->where('enrollments.grade_level', $explodeMe[0])
                 ->get();
+           } else {
+               $data = Enrollment::select(
+                "enrollments.*",
+                "roll_no",
+                "enrollments.curriculum",
+                "students.isbalik_aral",
+                "students.last_schoolyear_attended",
+                "sections.section_name",
+                "strands.strand",
+                DB::raw("CONCAT(students.student_lastname,', ',students.student_firstname,' ',students.student_middlename) as fullname")
+            )->orderBy('sections.section_name')
+                ->join('students', 'enrollments.student_id', 'students.id')
+                ->leftjoin('strands', 'enrollments.strand_id', 'strands.id')
+                ->leftjoin('sections', 'enrollments.section_id', 'sections.id')
+                ->join('school_years', 'enrollments.school_year_id', 'school_years.id')
+                // ->where('school_years.status', 1)
+                ->where('school_years.id', $year)
+                ->where('enrollments.grade_level', $explodeMe[0])
+                ->where('enrollments.term', $explodeMe[1])
+                ->get();
+           }
+           
         }
 
         return response()->json(['data' => $data]);
@@ -133,6 +157,7 @@ class EnrollmentController extends Controller
                 'curriculum' => $request->curriculum,
                 'student_type' => 'JHS',
                 'state' => 'New',
+                'last_school_attended' => $request->last_school_attended,
             ]);
             return $this->enrolledSubject($enrolled->id);
         } else {
@@ -184,7 +209,7 @@ class EnrollmentController extends Controller
             'province' => $request->province,
             'city' => $request->city,
             'barangay' => $request->barangay,
-            'last_school_attended' => $request->last_school_attended,
+            // 'last_school_attended' => $request->last_school_attended,
             'last_schoolyear_attended' => $request->last_schoolyear_attended,
             'isbalik_aral' => !empty($request->last_schoolyear_attended) ? 'yes' : 'no',
             'mother_name' => Str::title($request->mother_name),

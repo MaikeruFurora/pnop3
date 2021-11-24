@@ -10,14 +10,15 @@
             </div>
             <div class="modal-body pb-3">
                 @csrf
-                <table class="table table-striped">
+                <table class="table table-striped text-center">
                     <thead>
                         <tr>
-                            <th>Subject</th>
-                            <th>Grade Level</th>
-                            <th>Fail Grade</th>
-                            <th width="10%">Grade</th>
+                            <th>Subject & Grade Level</th>
+                            <th>Final Rating</th>
+                            <th>Recomputed Final Grade</th>
                             <th>Remarks</th>
+                            <th>Conducted From</th>
+                            <th>Conducted To</th>
                             <th>Action</th>
                         </tr>
                     </thead>

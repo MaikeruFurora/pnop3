@@ -141,7 +141,7 @@
 
             </div>
             <div class="col-lg-4 col-md-12 col-sm-12">
-                <div class="card mt-4">
+                <div class="card mt-4 card-primary">
                     <div class="card-header">
                         Account
                     </div>
@@ -167,7 +167,7 @@
 
                 {{-- upload picture --}}
 
-                <div class="card">
+                <div class="card card-info">
                     <div class="card-header">
                         Upload Picture
                     </div>

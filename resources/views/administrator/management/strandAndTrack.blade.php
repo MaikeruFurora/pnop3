@@ -1,5 +1,6 @@
 @extends('../layout/app')
 @section('content')
+@include('administrator/management/partial/deleteModal')
 <section class="section">
     <div class="section-body">
         <h2 class="section-title">Manage Strand and Track</h2>

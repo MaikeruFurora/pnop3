@@ -46,36 +46,62 @@ let loadTableNow = (id) => {
             $("#staticBackdrop").modal("show");
             data.forEach((val) => {
                 viewHTML += `
-                    <tr>
-                    <td>${val.descriptive_title}</td>
-                    <td>Grade ${val.grade_level}</td>
-                    <td>${val.prev_avg}</td>
-                    <td>
-                        <input type="text"
-                        ${val.remarks == "Passed" ? "readonly" : ""}
-                        class="form-control form-control-sm text-center inputAvg"
-                        value="${
-                            val.avg_now == null ? "" : val.avg_now
-                        }" id="avg_now_${val.id}"
-                        pattern="^[0-9]{2}$" onkeypress="return numberOnly(event)"
-                        maxlength="2"
-                    >
-                    </td>
-                    <td>${
-                        val.remarks == "Passed"
-                            ? `<span class="text-success"><b>${val.remarks}</b></span>`
-                            : val.remarks
-                    }</td>
-                    <td>
-                       ${
-                           val.remarks == "Passed"
-                               ? `---- Clear ----`
-                               : ` <button class="btn btn-sm btn-info btnUpdate" id="${val.id}" data-student="${val.student_id}">
-                            <i class="fa fa-pen-nib"></i> Update
-                        </button>`
-                       }
-                    </td>
-                    </tr>
+                   ${
+
+                    val.remarks != 'Repeated'
+                    ?
+                    `
+                        <tr>
+                        <td>${val.descriptive_title}- ${val.grade_level}</td>
+                        
+                        <td>${val.avg!=0?val.avg:''}</td>
+                        <td>
+                        ${
+                        val.remarks == "Passed" ?
+                            val.avg_now
+                        :
+                            `<input type="text"
+                            class="form-control form-control-sm text-center inputAvg"
+                            value="${
+                                val.avg_now == null ? "" : val.avg_now
+                            }" id="avg_now_${val.id}"
+                            pattern="^[0-9]{2}$" onkeypress="return numberOnly(event)"
+                            maxlength="2">`
+                        }
+                            
+                        </td>
+                        <td>${
+                            val.remarks == "Passed"
+                                ? `<span class="text-success"><b>${val.remarks}</b></span>`
+                                :'-- None --'
+                        }</td>
+                        <td>
+                            ${
+                                val.remarks == "Passed"
+                                ? `${val.conducted_from}`
+                                :`<input name="conducted_from" class="form-control" type="date" id="from_${val.id}" required>`
+                            }
+                        </td>
+                        <td>
+                        ${
+                            val.remarks == "Passed"
+                        ? `${val.conducted_to}`
+                        :`<input name="conducted_to" class="form-control" type="date" id="to_${val.id}" required>`
+                    }
+                        <td>
+                        ${
+                            val.remarks == "Passed"
+                                ? `--Clear--`
+                                : ` <button class="btn btn-sm btn-info btnUpdate" id="${val.id}" data-student="${val.student_id}">
+                                <i class="fa fa-pen-nib"></i> Update
+                            </button>`
+                        }
+                        </td>
+                        </tr>
+                    `
+                    :''
+
+                   }
                 `;
             });
             $("#viewTable").html(viewHTML);
@@ -102,6 +128,8 @@ $(document).on("click", ".btnUpdate", function () {
     let id = $(this).attr("id");
     let student_id = $(this).attr("data-student");
     let avg_now = $("#avg_now_" + id).val();
+    let conducted_from = $('#from_'+id).val();
+    let conducted_to = $('#to_'+id).val();
     $.ajax({
         url: `backrecord/update/${id}`,
         type: "PATCH",
@@ -109,6 +137,8 @@ $(document).on("click", ".btnUpdate", function () {
             id,
             _token: $('input[name="_token"]').val(),
             avg_now,
+            conducted_from,
+            conducted_to
         },
     })
         .done(function (data) {

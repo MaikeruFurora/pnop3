@@ -3,9 +3,9 @@
     <li class="{{ request()->is('admin/my/dashboard')?'active':'' }}"><a class="nav-link"
             href="{{ route('admin.dashboard') }}"><i class="fas fa-cube"></i><span>Dashboard</span></a>
     </li>
-    {{-- <li class="{{ request()->is('admin/my/announcement')?'active':'' }}"><a class="nav-link"
+    <li class="{{ request()->is('admin/my/announcement')?'active':'' }}"><a class="nav-link"
         href="{{ route('admin.announcement') }}"><i class="fas fa-bell"></i><span>Announcement</span></a>
-    </li> --}}
+    </li>
     <li class="menu-header">Appointment</li>
     <li class="{{ request()->is('admin/my/appointment')?'active':'' }}">
         <a class="nav-link" href="{{ route('admin.appointment') }}">

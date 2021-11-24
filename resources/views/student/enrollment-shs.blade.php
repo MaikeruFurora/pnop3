@@ -1,5 +1,26 @@
 @extends('../layout/app')
 @section('content')
+
+{{-- Modal --}}
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <div class="modal-body pt-5 text-center">
+            <p>
+                Make sure the information you provide throughout the enrolling process is accurate so that your information can be processed quickly and correctly.
+            </p>
+            <div class="mb-2">
+                <button type="button" class="btn btn-primary btn-sm btnCheckandVerify">Enroll Now</button>&nbsp;&nbsp;
+                <button type="button" class="btn btn-warning btn-sm" data-dismiss="modal">Close</button>
+            </div>
+            <span class="text-danger showmessage"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+{{-- Modal end --}}
+
 <section class="section">
     <div class="section-body">
         <div class="col-md-12 mt-5">
@@ -39,7 +60,7 @@
                                                     class="list-group-item d-flex justify-content-between align-items-center">
                                                     Grade Level &amp; Term
                                                     <span class="badge badge-primary badge-pill">Grade
-                                                        {{ Auth::user()->student_info->grade_level }} &amp;
+                                                        {{ $dataArr['grade_level'] }} &amp;
                                                         {{ $dataArr['term'] }}</span>
                                                 </li>
 
@@ -85,22 +106,97 @@
                                             <button class="btn btn-primary" disabled>
                                                 Waiting for Sectioning
                                             </button>
+                                            <p class="mt-3">Enrollment No. <span class="badge badge-warning badge-pill">{{ $dataArr['tracking_no'] }}</span></p>
+                                            <p class="mt-3"><b>Note: </b> If your enrollment is taking too long and the enrollment date has passed, you can contact the grade level chairman for your grade level to process your enrollment.</p>
                                             @elseif($dataArr['status']=='Enrolled')
-                                            <button class="btn btn-primary" disabled>FINALIZED</button>
+                                            <div class="form-group">
+                                                <input type="text" readonly class="form-control" value="{{ Auth::user()->student_info->strand.' - '.Auth::user()->student_info->description }}">
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-6">
+                                                    <input type="text" readonly class="form-control" value="Grade {{ Auth::user()->student_info->grade_level }}">
+                                                </div>
+                                               <div class="form-group col-6">
+                                                    <input type="text" readonly class="form-control" value="{{ $dataArr['term'] }}">
+                                                </div>
+                                            </div>
+                                            <button class="btn btn-primary" disabled>FINALIZED <small>(Enrolled)</small></button>
                                             @else
-                                            <p class="noteTxt"></p>
+                                            <span class="badge badge-warning badge-pill noteTxt mb-3"></span>
                                             @csrf
                                             @if ($dataArr['active_term']=='1st')
                                             <h6>First Semester enrollment was open</h6>
+                                           <div class="form-group">
+                                                <input type="text" readonly class="form-control" value="{{ Auth::user()->student_info->strand.' - '.Auth::user()->student_info->description }}">
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-6">
+                                                    <select class="form-control" name="first_term_grade_level" required>
+                                                        <option value="">Grade level to Enroll</option>
+                                                        <option value="11">Grade 11</option>
+                                                        <option value="12">Grade 12</option>
+                                                    </select>
+                                               </div>
+                                               <div class="form-group col-6">
+                                                    <input type="text" readonly class="form-control" value="First Semester">
+                                                </div>
+                                            </div>
+                                           
                                             @else
                                             <h6>Second Semester enrollment was open</h6>
+                                           <div class="form-row">
+                                               <div class="form-group col-6">
+                                                <input type="text" readonly class="form-control" value="{{ Auth::user()->student_info->strand.' - '.Auth::user()->student_info->description }}">
+                                               </div>
+                                               <div class="form-group col-6">
+                                                <input type="text" readonly class="form-control" value="Second Semester">
+                                               </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-6">
+                                                    <select class="form-control" name="second_term_grade_level" required>
+                                                        <option value="">Grade level to Enroll</option>
+                                                        <option value="11" @if ($dataArr['grade_level']=='11') selected @endif>Grade 11</option>
+                                                        <option value="12" @if ($dataArr['grade_level']=='12') selected @endif>Grade 12</option>
+                                                    </select>
+                                               </div>
+                                               <div class="form-group col-6">
+                                                <select class="form-control" name="second_term_section_id" readonly>
+                                                    <option value="{{ $dataArr['section_id'] }}">{{ $dataArr['section'] }}</option>
+                                                </select>
+                                           </div>
+                                            </div>
                                             @endif
-                                            <button type="submit"
-                                                class="btn btn-primary btnCheckandVerify mt-3">Enroll</button>
+                                            <button type="submit" class="btn btn-primary promptModal">Proceed</button>
                                             @endif
                                         </div>
                                     </div>
                                 </div>
+
+                                @if(Auth::user()->grade()->where('avg','<','75')->whereNull('remarks')->get()->count()!=0)
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="card card-primary">
+                                        <div class="card-header">
+                                            <h4>OTHERS</h4>
+                                        </div>
+                                        <div class="card-body">
+
+                                            <p>
+                                                Back Subject:
+                                                <span class="badge badge-danger">
+                                                    {{ Auth::user()->grade()->where('avg','<','75')->where('remarks')->get()->count() }}
+                                                </span><br>
+                                                <small>* Note
+                                                    <em> Must enroll in remedial classes for learning areas with
+                                                        failing mark
+                                                        and obtain at least 75 or higher</em>
+                                                </small>
+                                            </p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
                             </div>
 
                         </div>

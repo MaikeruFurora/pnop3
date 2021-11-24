@@ -155,7 +155,7 @@ setTimeout(() => {
 
 $("select[name='filterGradeLevel']").on("change", function () {
     let data = $(this).val().split("_");
-    if (val!="") {
-        gradeTable(val[0], val[1]);
+    if (data!="") {
+        gradeTable(data[0], data[1]);
     }
 });
