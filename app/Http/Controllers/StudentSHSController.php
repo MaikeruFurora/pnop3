@@ -106,6 +106,7 @@ class StudentSHSController extends Controller
             $dataArr['status'] = $ifexist->enroll_status;
             $dataArr['term'] = $ifexist->term . ' Term';
             $dataArr['active_term'] = $activeTerm;
+            $dataArr['grade_level'] = $ifexist->grade_level ?? 'N/A';
             $dataArr['tracking_no'] = $ifexist->tracking_no;
         } else {
             $previousData=Enrollment::select('enrollments.created_at', 'sections.section_name','enrollments.section_id','enrollments.grade_level')
@@ -131,7 +132,7 @@ class StudentSHSController extends Controller
 
     public function checkSubjectBalance(Student $student)
     {
-        return Grade::where('student_id', $student->id)->WhereNull('avg')->orWhere('avg', '')->get()->count();
+        return Grade::where('student_id', $student->id)->WhereNull('avg')->orWhere('avg', '')->whereNotNull('term')->get()->count();
     }
 
     public function storeProfileImage(Request $request){
@@ -223,7 +224,7 @@ class StudentSHSController extends Controller
             if ($fail->count()>=3) {
                 return $fail[0]->grade_level;
                } else {
-                return $grade_level + 1;
+                return $grade_level;
                }
         } else {
             return $grade_level;

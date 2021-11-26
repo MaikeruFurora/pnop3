@@ -14,6 +14,13 @@ class EnrollmentMasterList implements FromCollection, ShouldAutoSize, WithHeadin
     /**
     * @return \Illuminate\Support\Collection
     */
+
+    public function __construct(String $schoolyear, String $level)
+    {
+        $this->schoolyear = $schoolyear;
+        $this->level = $level;
+    }
+    
     public function collection()
     {
         $term=null;
@@ -24,13 +31,33 @@ class EnrollmentMasterList implements FromCollection, ShouldAutoSize, WithHeadin
         if (Config::get('activeAY')->second_term == 'Yes') {
             $term= '2nd';
         }
+
         
-        $data = Enrollment::join("students","enrollments.student_id","students.id")
-        ->leftjoin('sections','enrollments.section_id','sections.id')
-        ->leftjoin('strands','enrollments.strand_id','strands.id')
-        ->where('enrollments.school_year_id', Config::get('activeAY')->id)
-        ->orwhere('enrollments.term', $term)
-        ->get();
+        if ($this->level=="all") {
+            $data = Enrollment::join("students","enrollments.student_id","students.id")
+            ->leftjoin('sections','enrollments.section_id','sections.id')
+            ->leftjoin('strands','enrollments.strand_id','strands.id')
+            ->where('enrollments.school_year_id', $this->level)
+            ->where('enrollments.term', $term)
+            ->get();
+        } else {
+            if (intval(explode("_",$this->level)[0])>=11) {
+                $data = Enrollment::join("students","enrollments.student_id","students.id")
+                ->leftjoin('sections','enrollments.section_id','sections.id')
+                ->leftjoin('strands','enrollments.strand_id','strands.id')
+                ->where('enrollments.school_year_id', $this->schoolyear)
+                ->where('enrollments.term', explode("_",$this->level)[1])
+                ->where('enrollments.grade_level', explode("_",$this->level)[0])
+                ->get();
+            } else {
+                $data = Enrollment::join("students","enrollments.student_id","students.id")
+                ->leftjoin('sections','enrollments.section_id','sections.id')
+                ->leftjoin('strands','enrollments.strand_id','strands.id')
+                ->where('enrollments.school_year_id', $this->schoolyear)
+                ->where('enrollments.grade_level', $this->level)
+                ->get();
+            }
+        }
 
         return $data;
     }

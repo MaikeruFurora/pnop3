@@ -42,7 +42,7 @@ const sectionTable = () => {
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <button type="button" style="font-size:9px" class="btn btn-sm btn-info pl-3 pr-3 editSection editSec_${
                                         val.id
-                                    }" id="${val.id}">Edit</button>
+                                    }" id="${val.id}"> <i class="fas fa-edit"></i></button>
                                     <button type="button" style="font-size:9px" class="btn btn-sm btn-danger pl-3 pr-3 deleteSection deleteSec_${
                                         val.id
                                     }" id="${

@@ -60,7 +60,7 @@
                                                     class="list-group-item d-flex justify-content-between align-items-center">
                                                     Grade Level &amp; Term
                                                     <span class="badge badge-primary badge-pill">Grade
-                                                        {{ $dataArr['grade_level'] }} &amp;
+                                                        {{ $dataArr['grade_level'] ?? 'N/A' }} &amp;
                                                         {{ $dataArr['term'] }}</span>
                                                 </li>
 

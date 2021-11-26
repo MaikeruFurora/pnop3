@@ -22,7 +22,12 @@ class EnrollmentSHSController extends Controller
     public function filterSection($strand)
     {
         return response()->json(
-            Section::select('sections.section_name', 'sections.id')->where('strand_id', $strand)->where('grade_level', Auth::user()->chairman->grade_level)->get()
+            Section::join('school_years', 'sections.school_year_id', 'school_years.id')
+            ->select('sections.section_name', 'sections.id')
+            ->where('school_years.status', 1)
+            ->where('strand_id', $strand)
+            ->where('grade_level',  Auth::user()->chairman_info->grade_level)
+            ->get()
         );
     }
 

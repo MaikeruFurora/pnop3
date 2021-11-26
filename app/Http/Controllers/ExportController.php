@@ -22,8 +22,8 @@ class ExportController extends Controller
         }
     }
 
-    public function exportMasterList(){
-        return Excel::download(new EnrollmentMasterList, 'Enrollment-Masterlist-'.date("F_d_Y").'.xlsx');
+    public function exportMasterList($schoolyear,$level){
+        return Excel::download(new EnrollmentMasterList($schoolyear,$level), 'Enrollment-Masterlist-'.date("F_d_Y").'.xlsx');
     }
 
     public function exportMyTemplate(Section $section,Subject $subject,$type){

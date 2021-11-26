@@ -50,20 +50,17 @@
         </div>
 
         <div class="card card-info">
+            <div class="card-header">
+                <div class="btn-group mb-3" role="group" aria-label="Basic example">
+                    <button class="btn btn-warning txtSubjectName"></button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-secondary btn-icon" id="btnImport"><i class="fas fa-cloud-upload-alt"></i>Import</button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-secondary btn-icon btnDownload"><i class="fas fa-cloud-download-alt"></i>Template</button>
+                </div>
+            </div>
             <div class="card-body pb-1">
                 <div class="table-responsive">
-                    <div class="float-left">
-                        <span style="font-size: 15px" class="txtSubjectName badge badge-warning pt-1 pb-1 mt-2"></span>
-                    </div>
-                    <div class="col-lg-1 float-left">
-                        <button type="button" class="btn btn-outline-primary btn-block" id="btnImport"><i
-                                class="fas fa-cloud-upload-alt"></i>&nbsp;Import
-                        </button>
-                    </div>
-                    <div class="col-lg-1 float-left">
-                        <button class="btn btn-outline-secondary btnDownload" type="button"><i
-                            class="fas fa-cloud-download-alt"></i>Template</button>
-                    </div>
+                  
                     <table class="table  table-bordered table-hover" id="myClassTable" style="font-size: 14px">
                         <thead class="bg-info ">
                             <tr>

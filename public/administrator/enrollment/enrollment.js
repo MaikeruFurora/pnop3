@@ -83,5 +83,5 @@ $("select[name='school_year_id']").on("change", function () {
 
 
 $("button[name='btnExport']").on('click', function () {
-    window.open("enrollment/export/by/level")
+    window.open("enrollment/export/by/level/"+$("select[name='school_year_id']").val()+"/"+$("select[name='selectedGL']").val())
 });
